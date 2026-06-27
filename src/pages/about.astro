@@ -2,7 +2,9 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE } from '../consts';
+
+const topics = ['男性特權', '情感腳本', '性別凝視', '身份認同', '在地事件', '多元對話', '聽眾互動'];
 ---
 
 <!doctype html>
@@ -14,68 +16,72 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		/>
 		<style>
 			main {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: 3rem auto;
-				padding: 0 1em;
+				max-width: 680px;
 			}
-			h1 {
-				font-size: 2rem;
-				margin-bottom: 0.5rem;
+			.eyebrow {
+				display: inline-block;
+				background: var(--accent-light);
+				color: var(--accent-dark);
+				font-size: 0.82rem;
+				font-weight: 600;
+				padding: 0.3rem 0.9rem;
+				border-radius: 999px;
+				margin-bottom: 1rem;
 			}
 			.subtitle {
-				color: rgb(var(--gray));
-				font-size: 1.1rem;
-				margin-bottom: 2rem;
+				color: var(--text-secondary);
+				font-size: 1.15rem;
+				margin-bottom: 2.5rem;
 			}
 			.topic-grid {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 0.5rem;
-				margin: 1.5rem 0;
+				margin: 1.5rem 0 2.5rem;
 			}
 			.topic-tag {
-				background: #e9ecef;
-				color: rgb(var(--gray-dark));
-				padding: 0.3rem 0.8rem;
-				border-radius: 6px;
+				background: var(--surface-soft);
+				border: 1px solid var(--border);
+				color: var(--text-primary);
+				padding: 0.4rem 0.9rem;
+				border-radius: 999px;
 				font-size: 0.9rem;
 			}
 			.listen-section {
-				margin-top: 2rem;
-				padding: 1.5rem;
-				background: #f8f9fa;
-				border-radius: 12px;
+				margin-top: 2.5rem;
+				padding: 1.75rem;
+				background: var(--surface-soft);
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
 			}
 			.listen-section h2 {
 				margin-top: 0;
-				font-size: 1.2rem;
+				font-size: 1.15rem;
 			}
 			.listen-links {
 				display: flex;
-				gap: 0.75rem;
+				gap: 0.6rem;
 				flex-wrap: wrap;
 				margin-top: 1rem;
 			}
 			.listen-links a {
-				display: inline-block;
-				padding: 0.5rem 1.2rem;
-				border-radius: 6px;
-				text-decoration: none;
+				display: inline-flex;
+				padding: 0.5rem 1.1rem;
+				border-radius: 999px;
 				font-weight: 600;
-				font-size: 0.9rem;
-				transition: opacity 0.2s;
+				font-size: 0.85rem;
+				color: #fff;
 			}
-			.listen-links a:hover { opacity: 0.8; }
-			.btn-soundon { background: #ff6b35; color: white; }
-			.btn-spotify { background: #1db954; color: white; }
-			.btn-apple   { background: #fc3c44; color: white; }
-			.btn-kkbox   { background: #009fcc; color: white; }
+			.btn-soundon { background: #ff6b35; }
+			.btn-spotify { background: #1db954; }
+			.btn-apple   { background: #a855f7; }
+			.btn-kkbox   { background: #009fcc; }
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
+			<span class="eyebrow">關於節目</span>
 			<h1>關於《新世紀直男戰士》</h1>
 			<p class="subtitle">用男性視角，認真討論性別這件事。</p>
 
@@ -85,19 +91,13 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 			</p>
 
 			<p>
-				每集節目，我們邀請來賓、學者、素人，一起聊那些男生可能沒想過、或者不敢說出口的性別問題：
+				每集節目，我們邀請來賓、學者、素人，一起聊那些男生可能沒想過、或者不敢說出口的性別問題:
 				從情感腳本、男性特權，到身份認同、在地事件……我們試著把這些對話記錄下來，轉化成可讀、可搜尋的文字。
 			</p>
 
 			<h2>我們談的議題</h2>
 			<div class="topic-grid">
-				<span class="topic-tag">男性特權</span>
-				<span class="topic-tag">情感腳本</span>
-				<span class="topic-tag">性別凝視</span>
-				<span class="topic-tag">身份認同</span>
-				<span class="topic-tag">在地事件</span>
-				<span class="topic-tag">多元對話</span>
-				<span class="topic-tag">聽眾互動</span>
+				{topics.map((t) => <span class="topic-tag">{t}</span>)}
 			</div>
 
 			<p>
@@ -107,7 +107,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 			<div class="listen-section">
 				<h2>在這裡收聽節目</h2>
-				<p>選擇你慣用的平台，訂閱不錯過：</p>
+				<p style="margin-bottom:0;">選擇你慣用的平台，訂閱不錯過:</p>
 				<div class="listen-links">
 					<a href="#" class="btn-soundon">SoundOn</a>
 					<a href="#" class="btn-spotify">Spotify</a>

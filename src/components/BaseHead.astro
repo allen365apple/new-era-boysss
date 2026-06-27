@@ -3,7 +3,6 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE, SITE_DESCRIPTION, PODCAST_NAME, PODCAST_HOST } from '../consts';
-import { Font } from 'astro:assets';
 
 interface Props {
 	title: string;
@@ -69,7 +68,13 @@ const siteJsonLd = !isArticle ? JSON.stringify({
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-atkinson" preload />
+<!-- 思源黑體 Noto Sans TC（Google Fonts，CJK 動態子集化） -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
+	rel="stylesheet"
+/>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

@@ -1,13 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { PODCAST_NAME } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { headings?: MarkdownHeading[] };
 
 const {
 	title,
@@ -20,210 +21,314 @@ const {
 	topics,
 	listenLinks,
 	aiGenerated,
+	headings = [],
 } = Astro.props;
+
+// 只取 h2 / h3 進目錄
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
 <html lang="zh-TW">
 	<head>
 		<BaseHead title={title} description={description} image={coverImage} isArticle={true} pubDate={pubDate} />
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
+			.hero {
+				max-width: 920px;
 				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
+				padding: 3.5rem 1.25rem 2rem;
 				text-align: center;
-				line-height: 1;
+				border-bottom: 1px dashed var(--border);
 			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.meta {
+			.hero .meta-top {
 				display: flex;
-				gap: 0.5rem;
 				justify-content: center;
+				gap: 0.5rem;
 				flex-wrap: wrap;
-				margin-bottom: 0.75rem;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
+				margin-bottom: 1rem;
 			}
 			.episode-tag {
-				background: rgb(var(--accent));
-				color: white;
-				font-size: 0.8rem;
-				padding: 0.2rem 0.6rem;
-				border-radius: 4px;
-				font-weight: bold;
+				background: var(--accent);
+				color: #fff;
+				font-size: 0.78rem;
+				font-weight: 600;
+				padding: 0.2rem 0.7rem;
+				border-radius: 999px;
 			}
 			.topic-tag {
-				background: #e9ecef;
-				color: rgb(var(--gray-dark));
-				font-size: 0.8rem;
-				padding: 0.2rem 0.6rem;
-				border-radius: 4px;
+				background: var(--accent-light);
+				color: var(--accent-dark);
+				font-size: 0.78rem;
+				font-weight: 500;
+				padding: 0.2rem 0.7rem;
+				border-radius: 999px;
 			}
-			.guests-line {
-				color: rgb(var(--gray));
-				font-size: 0.9rem;
-				text-align: center;
-				margin-bottom: 0.5rem;
+			.hero h1 {
+				font-size: 2.6rem;
+				margin: 0 0 1rem;
+			}
+			.hero .date {
+				color: var(--text-muted);
+				font-size: 0.95rem;
+			}
+			.hero .guests {
+				color: var(--text-secondary);
+				font-size: 0.95rem;
+				margin-top: 0.4rem;
+			}
+			.cover {
+				max-width: 1000px;
+				margin: 2rem auto 0;
+				padding: 0 1.25rem;
+			}
+			.cover img {
+				width: 100%;
+				border-radius: var(--radius-lg);
 			}
 
-			/* 底部 AI 整理 + 收聽區塊 */
+			/* 兩欄:目錄 + 內文 */
+			.layout {
+				display: grid;
+				grid-template-columns: 240px minmax(0, var(--content-width));
+				gap: 3.5rem;
+				justify-content: center;
+				padding: 3rem 1.25rem 4rem;
+				align-items: start;
+			}
+			.toc {
+				position: sticky;
+				top: 2rem;
+				font-size: 0.9rem;
+			}
+			.toc-label {
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				font-size: 0.72rem;
+				color: var(--text-muted);
+				font-weight: 600;
+				margin-bottom: 0.8rem;
+				padding-bottom: 0.8rem;
+				border-bottom: 1px dashed var(--border);
+			}
+			.toc ul {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 0.3rem;
+			}
+			.toc a {
+				color: var(--text-muted);
+				text-decoration: none;
+				display: block;
+				line-height: 1.4;
+				padding: 0.4rem 0.7rem;
+				border-left: 2px solid transparent;
+				border-radius: 6px;
+				transition: all 0.15s ease;
+			}
+			.toc a.depth-3 {
+				padding-left: 1.4rem;
+				font-size: 0.85rem;
+			}
+			.toc a:hover {
+				color: var(--text-secondary);
+			}
+			.toc a.active {
+				color: var(--accent);
+				font-weight: 500;
+				background: var(--accent-light);
+				border-left-color: var(--accent);
+			}
+			.article {
+				min-width: 0;
+			}
+			.article :global(h2),
+			.article :global(h3) {
+				scroll-margin-top: 1.5rem;
+			}
+
+			/* 文末:AI 整理 + 收聽 */
 			.listen-block {
-				margin-top: 3rem;
-				padding: 1.5rem;
-				background: #f8f9fa;
-				border-radius: 12px;
-				border-left: 4px solid rgb(var(--accent));
+				margin-top: 3.5rem;
+				padding: 1.75rem;
+				background: var(--surface-soft);
+				border: 1px dashed var(--border-strong);
+				border-radius: var(--radius-lg);
 			}
 			.listen-block .ai-notice {
-				font-size: 0.85rem;
-				color: rgb(var(--gray));
-				margin-bottom: 1rem;
+				font-size: 0.9rem;
+				color: var(--text-secondary);
+				margin: 0 0 1.2rem;
 				display: flex;
-				align-items: center;
-				gap: 0.4rem;
-			}
-			.listen-block .ai-notice::before {
-				content: "🤖";
+				align-items: flex-start;
+				gap: 0.5rem;
+				line-height: 1.6;
 			}
 			.listen-block h3 {
 				margin: 0 0 1rem;
-				font-size: 1rem;
-				color: rgb(var(--black));
+				font-size: 1.05rem;
 			}
 			.listen-links {
 				display: flex;
-				gap: 0.75rem;
+				gap: 0.6rem;
 				flex-wrap: wrap;
 			}
 			.listen-links a {
-				display: inline-block;
-				padding: 0.5rem 1rem;
-				border-radius: 6px;
-				text-decoration: none;
+				display: inline-flex;
+				align-items: center;
+				padding: 0.5rem 1.1rem;
+				border-radius: 999px;
 				font-size: 0.85rem;
 				font-weight: 600;
-				transition: opacity 0.2s;
+				color: #fff;
+				transition: transform 0.15s ease, opacity 0.15s ease;
 			}
 			.listen-links a:hover {
-				opacity: 0.8;
+				transform: translateY(-1px);
+				opacity: 0.92;
 			}
-			.listen-links .btn-soundon {
-				background: #ff6b35;
-				color: white;
-			}
-			.listen-links .btn-spotify {
-				background: #1db954;
-				color: white;
-			}
-			.listen-links .btn-apple {
-				background: #fc3c44;
-				color: white;
-			}
-			.listen-links .btn-kkbox {
-				background: #009fcc;
-				color: white;
-			}
+			.btn-soundon { background: #ff6b35; }
+			.btn-spotify { background: #1db954; }
+			.btn-apple   { background: #a855f7; }
+			.btn-kkbox   { background: #009fcc; }
 			.no-links-notice {
-				color: rgb(var(--gray));
-				font-size: 0.85rem;
-				font-style: italic;
+				color: var(--text-muted);
+				font-size: 0.88rem;
+			}
+
+			@media (max-width: 1024px) {
+				.layout {
+					grid-template-columns: minmax(0, var(--content-width));
+				}
+				.toc {
+					display: none;
+				}
+			}
+			@media (max-width: 720px) {
+				.hero {
+					padding-top: 2rem;
+				}
+				.hero h1 {
+					font-size: 1.9rem;
+				}
 			}
 		</style>
 	</head>
 
 	<body>
 		<Header />
-		<main>
+		<main style="width: 100%; max-width: 100%; padding: 0;">
 			<article>
-				<div class="hero-image">
-					{coverImage && <Image width={1020} height={510} src={coverImage} alt={title} />}
+				<div class="hero">
+					<div class="meta-top">
+						{episode && <span class="episode-tag">{episode}</span>}
+						{topics && topics.map((t) => <span class="topic-tag">{t}</span>)}
+					</div>
+					<h1>{title}</h1>
+					<div class="date">
+						<FormattedDate date={pubDate} />
+						{updatedDate && <span> · 最後更新 <FormattedDate date={updatedDate} /></span>}
+					</div>
+					{guests && <p class="guests">來賓:{guests}</p>}
 				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{updatedDate && (
-								<div class="last-updated-on">
-									最後更新：<FormattedDate date={updatedDate} />
+
+				{coverImage && (
+					<div class="cover">
+						<Image width={1000} height={500} src={coverImage} alt={title} />
+					</div>
+				)}
+
+				<div class="layout">
+					{toc.length > 0 && (
+						<nav class="toc" aria-label="文章目錄">
+							<div class="toc-label">本文目錄</div>
+							<ul>
+								{toc.map((h) => (
+									<li>
+										<a href={`#${h.slug}`} class={`depth-${h.depth}`} data-toc-link={h.slug}>
+											{h.text}
+										</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					)}
+
+					<div class="article prose">
+						<slot />
+
+						<div class="listen-block">
+							{aiGenerated && (
+								<p class="ai-notice">
+									<span aria-hidden="true">🎧</span>
+									<span>本文由 AI 整理自《{PODCAST_NAME}》Podcast 內容，經人工審閱後發布。</span>
+								</p>
+							)}
+							<h3>收聽原集節目</h3>
+							{listenLinks ? (
+								<div class="listen-links">
+									{listenLinks.soundon && <a href={listenLinks.soundon} target="_blank" rel="noopener" class="btn-soundon">SoundOn</a>}
+									{listenLinks.spotify && <a href={listenLinks.spotify} target="_blank" rel="noopener" class="btn-spotify">Spotify</a>}
+									{listenLinks.apple && <a href={listenLinks.apple} target="_blank" rel="noopener" class="btn-apple">Apple Podcasts</a>}
+									{listenLinks.kkbox && <a href={listenLinks.kkbox} target="_blank" rel="noopener" class="btn-kkbox">KKBOX</a>}
 								</div>
+							) : (
+								<p class="no-links-notice">收聽連結將於整理完成後加入。</p>
 							)}
 						</div>
-						{guests && <p class="guests-line">來賓：{guests}</p>}
-						<div class="meta">
-							{episode && <span class="episode-tag">{episode}</span>}
-							{topics && topics.map(t => <span class="topic-tag">{t}</span>)}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-
-					<slot />
-
-					<!-- AI 整理 + 收聽連結區塊 -->
-					<div class="listen-block">
-						{aiGenerated && (
-							<p class="ai-notice">
-								本文由 AI 整理自《{PODCAST_NAME}》Podcast 內容，經人工審閱後發布。
-							</p>
-						)}
-						<h3>收聽原集節目</h3>
-						{listenLinks ? (
-							<div class="listen-links">
-								{listenLinks.soundon && (
-									<a href={listenLinks.soundon} target="_blank" rel="noopener" class="btn-soundon">
-										SoundOn
-									</a>
-								)}
-								{listenLinks.spotify && (
-									<a href={listenLinks.spotify} target="_blank" rel="noopener" class="btn-spotify">
-										Spotify
-									</a>
-								)}
-								{listenLinks.apple && (
-									<a href={listenLinks.apple} target="_blank" rel="noopener" class="btn-apple">
-										Apple Podcasts
-									</a>
-								)}
-								{listenLinks.kkbox && (
-									<a href={listenLinks.kkbox} target="_blank" rel="noopener" class="btn-kkbox">
-										KKBOX
-									</a>
-								)}
-							</div>
-						) : (
-							<p class="no-links-notice">收聽連結將於整理完成後加入。</p>
-						)}
 					</div>
 				</div>
 			</article>
 		</main>
 		<Footer />
+
+		<script>
+			// 捲動淡入
+			const revealEls = document.querySelectorAll('.article > *');
+			revealEls.forEach((el) => el.classList.add('reveal'));
+			const revealObserver = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('is-visible');
+							revealObserver.unobserve(entry.target);
+						}
+					});
+				},
+				{ threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+			);
+			revealEls.forEach((el) => revealObserver.observe(el));
+
+			// 目錄 scroll-spy:捲動時高亮當前章節
+			const tocLinks = document.querySelectorAll('[data-toc-link]');
+			const headingMap = new Map();
+			tocLinks.forEach((link) => {
+				const id = link.getAttribute('data-toc-link');
+				const heading = id ? document.getElementById(id) : null;
+				if (heading) headingMap.set(heading, link);
+			});
+
+			let activeLink = null;
+			const setActive = (link) => {
+				if (activeLink === link) return;
+				if (activeLink) activeLink.classList.remove('active');
+				if (link) link.classList.add('active');
+				activeLink = link;
+			};
+
+			const spyObserver = new IntersectionObserver(
+				(entries) => {
+					const visible = entries
+						.filter((e) => e.isIntersecting)
+						.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+					if (visible.length > 0) {
+						setActive(headingMap.get(visible[0].target));
+					}
+				},
+				{ rootMargin: '-10% 0px -75% 0px', threshold: 0 }
+			);
+			headingMap.forEach((_, heading) => spyObserver.observe(heading));
+		</script>
 	</body>
 </html>

@@ -3,17 +3,22 @@ const today = new Date();
 ---
 
 <footer>
-	<p>&copy; {today.getFullYear()} 新世紀直男戰士 · 本站文章由 AI 整理自 Podcast 內容</p>
+	<p>&copy; {today.getFullYear()} 新世紀直男戰士</p>
+	<p class="sub">本站文章由 AI 整理自 Podcast 內容，經人工審閱後發布</p>
 </footer>
 <style>
 	footer {
-		padding: 2em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: rgb(var(--gray));
+		border-top: 1px solid var(--border);
+		padding: 2.5rem 1.25rem;
 		text-align: center;
+		color: var(--text-muted);
 		font-size: 0.9rem;
 	}
 	footer p {
 		margin: 0;
+	}
+	footer .sub {
+		font-size: 0.82rem;
+		margin-top: 0.3rem;
 	}
 </style>

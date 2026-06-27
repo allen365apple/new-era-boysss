@@ -5,47 +5,53 @@ import HeaderLink from './HeaderLink.astro';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<a href="/" class="brand">{SITE_TITLE}</a>
 		<div class="internal-links">
-			<HeaderLink href="/">文章列表</HeaderLink>
-			<HeaderLink href="/blog">所有文章</HeaderLink>
+			<HeaderLink href="/">文章</HeaderLink>
 			<HeaderLink href="/about">關於節目</HeaderLink>
 		</div>
 	</nav>
 </header>
 <style>
 	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: saturate(180%) blur(12px);
+		border-bottom: 1px solid var(--border);
 	}
 	nav {
+		max-width: 1080px;
+		margin: 0 auto;
+		padding: 0 1.25rem;
+		height: 60px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+	.brand {
+		font-weight: 700;
+		font-size: 1.1rem;
+		color: var(--text-primary);
+		letter-spacing: -0.02em;
 		text-decoration: none;
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+	.internal-links {
+		display: flex;
+		gap: 0.5rem;
 	}
-	@media (max-width: 720px) {
-		h2 {
-			font-size: 0.9em;
-		}
+	nav :global(a:not(.brand)) {
+		padding: 0.4rem 0.75rem;
+		color: var(--text-secondary);
+		border-radius: var(--radius);
+		text-decoration: none;
+		font-size: 0.95rem;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+	nav :global(a.active),
+	nav :global(a:not(.brand):hover) {
+		color: var(--text-primary);
+		background: var(--surface-soft);
 	}
 </style>
