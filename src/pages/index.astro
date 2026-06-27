@@ -51,7 +51,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 			}
 			.post-card {
 				display: grid;
-				grid-template-columns: 200px 1fr;
+				grid-template-columns: 150px 1fr;
 				gap: 1.5rem;
 				padding: 1.75rem 0;
 				border-top: 1px dashed var(--border);
@@ -66,7 +66,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 			.post-card .thumb {
 				border-radius: var(--radius);
 				overflow: hidden;
-				aspect-ratio: 16 / 10;
+				aspect-ratio: 1 / 1;
 				background: var(--surface-soft);
 			}
 			.post-card .thumb img {
@@ -138,11 +138,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 					font-size: 2.1rem;
 				}
 				.post-card {
-					grid-template-columns: 1fr;
-					gap: 0.9rem;
-				}
-				.post-card .thumb {
-					max-height: 200px;
+					grid-template-columns: 96px 1fr;
+					gap: 1rem;
 				}
 			}
 		</style>
@@ -162,7 +159,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 							<article class={`post-card${post.data.coverImage ? '' : ' no-thumb'}`}>
 								{post.data.coverImage && (
 									<div class="thumb">
-										<Image width={400} height={250} src={post.data.coverImage} alt={post.data.title} />
+										<Image width={300} height={300} src={post.data.coverImage} alt={post.data.title} />
 									</div>
 								)}
 								<div class="body">
