@@ -5,6 +5,7 @@ backend:
   base_url: https://new-era-boysss.pages.dev
   auth_endpoint: /api/auth
 
+site_url: https://new-era-boysss.pages.dev
 media_folder: src/assets/uploads
 public_folder: /assets/uploads
 
@@ -17,6 +18,7 @@ collections:
     folder: src/content/blog
     create: true
     slug: "{{slug}}"
+    preview_path: "blog/{{slug}}"
     extension: md
     format: frontmatter
     fields:
