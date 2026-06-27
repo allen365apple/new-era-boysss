@@ -76,12 +76,14 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 				margin-top: 0.4rem;
 			}
 			.cover {
-				max-width: 1000px;
 				margin: 2rem auto 0;
 				padding: 0 1.25rem;
+				text-align: center;
 			}
 			.cover img {
+				max-width: 480px;
 				width: 100%;
+				height: auto;
 				border-radius: var(--radius-lg);
 			}
 
@@ -235,7 +237,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 				{coverImage && (
 					<div class="cover">
-						<Image width={1000} height={500} src={coverImage} alt={title} />
+						<Image src={coverImage} alt={title} />
 					</div>
 				)}
 

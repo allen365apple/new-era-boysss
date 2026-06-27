@@ -110,6 +110,4 @@ draft: false
 
 **【以上文字由柏文視角出發，經 AI 潤稿後整理】**
 
-🎧 想要聽更多我們討論的細節，歡迎至下方連結或各大 Podcast 平台收聽
-
-https://open.spotify.com/episode/4Cl0YkYUFSCTvBBChk3jcY?si=d2b6a1b2f8684298
+🎧 想要聽更多我們討論的細節，歡迎至各大 Podcast 平台收聽，或 [在 Spotify 收聽這一集](https://open.spotify.com/episode/4Cl0YkYUFSCTvBBChk3jcY)。
