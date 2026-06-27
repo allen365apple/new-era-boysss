@@ -1,0 +1,93 @@
+backend:
+  name: github
+  repo: allen365apple/new-era-boysss
+  branch: main
+  base_url: https://new-era-boysss.pages.dev
+  auth_endpoint: /api/auth
+
+media_folder: src/assets/uploads
+public_folder: /assets/uploads
+
+locale: zh_Hant
+
+collections:
+  - name: blog
+    label: 文章
+    label_singular: 文章
+    folder: src/content/blog
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - label: 標題
+        name: title
+        widget: string
+
+      - label: 摘要（SEO 用）
+        name: description
+        widget: text
+        hint: 建議 50–160 字，會顯示在 Google 搜尋結果
+
+      - label: 發布日期
+        name: pubDate
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+
+      - label: 集數
+        name: episode
+        widget: string
+        required: false
+        hint: 例如 EP52
+
+      - label: 來賓
+        name: guests
+        widget: string
+        required: false
+        hint: 例如 方念萱老師
+
+      - label: 議題分類
+        name: topics
+        widget: select
+        multiple: true
+        required: false
+        options:
+          - { label: 男性特權, value: 男性特權 }
+          - { label: 情感腳本, value: 情感腳本 }
+          - { label: 性別凝視, value: 性別凝視 }
+          - { label: 身份認同, value: 身份認同 }
+          - { label: 在地事件, value: 在地事件 }
+          - { label: 多元對話, value: 多元對話 }
+          - { label: 聽眾互動, value: 聽眾互動 }
+
+      - label: 收聽連結
+        name: listenLinks
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { label: SoundOn, name: soundon, widget: string, required: false }
+          - { label: Spotify, name: spotify, widget: string, required: false }
+          - { label: Apple Podcasts, name: apple, widget: string, required: false }
+          - { label: KKBOX, name: kkbox, widget: string, required: false }
+
+      - label: 封面圖
+        name: coverImage
+        widget: image
+        required: false
+
+      - label: AI 整理內容
+        name: aiGenerated
+        widget: boolean
+        default: true
+        hint: 勾選表示本文由 AI 整理自 Podcast 逐字稿
+
+      - label: 草稿（不發布）
+        name: draft
+        widget: boolean
+        default: false
+
+      - label: 內文
+        name: body
+        widget: markdown
