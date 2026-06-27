@@ -27,4 +27,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://example.com/sitemap-index.xml
+Sitemap: https://new-era-boysss.pages.dev/sitemap-index.xml
