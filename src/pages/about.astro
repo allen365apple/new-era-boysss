@@ -1,0 +1,121 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="zh-TW">
+	<head>
+		<BaseHead
+			title={`關於節目 — ${SITE_TITLE}`}
+			description="《新世紀直男戰士》是一個從男性視角出發，認真討論性別議題的 Podcast。我們相信，男性加入性別對話，是讓社會更平等的重要一步。"
+		/>
+		<style>
+			main {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: 3rem auto;
+				padding: 0 1em;
+			}
+			h1 {
+				font-size: 2rem;
+				margin-bottom: 0.5rem;
+			}
+			.subtitle {
+				color: rgb(var(--gray));
+				font-size: 1.1rem;
+				margin-bottom: 2rem;
+			}
+			.topic-grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin: 1.5rem 0;
+			}
+			.topic-tag {
+				background: #e9ecef;
+				color: rgb(var(--gray-dark));
+				padding: 0.3rem 0.8rem;
+				border-radius: 6px;
+				font-size: 0.9rem;
+			}
+			.listen-section {
+				margin-top: 2rem;
+				padding: 1.5rem;
+				background: #f8f9fa;
+				border-radius: 12px;
+			}
+			.listen-section h2 {
+				margin-top: 0;
+				font-size: 1.2rem;
+			}
+			.listen-links {
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+				margin-top: 1rem;
+			}
+			.listen-links a {
+				display: inline-block;
+				padding: 0.5rem 1.2rem;
+				border-radius: 6px;
+				text-decoration: none;
+				font-weight: 600;
+				font-size: 0.9rem;
+				transition: opacity 0.2s;
+			}
+			.listen-links a:hover { opacity: 0.8; }
+			.btn-soundon { background: #ff6b35; color: white; }
+			.btn-spotify { background: #1db954; color: white; }
+			.btn-apple   { background: #fc3c44; color: white; }
+			.btn-kkbox   { background: #009fcc; color: white; }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>關於《新世紀直男戰士》</h1>
+			<p class="subtitle">用男性視角，認真討論性別這件事。</p>
+
+			<p>
+				《新世紀直男戰士》是一個從男性出發、面向所有人的性別議題 Podcast。
+				我們相信，性別平等的對話需要各種聲音——包括願意自我反思的男性聲音。
+			</p>
+
+			<p>
+				每集節目，我們邀請來賓、學者、素人，一起聊那些男生可能沒想過、或者不敢說出口的性別問題：
+				從情感腳本、男性特權，到身份認同、在地事件……我們試著把這些對話記錄下來，轉化成可讀、可搜尋的文字。
+			</p>
+
+			<h2>我們談的議題</h2>
+			<div class="topic-grid">
+				<span class="topic-tag">男性特權</span>
+				<span class="topic-tag">情感腳本</span>
+				<span class="topic-tag">性別凝視</span>
+				<span class="topic-tag">身份認同</span>
+				<span class="topic-tag">在地事件</span>
+				<span class="topic-tag">多元對話</span>
+				<span class="topic-tag">聽眾互動</span>
+			</div>
+
+			<p>
+				本站的文章由 AI 協助整理 Podcast 逐字稿後改寫，經製作團隊審閱後發布。
+				目的是讓這些對話被更多人看見、被 Google 找到、也被 AI 助理引用時能有清楚的來源。
+			</p>
+
+			<div class="listen-section">
+				<h2>在這裡收聽節目</h2>
+				<p>選擇你慣用的平台，訂閱不錯過：</p>
+				<div class="listen-links">
+					<a href="#" class="btn-soundon">SoundOn</a>
+					<a href="#" class="btn-spotify">Spotify</a>
+					<a href="#" class="btn-apple">Apple Podcasts</a>
+					<a href="#" class="btn-kkbox">KKBOX</a>
+				</div>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

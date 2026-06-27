@@ -1,0 +1,229 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { PODCAST_NAME } from '../consts';
+
+type Props = CollectionEntry<'blog'>['data'];
+
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	coverImage,
+	episode,
+	guests,
+	topics,
+	listenLinks,
+	aiGenerated,
+} = Astro.props;
+---
+
+<html lang="zh-TW">
+	<head>
+		<BaseHead title={title} description={description} image={coverImage} isArticle={true} pubDate={pubDate} />
+		<style>
+			main {
+				width: calc(100% - 2em);
+				max-width: 100%;
+				margin: 0;
+			}
+			.hero-image {
+				width: 100%;
+			}
+			.hero-image img {
+				display: block;
+				margin: 0 auto;
+				border-radius: 12px;
+				box-shadow: var(--box-shadow);
+			}
+			.prose {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 1em;
+				color: rgb(var(--gray-dark));
+			}
+			.title {
+				margin-bottom: 1em;
+				padding: 1em 0;
+				text-align: center;
+				line-height: 1;
+			}
+			.title h1 {
+				margin: 0 0 0.5em 0;
+			}
+			.meta {
+				display: flex;
+				gap: 0.5rem;
+				justify-content: center;
+				flex-wrap: wrap;
+				margin-bottom: 0.75rem;
+			}
+			.date {
+				margin-bottom: 0.5em;
+				color: rgb(var(--gray));
+			}
+			.last-updated-on {
+				font-style: italic;
+			}
+			.episode-tag {
+				background: rgb(var(--accent));
+				color: white;
+				font-size: 0.8rem;
+				padding: 0.2rem 0.6rem;
+				border-radius: 4px;
+				font-weight: bold;
+			}
+			.topic-tag {
+				background: #e9ecef;
+				color: rgb(var(--gray-dark));
+				font-size: 0.8rem;
+				padding: 0.2rem 0.6rem;
+				border-radius: 4px;
+			}
+			.guests-line {
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+				text-align: center;
+				margin-bottom: 0.5rem;
+			}
+
+			/* 底部 AI 整理 + 收聽區塊 */
+			.listen-block {
+				margin-top: 3rem;
+				padding: 1.5rem;
+				background: #f8f9fa;
+				border-radius: 12px;
+				border-left: 4px solid rgb(var(--accent));
+			}
+			.listen-block .ai-notice {
+				font-size: 0.85rem;
+				color: rgb(var(--gray));
+				margin-bottom: 1rem;
+				display: flex;
+				align-items: center;
+				gap: 0.4rem;
+			}
+			.listen-block .ai-notice::before {
+				content: "🤖";
+			}
+			.listen-block h3 {
+				margin: 0 0 1rem;
+				font-size: 1rem;
+				color: rgb(var(--black));
+			}
+			.listen-links {
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+			}
+			.listen-links a {
+				display: inline-block;
+				padding: 0.5rem 1rem;
+				border-radius: 6px;
+				text-decoration: none;
+				font-size: 0.85rem;
+				font-weight: 600;
+				transition: opacity 0.2s;
+			}
+			.listen-links a:hover {
+				opacity: 0.8;
+			}
+			.listen-links .btn-soundon {
+				background: #ff6b35;
+				color: white;
+			}
+			.listen-links .btn-spotify {
+				background: #1db954;
+				color: white;
+			}
+			.listen-links .btn-apple {
+				background: #fc3c44;
+				color: white;
+			}
+			.listen-links .btn-kkbox {
+				background: #009fcc;
+				color: white;
+			}
+			.no-links-notice {
+				color: rgb(var(--gray));
+				font-size: 0.85rem;
+				font-style: italic;
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main>
+			<article>
+				<div class="hero-image">
+					{coverImage && <Image width={1020} height={510} src={coverImage} alt={title} />}
+				</div>
+				<div class="prose">
+					<div class="title">
+						<div class="date">
+							<FormattedDate date={pubDate} />
+							{updatedDate && (
+								<div class="last-updated-on">
+									最後更新：<FormattedDate date={updatedDate} />
+								</div>
+							)}
+						</div>
+						{guests && <p class="guests-line">來賓：{guests}</p>}
+						<div class="meta">
+							{episode && <span class="episode-tag">{episode}</span>}
+							{topics && topics.map(t => <span class="topic-tag">{t}</span>)}
+						</div>
+						<h1>{title}</h1>
+						<hr />
+					</div>
+
+					<slot />
+
+					<!-- AI 整理 + 收聽連結區塊 -->
+					<div class="listen-block">
+						{aiGenerated && (
+							<p class="ai-notice">
+								本文由 AI 整理自《{PODCAST_NAME}》Podcast 內容，經人工審閱後發布。
+							</p>
+						)}
+						<h3>收聽原集節目</h3>
+						{listenLinks ? (
+							<div class="listen-links">
+								{listenLinks.soundon && (
+									<a href={listenLinks.soundon} target="_blank" rel="noopener" class="btn-soundon">
+										SoundOn
+									</a>
+								)}
+								{listenLinks.spotify && (
+									<a href={listenLinks.spotify} target="_blank" rel="noopener" class="btn-spotify">
+										Spotify
+									</a>
+								)}
+								{listenLinks.apple && (
+									<a href={listenLinks.apple} target="_blank" rel="noopener" class="btn-apple">
+										Apple Podcasts
+									</a>
+								)}
+								{listenLinks.kkbox && (
+									<a href={listenLinks.kkbox} target="_blank" rel="noopener" class="btn-kkbox">
+										KKBOX
+									</a>
+								)}
+							</div>
+						) : (
+							<p class="no-links-notice">收聽連結將於整理完成後加入。</p>
+						)}
+					</div>
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
