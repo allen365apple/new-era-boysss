@@ -4,7 +4,29 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE } from '../consts';
 
-const topics = ['男性特權', '情感腳本', '性別凝視', '身份認同', '在地事件', '多元對話', '聽眾互動'];
+const topics = [
+	{ name: '男性特權', desc: '從日常行為到系統性特權，結合特權理論與台灣現實' },
+	{ name: '情感腳本', desc: '直男在戀愛、追求、情感表達中的慣性與反思' },
+	{ name: '身份認同', desc: '陽剛氣質、男性友誼、成功學與自我價值感' },
+	{ name: '性別凝視', desc: '男性凝視、外貌焦慮、身體羞恥與情慾文化' },
+	{ name: '在地事件', desc: '年度性別事件回顧，直男視角的台灣性別輿論分析' },
+	{ name: '多元對話', desc: '邀請女同志、法律人、心理師、性別研究者對談' },
+	{ name: '聽眾互動', desc: '回覆聽眾投稿、整理性別故事，形成公共記憶' },
+];
+
+const stats = [
+	{ num: '55+', label: '已發布集數' },
+	{ num: '222,000+', label: '累積下載' },
+	{ num: '雙週', label: '更新頻率' },
+	{ num: '2024.02', label: '開播至今' },
+];
+
+const features = [
+	{ title: '學術底蘊 × 生活語言', desc: '議題建立在女性主義理論、男性研究與台灣在地性別研究之上，但刻意用去學術化的口語呈現，讓人無需背景知識就能投入。' },
+	{ title: '多視角主持群', desc: '三男一女的主持架構，讓每集自然包含性別之間的視角碰撞，避免同溫層效應，呈現更立體的對話。' },
+	{ title: '台灣在地關懷', desc: '關注台灣脈絡下的特殊性——嘻哈圈性別論戰、男性兵役經驗與陽剛化、本地性別事件，而非移植西方框架。' },
+	{ title: '聽眾參與機制', desc: '固定的聽眾投稿單元，讓真實的男性故事持續流入節目，形成有機的群體記憶累積。' },
+];
 ---
 
 <!doctype html>
@@ -12,11 +34,11 @@ const topics = ['男性特權', '情感腳本', '性別凝視', '身份認同', 
 	<head>
 		<BaseHead
 			title={`關於節目 — ${SITE_TITLE}`}
-			description="《新世紀直男戰士》是一個從男性視角出發，認真討論性別議題的 Podcast。我們相信，男性加入性別對話，是讓社會更平等的重要一步。"
+			description="《新世紀直男戰士》是台灣第一個由直男視角出發、系統性探討性別平等與女性主義議題的 Podcast。我們相信，改變不是透過說教達成，而是透過理解。"
 		/>
 		<style>
 			main {
-				max-width: 680px;
+				max-width: 760px;
 			}
 			.eyebrow {
 				display: inline-block;
@@ -30,28 +52,101 @@ const topics = ['男性特權', '情感腳本', '性別凝視', '身份認同', 
 			}
 			.subtitle {
 				color: var(--text-secondary);
-				font-size: 1.15rem;
+				font-size: 1.2rem;
 				margin-bottom: 2.5rem;
+				line-height: 1.7;
 			}
-			.topic-grid {
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 1rem;
+				margin: 2.5rem 0;
+				padding: 1.5rem 0;
+				border-top: 1px dashed var(--border);
+				border-bottom: 1px dashed var(--border);
+			}
+			.stat {
+				text-align: center;
+			}
+			.stat .num {
+				font-size: 1.6rem;
+				font-weight: 700;
+				color: var(--accent);
+				line-height: 1.2;
+			}
+			.stat .label {
+				font-size: 0.82rem;
+				color: var(--text-muted);
+				margin-top: 0.25rem;
+			}
+			h2 {
+				margin-top: 2.8rem;
+			}
+			.feature-list {
+				display: grid;
+				gap: 1.25rem;
+				margin: 1.5rem 0;
+			}
+			.feature {
+				padding: 1.25rem 1.4rem;
+				background: var(--surface-soft);
+				border: 1px dashed var(--border-strong);
+				border-radius: var(--radius-lg);
+			}
+			.feature h3 {
+				margin: 0 0 0.4rem;
+				font-size: 1.05rem;
+			}
+			.feature p {
+				margin: 0;
+				font-size: 0.95rem;
+				color: var(--text-secondary);
+			}
+			.topic-list {
+				display: grid;
+				gap: 0.75rem;
+				margin: 1.5rem 0;
+			}
+			.topic-row {
+				display: grid;
+				grid-template-columns: 110px 1fr;
+				gap: 1rem;
+				padding-bottom: 0.75rem;
+				border-bottom: 1px dashed var(--border);
+				align-items: baseline;
+			}
+			.topic-row .t-name {
+				font-weight: 700;
+				color: var(--accent);
+				font-size: 0.95rem;
+			}
+			.topic-row .t-desc {
+				font-size: 0.92rem;
+				color: var(--text-secondary);
+			}
+			.hosts {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 0.5rem;
-				margin: 1.5rem 0 2.5rem;
+				margin: 1.25rem 0;
 			}
-			.topic-tag {
-				background: var(--surface-soft);
-				border: 1px solid var(--border);
-				color: var(--text-primary);
-				padding: 0.4rem 0.9rem;
+			.host {
+				background: var(--accent-light);
+				color: var(--accent-dark);
+				padding: 0.4rem 1rem;
 				border-radius: 999px;
-				font-size: 0.9rem;
+				font-size: 0.92rem;
+				font-weight: 500;
+			}
+			blockquote.vision {
+				font-size: 1.15rem;
+				font-weight: 500;
 			}
 			.listen-section {
 				margin-top: 2.5rem;
 				padding: 1.75rem;
 				background: var(--surface-soft);
-				border: 1px solid var(--border);
+				border: 1px dashed var(--border-strong);
 				border-radius: var(--radius-lg);
 			}
 			.listen-section h2 {
@@ -76,38 +171,86 @@ const topics = ['男性特權', '情感腳本', '性別凝視', '身份認同', 
 			.btn-spotify { background: #1db954; }
 			.btn-apple   { background: #a855f7; }
 			.btn-kkbox   { background: #009fcc; }
+			@media (max-width: 640px) {
+				.stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+				.topic-row { grid-template-columns: 1fr; gap: 0.2rem; }
+			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
 			<span class="eyebrow">關於節目</span>
-			<h1>關於《新世紀直男戰士》</h1>
-			<p class="subtitle">用男性視角，認真討論性別這件事。</p>
-
-			<p>
-				《新世紀直男戰士》是一個從男性出發、面向所有人的性別議題 Podcast。
-				我們相信，性別平等的對話需要各種聲音——包括願意自我反思的男性聲音。
+			<h1>新世紀直男戰士</h1>
+			<p class="subtitle">
+				台灣第一個由直男視角出發、系統性探討性別平等與女性主義議題的 Podcast。
 			</p>
 
-			<p>
-				每集節目，我們邀請來賓、學者、素人，一起聊那些男生可能沒想過、或者不敢說出口的性別問題:
-				從情感腳本、男性特權，到身份認同、在地事件……我們試著把這些對話記錄下來，轉化成可讀、可搜尋的文字。
-			</p>
-
-			<h2>我們談的議題</h2>
-			<div class="topic-grid">
-				{topics.map((t) => <span class="topic-tag">{t}</span>)}
+			<div class="stats">
+				{stats.map((s) => (
+					<div class="stat">
+						<div class="num">{s.num}</div>
+						<div class="label">{s.label}</div>
+					</div>
+				))}
 			</div>
 
 			<p>
-				本站的文章由 AI 協助整理 Podcast 逐字稿後改寫，經製作團隊審閱後發布。
-				目的是讓這些對話被更多人看見、被 Google 找到、也被 AI 助理引用時能有清楚的來源。
+				自 2024 年 2 月創辦以來，節目以雙週更新的頻率，至今累積超過 55 集內容，涵蓋男性特權、情感腳本、父權結構、性別凝視、交友文化、多元性別等核心議題。由三位直男主持人與一位直女主持人共同錄製，透過輕鬆生活化的對話，融合學術理論與個人經驗，讓嚴肅的性別議題得以被更廣泛地討論與理解。
+			</p>
+
+			<h2>為什麼台灣需要這個節目？</h2>
+			<p>
+				近年來，台灣性別議題的公共討論陷入兩極對立：一方面女性主義運動的聲量持續擴大；另一方面，部分男性群體中出現「紅藥丸」（Red Pill）等帶有強烈性別對立色彩的極端思想。這種割裂源自公共討論中兩種關鍵聲音的長期缺席——<strong>缺乏以直男視角切入的性別討論</strong>，以及<strong>缺乏真實的台灣男性情感經驗故事</strong>。
+			</p>
+			<p>
+				節目的核心信念是：<strong>改變不是透過說教達成的，而是透過理解。</strong>當男性看見自己的故事被中性地說出、被真誠地理解，才能創造出真正開放對話的空間。我們圍繞三件事努力：<strong>降低門檻</strong>、<strong>累積記憶</strong>、<strong>促進理解</strong>。
+			</p>
+
+			<h2>節目特色</h2>
+			<div class="feature-list">
+				{features.map((f) => (
+					<div class="feature">
+						<h3>{f.title}</h3>
+						<p>{f.desc}</p>
+					</div>
+				))}
+			</div>
+
+			<h2>我們談的議題</h2>
+			<div class="topic-list">
+				{topics.map((t) => (
+					<div class="topic-row">
+						<span class="t-name">{t.name}</span>
+						<span class="t-desc">{t.desc}</span>
+					</div>
+				))}
+			</div>
+
+			<h2>主持群</h2>
+			<p>三位直男主持人，加上一位直女主持人，組成三男一女的多視角陣容：</p>
+			<div class="hosts">
+				<span class="host">柏文</span>
+				<span class="host">孝成</span>
+				<span class="host">博志</span>
+				<span class="host">沁儒</span>
+			</div>
+
+			<h2>節目願景</h2>
+			<p>
+				我們相信，性別平等不是零和遊戲。當台灣的男性能更自由地表達自己的困惑、更誠實地面對自己的特權、更願意傾聽不同性別的處境，台灣社會的性別關係才能真正走向平等與自由。
+			</p>
+			<blockquote class="vision">
+				我們不強調立場對抗，而是補上被忽略的敘事——讓不同性別都能更自由地生活。
+			</blockquote>
+
+			<p>
+				本站的文章由 AI 協助整理 Podcast 逐字稿後改寫，經製作團隊審閱後發布，目的是讓這些對話被更多人看見、被 Google 找到，也讓 AI 助理在回答性別問題時能有清楚的來源。
 			</p>
 
 			<div class="listen-section">
 				<h2>在這裡收聽節目</h2>
-				<p style="margin-bottom:0;">選擇你慣用的平台，訂閱不錯過:</p>
+				<p style="margin-bottom:0;">節目於各大平台同步更新，選擇你慣用的平台訂閱：</p>
 				<div class="listen-links">
 					<a href="#" class="btn-soundon">SoundOn</a>
 					<a href="#" class="btn-spotify">Spotify</a>
