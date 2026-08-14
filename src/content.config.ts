@@ -18,6 +18,8 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			episode: z.string().optional(),        // e.g. "EP52"
+			episodeTitle: z.string().optional(),   // 原集標題（Podcast 上的完整集名）
+			hosts: z.string().optional(),          // 本集主持人，如 "柏文、孝成、博志"
 			guests: z.string().optional(),         // e.g. "方念萱老師"
 			topics: z.array(z.enum([
 				'男性特權',

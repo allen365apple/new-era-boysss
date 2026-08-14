@@ -43,6 +43,18 @@ collections:
         required: false
         hint: 例如 EP52
 
+      - label: 本集標題（原集名）
+        name: episodeTitle
+        widget: string
+        required: false
+        hint: Podcast 上的完整集名
+
+      - label: 主持人
+        name: hosts
+        widget: string
+        required: false
+        hint: 例如 柏文、孝成、博志
+
       - label: 來賓
         name: guests
         widget: string

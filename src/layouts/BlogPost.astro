@@ -17,6 +17,8 @@ const {
 	updatedDate,
 	coverImage,
 	episode,
+	episodeTitle,
+	hosts,
 	guests,
 	topics,
 	listenLinks,
@@ -145,6 +147,30 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 			.article {
 				min-width: 0;
 			}
+
+			/* 頂部：低調的 AI 整理標示 */
+			.episode-source {
+				background: var(--surface-soft);
+				border: 1px solid var(--border);
+				border-radius: var(--radius);
+				padding: 0.55rem 0.9rem;
+				margin-bottom: 2.2rem;
+				font-size: 0.83rem;
+				color: var(--text-muted);
+			}
+
+			/* 底部收聽區的集資訊 */
+			.listen-block .ep-title {
+				margin: 0 0 0.3rem;
+				font-size: 0.95rem;
+				font-weight: 500;
+				color: var(--text-primary);
+			}
+			.listen-block .ep-people {
+				margin: 0 0 1rem;
+				font-size: 0.85rem;
+				color: var(--text-muted);
+			}
 			.article :global(h2),
 			.article :global(h3) {
 				scroll-margin-top: 1.5rem;
@@ -258,16 +284,19 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 					)}
 
 					<div class="article prose">
+						{episode && aiGenerated && (
+							<div class="episode-source">本內容由 AI 整理自 {episode}</div>
+						)}
 						<slot />
 
 						<div class="listen-block">
-							{aiGenerated && (
-								<p class="ai-notice">
-									<span aria-hidden="true">🎧</span>
-									<span>本文由 AI 整理自《{PODCAST_NAME}》Podcast 內容，經人工審閱後發布。</span>
+							<h3>🎧 收聽原集節目</h3>
+							{episodeTitle && <p class="ep-title">{episode}：{episodeTitle}</p>}
+							{(hosts || guests) && (
+								<p class="ep-people">
+									{hosts && `主持：${hosts}`}{hosts && guests && ' · '}{guests && `來賓：${guests}`}
 								</p>
 							)}
-							<h3>收聽原集節目</h3>
 							{listenLinks ? (
 								<div class="listen-links">
 									{listenLinks.soundon && <a href={listenLinks.soundon} target="_blank" rel="noopener" class="btn-soundon">SoundOn</a>}
