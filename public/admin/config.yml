@@ -21,19 +21,24 @@ collections:
     preview_path: "blog/{{slug}}"
     extension: md
     format: frontmatter
+    media_folder: ../../assets/uploads
+    public_folder: ../../assets/uploads
     fields:
       - label: 標題
         name: title
         widget: string
+        required: true
 
       - label: 摘要（SEO 用）
         name: description
         widget: text
+        required: true
         hint: 建議 50–160 字，會顯示在 Google 搜尋結果
 
       - label: 發布日期
         name: pubDate
         widget: datetime
+        required: true
         date_format: YYYY-MM-DD
         time_format: false
 
@@ -81,10 +86,10 @@ collections:
         required: false
         collapsed: true
         fields:
-          - { label: SoundOn, name: soundon, widget: string, required: false }
-          - { label: Spotify, name: spotify, widget: string, required: false }
-          - { label: Apple Podcasts, name: apple, widget: string, required: false }
-          - { label: KKBOX, name: kkbox, widget: string, required: false }
+          - { label: SoundOn, name: soundon, widget: url, required: false }
+          - { label: Spotify, name: spotify, widget: url, required: false }
+          - { label: Apple Podcasts, name: apple, widget: url, required: false }
+          - { label: KKBOX, name: kkbox, widget: url, required: false }
 
       - label: 封面圖
         name: coverImage
@@ -100,8 +105,9 @@ collections:
       - label: 草稿（不發布）
         name: draft
         widget: boolean
-        default: false
+        default: true
 
       - label: 內文
         name: body
         widget: markdown
+        required: true

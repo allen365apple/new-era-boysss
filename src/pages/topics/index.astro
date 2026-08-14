@@ -1,0 +1,85 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+import { TOPICS } from '../../data/topics';
+---
+
+<!doctype html>
+<html lang="zh-TW">
+	<head>
+		<BaseHead
+			title={`議題索引 — ${SITE_TITLE}`}
+			description={`依議題閱讀《${SITE_TITLE}》Podcast 整理文章，從男性特權、情感腳本到聽眾互動，找到你想繼續思考的問題。`}
+			pageKind="collection"
+		/>
+		<style>
+			main {
+				max-width: 760px;
+			}
+			.intro {
+				margin-bottom: 2.5rem;
+			}
+			.eyebrow {
+				display: inline-block;
+				margin: 0 0 1rem;
+				color: var(--accent-dark);
+				font-size: 0.82rem;
+				font-weight: 600;
+			}
+			.intro p {
+				max-width: 620px;
+				color: var(--text-secondary);
+			}
+			.topic-list {
+				display: grid;
+				gap: 1rem;
+			}
+			.topic-card {
+				display: block;
+				padding: 1.25rem 1.4rem;
+				background: var(--surface-soft);
+				border: 1px dashed var(--border-strong);
+				border-radius: var(--radius-lg);
+				color: inherit;
+				text-decoration: none;
+				transition: transform 0.15s ease, border-color 0.15s ease;
+			}
+			.topic-card:hover {
+				transform: translateY(-2px);
+				border-color: var(--accent);
+			}
+			.topic-card h2 {
+				margin: 0 0 0.35rem;
+				font-size: 1.25rem;
+				border: 0;
+				padding: 0;
+			}
+			.topic-card p {
+				margin: 0;
+				font-size: 0.95rem;
+				color: var(--text-secondary);
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main id="main-content">
+			<section class="intro">
+				<p class="eyebrow">議題索引</p>
+				<h1>從哪一個問題開始？</h1>
+				<p>節目談的不是七個封閉的分類，而是七條可以交會的路。挑一個你最近正在想的問題，從那裡開始讀。</p>
+			</section>
+			<nav class="topic-list" aria-label="議題分類">
+				{TOPICS.map((topic) => (
+					<a class="topic-card" href={`/topics/${topic.slug}/`}>
+						<h2>{topic.name}</h2>
+						<p>{topic.description}</p>
+					</a>
+				))}
+			</nav>
+		</main>
+		<Footer />
+	</body>
+</html>

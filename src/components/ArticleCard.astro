@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import FallbackImage from '../assets/blog-placeholder-1.jpg';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const image = post.data.coverImage ?? FallbackImage;
+---
+
+<a href={`/blog/${post.id}/`} class="card-link">
+	<article class="post-card">
+		<div class="thumb">
+			<Image width={300} height={300} src={image} alt={post.data.title} />
+		</div>
+		<div class="body">
+			<div class="tags">
+				{post.data.episode && <span class="episode-tag">{post.data.episode}</span>}
+				{post.data.topics?.slice(0, 2).map((topic) => <span class="topic-tag">{topic}</span>)}
+			</div>
+			<h2>{post.data.title}</h2>
+			<p class="desc">{post.data.description}</p>
+			<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+		</div>
+	</article>
+</a>
+
+<style>
+	.card-link {
+		display: block;
+		color: inherit;
+		text-decoration: none;
+	}
+	.post-card {
+		display: grid;
+		grid-template-columns: 150px minmax(0, 1fr);
+		gap: 1.5rem;
+		padding: 1.75rem 0;
+		border-top: 1px dashed var(--border);
+		align-items: center;
+	}
+	.card-link:last-child .post-card {
+		border-bottom: 1px dashed var(--border);
+	}
+	.thumb {
+		border-radius: var(--radius);
+		overflow: hidden;
+		aspect-ratio: 1 / 1;
+		background: var(--surface-soft);
+	}
+	.thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 0;
+		transition: transform 0.3s ease;
+	}
+	.card-link:hover .thumb img {
+		transform: scale(1.04);
+	}
+	.body {
+		min-width: 0;
+	}
+	.tags {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.5rem;
+	}
+	.episode-tag,
+	.topic-tag {
+		font-size: 0.72rem;
+		padding: 0.15rem 0.6rem;
+		border-radius: 999px;
+	}
+	.episode-tag {
+		background: var(--accent);
+		color: #fff;
+		font-weight: 600;
+	}
+	.topic-tag {
+		background: var(--accent-light);
+		color: var(--accent-dark);
+		font-weight: 500;
+	}
+	h2 {
+		font-size: 1.3rem;
+		margin: 0 0 0.4rem;
+		color: var(--text-primary);
+		line-height: 1.4;
+		transition: color 0.15s ease;
+	}
+	.card-link:hover h2 {
+		color: var(--accent);
+	}
+	.desc {
+		color: var(--text-secondary);
+		font-size: 0.95rem;
+		margin: 0 0 0.5rem;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.date {
+		color: var(--text-muted);
+		font-size: 0.85rem;
+	}
+	@media (max-width: 640px) {
+		.post-card {
+			grid-template-columns: 96px minmax(0, 1fr);
+			gap: 1rem;
+		}
+	}
+</style>

@@ -2,6 +2,13 @@
 title: "「你們男生都這樣！」一個直男在性平浪潮裡的困惑與反思"
 description: "那天在研究室，我跟幾個男生聊到一個女生身材很好。就這樣，普通的閒聊。然後同在場的一個女生開口了：「你們男生每次聚在一起，就聊這種東西。」"
 pubDate: 2026-04-02
+episode: EP1
+episodeTitle: "女權來襲？性平浪潮下的男生到底委不委屈！？"
+hosts: "柏文、孝成、博志"
+listenLinks:
+  soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/3dc8240f-5f80-4828-b230-67537c484115
+  spotify: https://open.spotify.com/show/1BAWRDklXg5vdIUxMoPCkr
+  apple: https://podcasts.apple.com/podcast/1732062544
 topics:
   - 身份認同
   - 男性特權

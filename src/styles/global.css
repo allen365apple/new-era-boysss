@@ -13,7 +13,7 @@
 
 	--text-primary: #1f2430;
 	--text-secondary: #4a4f5c;
-	--text-muted: #9a958c;
+	--text-muted: #6f6a62;
 
 	--surface: #fbf7f1;        /* 文章底色:暖米白 */
 	--surface-soft: #f4eee4;   /* 區塊底色:深一階米色 */
@@ -106,6 +106,13 @@ a {
 }
 a:hover {
 	color: var(--accent-dark);
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+	outline: 3px solid var(--accent);
+	outline-offset: 3px;
 }
 
 strong,
