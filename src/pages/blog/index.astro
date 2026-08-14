@@ -1,11 +1,10 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import ArticleCard from '../../components/ArticleCard.astro';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -13,100 +12,57 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-TW">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title={`所有文章 — ${SITE_TITLE}`}
+			description={`整理《${SITE_TITLE}》Podcast 對談文章，從男性特權、情感腳本到多元對話，讀懂台灣性別議題。`}
+			pageKind="collection"
+			jsonLdExtra={{
+				mainEntity: {
+					'@type': 'ItemList',
+					itemListElement: posts.map((post, index) => ({
+						'@type': 'ListItem',
+						position: index + 1,
+						url: new URL(`/blog/${post.id}/`, Astro.site).toString(),
+						name: post.data.title,
+					})),
+				},
+			}}
+		/>
 		<style>
 			main {
-				width: 960px;
+				max-width: 760px;
 			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
+			.intro {
+				margin-bottom: 2.5rem;
 			}
-			ul li {
-				width: calc(50% - 1rem);
+			.eyebrow {
+				display: inline-block;
+				margin: 0 0 1rem;
+				color: var(--accent-dark);
+				font-size: 0.82rem;
+				font-weight: 600;
 			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
+			.intro p {
+				max-width: 620px;
+				color: var(--text-secondary);
 			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
+			.posts {
+				margin-top: 1.5rem;
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
+		<main id="main-content">
+			<section class="intro">
+				<p class="eyebrow">文章總覽</p>
+				<h1>所有文章</h1>
+				<p>把 Podcast 裡那些還沒聊完的性別問題，整理成可以慢慢讀、慢慢想的文字。</p>
+			</section>
+			<section class="posts" aria-label="文章列表">
+				{posts.map((post) => <ArticleCard post={post} />)}
 			</section>
 		</main>
 		<Footer />

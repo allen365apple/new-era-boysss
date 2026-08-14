@@ -1,0 +1,105 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ArticleCard from '../../components/ArticleCard.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+import { TOPICS, type Topic } from '../../data/topics';
+
+type Props = {
+	topic: Topic;
+	posts: CollectionEntry<'blog'>[];
+};
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+	return TOPICS.map((topic) => ({
+		params: { topic: topic.slug },
+		props: {
+			topic,
+			posts: posts
+				.filter((post) => post.data.topics?.includes(topic.name))
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+		},
+	}));
+}
+
+const { topic, posts } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="zh-TW">
+	<head>
+		<BaseHead
+			title={`${topic.name} — ${SITE_TITLE}`}
+			description={`${topic.description} 閱讀《${SITE_TITLE}》相關文章。`}
+			pageKind="collection"
+			jsonLdExtra={{
+				mainEntity: {
+					'@type': 'ItemList',
+					itemListElement: posts.map((post, index) => ({
+						'@type': 'ListItem',
+						position: index + 1,
+						url: new URL(`/blog/${post.id}/`, Astro.site).toString(),
+						name: post.data.title,
+					})),
+				},
+			}}
+		/>
+		<style>
+			main {
+				max-width: 760px;
+			}
+			.breadcrumb {
+				margin: 0 0 1.5rem;
+				font-size: 0.88rem;
+				color: var(--text-muted);
+			}
+			.breadcrumb a {
+				color: var(--text-secondary);
+			}
+			.intro {
+				margin-bottom: 2.5rem;
+			}
+			.eyebrow {
+				display: inline-block;
+				margin: 0 0 1rem;
+				color: var(--accent-dark);
+				font-size: 0.82rem;
+				font-weight: 600;
+			}
+			.intro p {
+				max-width: 620px;
+				color: var(--text-secondary);
+			}
+			.posts {
+				margin-top: 1.5rem;
+			}
+			.empty {
+				padding: 1.25rem;
+				background: var(--surface-soft);
+				border-radius: var(--radius);
+				color: var(--text-secondary);
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main id="main-content">
+			<p class="breadcrumb"><a href="/topics/">議題索引</a> ／ {topic.name}</p>
+			<section class="intro">
+				<p class="eyebrow">議題</p>
+				<h1>{topic.name}</h1>
+				<p>{topic.description}</p>
+			</section>
+			<section class="posts" aria-label={`${topic.name}文章列表`}>
+				{posts.length > 0 ? posts.map((post) => <ArticleCard post={post} />) : (
+					<p class="empty">這個議題的文章正在整理中，先從其他分類逛逛吧。</p>
+				)}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

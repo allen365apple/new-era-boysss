@@ -6,9 +6,12 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { PODCAST_NAME } from '../consts';
+import { PODCAST_LINKS } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'] & { headings?: MarkdownHeading[] };
+type Props = CollectionEntry<'blog'>['data'] & {
+	headings?: MarkdownHeading[];
+	relatedPosts?: CollectionEntry<'blog'>[];
+};
 
 const {
 	title,
@@ -24,7 +27,11 @@ const {
 	listenLinks,
 	aiGenerated,
 	headings = [],
+	relatedPosts = [],
 } = Astro.props;
+
+const effectiveListenLinks = { kkbox: undefined, ...PODCAST_LINKS, ...listenLinks };
+const hasListenLinks = Object.values(effectiveListenLinks).some(Boolean);
 
 // 只取 h2 / h3 進目錄
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
@@ -32,7 +39,16 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 <html lang="zh-TW">
 	<head>
-		<BaseHead title={title} description={description} image={coverImage} isArticle={true} pubDate={pubDate} />
+		<BaseHead
+			title={title}
+			description={description}
+			image={coverImage}
+			isArticle={true}
+			pubDate={pubDate}
+			updatedDate={updatedDate}
+			episode={episode}
+			topics={topics}
+		/>
 		<style>
 			.hero {
 				max-width: 920px;
@@ -171,6 +187,40 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 				font-size: 0.85rem;
 				color: var(--text-muted);
 			}
+			.related {
+				margin-top: 2.5rem;
+				padding-top: 2rem;
+				border-top: 1px dashed var(--border);
+			}
+			.related h2 {
+				font-size: 1.2rem;
+				margin: 0 0 1rem;
+				padding: 0;
+				border: 0;
+			}
+			.related ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				gap: 0.75rem;
+			}
+			.related a {
+				display: block;
+				padding: 0.75rem 0.9rem;
+				background: var(--surface-soft);
+				border-radius: var(--radius);
+				color: var(--text-primary);
+			}
+			.related a:hover {
+				color: var(--accent);
+			}
+			.related .related-meta {
+				display: block;
+				margin-top: 0.2rem;
+				font-size: 0.82rem;
+				color: var(--text-muted);
+			}
 			.article :global(h2),
 			.article :global(h3) {
 				scroll-margin-top: 1.5rem;
@@ -246,7 +296,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 	<body>
 		<Header />
-		<main style="width: 100%; max-width: 100%; padding: 0;">
+		<main id="main-content" style="width: 100%; max-width: 100%; padding: 0;">
 			<article>
 				<div class="hero">
 					<div class="meta-top">
@@ -290,24 +340,43 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 						<slot />
 
 						<div class="listen-block">
-							<h3>🎧 收聽原集節目</h3>
+							<h3>🎧 收聽節目</h3>
 							{episodeTitle && <p class="ep-title">{episode}：{episodeTitle}</p>}
 							{(hosts || guests) && (
 								<p class="ep-people">
 									{hosts && `主持：${hosts}`}{hosts && guests && ' · '}{guests && `來賓：${guests}`}
 								</p>
 							)}
-							{listenLinks ? (
+							{hasListenLinks ? (
 								<div class="listen-links">
-									{listenLinks.soundon && <a href={listenLinks.soundon} target="_blank" rel="noopener" class="btn-soundon">SoundOn</a>}
-									{listenLinks.spotify && <a href={listenLinks.spotify} target="_blank" rel="noopener" class="btn-spotify">Spotify</a>}
-									{listenLinks.apple && <a href={listenLinks.apple} target="_blank" rel="noopener" class="btn-apple">Apple Podcasts</a>}
-									{listenLinks.kkbox && <a href={listenLinks.kkbox} target="_blank" rel="noopener" class="btn-kkbox">KKBOX</a>}
+									{effectiveListenLinks.soundon && <a href={effectiveListenLinks.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon">SoundOn</a>}
+									{effectiveListenLinks.spotify && <a href={effectiveListenLinks.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify">Spotify</a>}
+									{effectiveListenLinks.apple && <a href={effectiveListenLinks.apple} target="_blank" rel="noopener noreferrer" class="btn-apple">Apple Podcasts</a>}
+									{effectiveListenLinks.kkbox && <a href={effectiveListenLinks.kkbox} target="_blank" rel="noopener noreferrer" class="btn-kkbox">KKBOX</a>}
 								</div>
 							) : (
 								<p class="no-links-notice">收聽連結將於整理完成後加入。</p>
 							)}
 						</div>
+
+						{relatedPosts.length > 0 && (
+							<section class="related" aria-labelledby="related-heading">
+								<h2 id="related-heading">你可能也會想讀</h2>
+								<ul>
+									{relatedPosts.map((related) => (
+										<li>
+											<a href={`/blog/${related.id}/`}>
+												{related.data.title}
+												<span class="related-meta">
+													{related.data.episode ? `${related.data.episode} · ` : ''}
+													<FormattedDate date={related.data.pubDate} />
+												</span>
+											</a>
+										</li>
+									))}
+								</ul>
+							</section>
+						)}
 					</div>
 				</div>
 			</article>

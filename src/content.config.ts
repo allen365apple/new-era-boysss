@@ -33,7 +33,8 @@ const blog = defineCollection({
 			listenLinks: listenLinksSchema,
 			coverImage: z.optional(image()),
 			aiGenerated: z.boolean().default(true),
-			draft: z.boolean().default(false),
+			// 新文章先進草稿，人工審稿後才明確改成 false。
+			draft: z.boolean().default(true),
 		}),
 });
 

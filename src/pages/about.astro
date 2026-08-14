@@ -2,21 +2,12 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE } from '../consts';
-
-const topics = [
-	{ name: '男性特權', desc: '從日常生活的小事，聊到結構性的不對等，扣著台灣的現實談' },
-	{ name: '情感腳本', desc: '直男在戀愛、追求、情感表達中的慣性與反思' },
-	{ name: '身份認同', desc: '陽剛氣質、男性友誼、成功學與自我價值感' },
-	{ name: '性別凝視', desc: '男性凝視、外貌焦慮、身體羞恥與情慾文化' },
-	{ name: '在地事件', desc: '年度性別事件回顧，直男視角的台灣性別輿論分析' },
-	{ name: '多元對話', desc: '邀請女同志、法律人、心理師、性別研究者對談' },
-	{ name: '聽眾互動', desc: '回覆聽眾投稿、整理性別故事，形成公共記憶' },
-];
+import { PODCAST_LINKS, SITE_TITLE } from '../consts';
+import { TOPICS } from '../data/topics';
 
 const stats = [
-	{ num: '55+', label: '已發布集數' },
-	{ num: '222,000+', label: '累積下載' },
+	{ num: '55+', label: '已發布集數（截至 2026.04）' },
+	{ num: '222,000+', label: '累積下載（截至 2026.04）' },
 	{ num: '雙週', label: '更新頻率' },
 	{ num: '2024.02', label: '開播至今' },
 ];
@@ -35,6 +26,7 @@ const features = [
 		<BaseHead
 			title={`關於節目 — ${SITE_TITLE}`}
 			description="《新世紀直男戰士》是台灣第一個由直男視角出發、系統性探討性別平等與女性主義議題的 Podcast。我們相信，改變不是透過說教達成，而是透過理解。"
+			pageKind="about"
 		/>
 		<style>
 			main {
@@ -179,7 +171,7 @@ const features = [
 	</head>
 	<body>
 		<Header />
-		<main>
+		<main id="main-content">
 			<span class="eyebrow">關於節目</span>
 			<h1>新世紀直男戰士</h1>
 			<p class="subtitle">
@@ -196,7 +188,7 @@ const features = [
 			</div>
 
 			<p>
-				自 2024 年 2 月創辦以來，節目以雙週更新的頻率，至今累積超過 55 集內容，涵蓋男性特權、情感腳本、父權結構、性別凝視、交友文化、多元性別等核心議題。由三位直男主持人與一位直女主持人共同錄製，透過輕鬆生活化的對話，把我們讀到的觀點與自身經驗放在一起聊，讓嚴肅的性別議題得以被更廣泛地討論與理解。
+				自 2024 年 2 月創辦以來，節目以雙週更新的頻率，截至 2026 年 4 月已累積超過 55 集內容，涵蓋男性特權、情感腳本、父權結構、性別凝視、交友文化、多元性別等核心議題。由三位直男主持人與一位直女主持人共同錄製，透過輕鬆生活化的對話，把我們讀到的觀點與自身經驗放在一起聊，讓嚴肅的性別議題得以被更廣泛地討論與理解。
 			</p>
 
 			<h2>為什麼台灣需要這個節目？</h2>
@@ -219,10 +211,10 @@ const features = [
 
 			<h2>我們談的議題</h2>
 			<div class="topic-list">
-				{topics.map((t) => (
+				{TOPICS.map((t) => (
 					<div class="topic-row">
 						<span class="t-name">{t.name}</span>
-						<span class="t-desc">{t.desc}</span>
+						<span class="t-desc">{t.description}</span>
 					</div>
 				))}
 			</div>
@@ -252,10 +244,9 @@ const features = [
 				<h2>在這裡收聽節目</h2>
 				<p style="margin-bottom:0;">節目於各大平台同步更新，選擇你慣用的平台訂閱：</p>
 				<div class="listen-links">
-					<a href="#" class="btn-soundon">SoundOn</a>
-					<a href="#" class="btn-spotify">Spotify</a>
-					<a href="#" class="btn-apple">Apple Podcasts</a>
-					<a href="#" class="btn-kkbox">KKBOX</a>
+					<a href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon">SoundOn</a>
+					<a href={PODCAST_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify">Spotify</a>
+					<a href={PODCAST_LINKS.apple} target="_blank" rel="noopener noreferrer" class="btn-apple">Apple Podcasts</a>
 				</div>
 			</div>
 		</main>

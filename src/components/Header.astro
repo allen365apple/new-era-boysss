@@ -4,11 +4,13 @@ import HeaderLink from './HeaderLink.astro';
 ---
 
 <header>
+	<a href="#main-content" class="skip-link">跳到主要內容</a>
 	<nav>
 		<a href="/" class="brand">{SITE_TITLE}</a>
 		<div class="internal-links">
-			<HeaderLink href="/">文章</HeaderLink>
-			<HeaderLink href="/about">關於節目</HeaderLink>
+			<HeaderLink href="/blog/">文章</HeaderLink>
+			<HeaderLink href="/topics/">議題</HeaderLink>
+			<HeaderLink href="/about/">關於節目</HeaderLink>
 		</div>
 	</nav>
 </header>
@@ -20,6 +22,22 @@ import HeaderLink from './HeaderLink.astro';
 		background: rgba(255, 255, 255, 0.8);
 		backdrop-filter: saturate(180%) blur(12px);
 		border-bottom: 1px solid var(--border);
+	}
+	.skip-link {
+		position: absolute;
+		left: 1rem;
+		top: 0.5rem;
+		padding: 0.5rem 0.8rem;
+		background: var(--surface);
+		color: var(--text-primary);
+		border: 2px solid var(--accent);
+		border-radius: var(--radius);
+		transform: translateY(-200%);
+		transition: transform 0.15s ease;
+		z-index: 100;
+	}
+	.skip-link:focus {
+		transform: translateY(0);
 	}
 	nav {
 		max-width: 1080px;

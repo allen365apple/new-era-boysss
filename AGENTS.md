@@ -49,11 +49,15 @@ Node 18+ 即可。沒有資料庫、沒有後端伺服器（後台登入除外�
 |------|------|
 | `src/content.config.ts` | **文章資料結構（frontmatter schema）**。所有欄位與議題分類（7 種）定義在此。 |
 | `src/content/blog/*.md` | 所有文章。一篇一個 markdown 檔，檔名即網址 slug。 |
+| `src/data/topics.ts` | 七種議題的顯示名稱、網址 slug 與說明，供議題索引與主題頁共用。 |
 | `src/consts.ts` | 網站標題、描述、節目名等品牌常數。 |
 | `src/styles/global.css` | **設計變數（design tokens）**。改顏色/字體/間距只改這裡的 `:root`，全站連動。 |
+| `src/components/ArticleCard.astro` | 首頁、文章總覽與議題頁共用的文章卡片。 |
 | `src/layouts/BlogPost.astro` | **文章版型**。含頂部 AI 標示、左側目錄+捲動高亮、金句引用、文末收聽區塊。 |
 | `src/pages/index.astro` | 首頁（文章列表，正方形縮圖）。 |
 | `src/pages/about.astro` | 關於節目頁。 |
+| `src/pages/blog/index.astro` | 所有文章總覽頁。 |
+| `src/pages/topics/` | 議題索引與七種議題的文章彙整頁。 |
 | `src/pages/blog/[...slug].astro` | 單篇文章動態路由。 |
 | `src/components/BaseHead.astro` | 每頁的 SEO meta + Open Graph + JSON-LD 結構化資料。 |
 | `public/robots.txt` | **明確允許 AI 爬蟲**（GPTBot、ClaudeBot、PerplexityBot…）。 |
