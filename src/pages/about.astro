@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SiteBanner from '../components/SiteBanner.astro';
 import { PODCAST_LINKS, SITE_TITLE } from '../consts';
 import { TOPICS } from '../data/topics';
 
@@ -29,9 +30,8 @@ const features = [
 			pageKind="about"
 		/>
 		<style>
-			.content-panel {
-				width: min(900px, calc(100% - 2rem));
-				max-width: none;
+			main {
+				max-width: 760px;
 			}
 			.eyebrow {
 				display: inline-block;
@@ -172,7 +172,8 @@ const features = [
 	</head>
 	<body>
 		<Header />
-		<main id="main-content" class="content-panel transition-swup-fade onload-animation">
+		<SiteBanner />
+		<main id="main-content" class="transition-swup-fade onload-animation">
 			<span class="eyebrow">關於節目</span>
 			<h1>新世紀直男戰士</h1>
 			<p class="subtitle">

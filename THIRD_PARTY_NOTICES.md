@@ -2,7 +2,7 @@
 
 ## Fuwari
 
-本站導覽列的結構、`expand-animation`／`scale-animation` 按鈕互動模式、Swup 頁面轉場設定，以及文章排版樣式，取用自 [Fuwari](https://github.com/saicaca/fuwari)。其中 `src/styles/fuwari-article.css` 直接移植自 Fuwari 的 `src/styles/markdown.css`，由 Fuwari 同樣採用的 Tailwind Typography 建置；本站只將顏色映射至既有設計變數。
+本站導覽列的結構、`expand-animation`／`scale-animation` 按鈕互動模式，以及 Swup 頁面轉場設定，部分取用並改寫自 [Fuwari](https://github.com/saicaca/fuwari)。
 
 MIT License
 

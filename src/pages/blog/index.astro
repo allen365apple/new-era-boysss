@@ -4,6 +4,7 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
+import SiteBanner from '../../components/SiteBanner.astro';
 import { SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -31,9 +32,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 			}}
 		/>
 		<style>
-			.content-panel {
-				width: min(var(--page-width), calc(100% - 2rem));
-				max-width: none;
+			main {
+				max-width: 760px;
 			}
 			.intro {
 				margin-bottom: 2.5rem;
@@ -56,7 +56,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	</head>
 	<body>
 		<Header />
-		<main id="main-content" class="content-panel transition-swup-fade onload-animation">
+		<SiteBanner />
+		<main id="main-content" class="transition-swup-fade onload-animation">
 			<section class="intro">
 				<p class="eyebrow">文章總覽</p>
 				<h1>所有文章</h1>
