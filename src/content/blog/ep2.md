@@ -1,22 +1,22 @@
 ---
-title: "走外側、搶買單、排行程：直男的體貼為什麼讓人有壓力？"
-description: "男生走外側、主動買單、包辦約會行程，就一定是體貼嗎？從幾個約會小劇場拆開性別腳本，重新看見共識、選擇與身體界線。"
+title: 走外側、搶買單、排行程：直男的體貼為什麼讓人有壓力？
+draft: false
+description: 男生走外側、主動買單、包辦約會行程，就一定是體貼嗎？從幾個約會小劇場拆開性別腳本，重新看見共識、選擇與身體界線。
 pubDate: 2024-04-12
 episode: EP2
-episodeTitle: "EP2：我的愛意不是她的在意？直男與異性相處時的內心活動！ feat. 莉庭"
-listenLinks:
-  soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/2cc4d0a0-56fd-44f0-a3ae-6cfe286f763b
-  apple: https://podcasts.apple.com/tw/podcast/ep2-%E6%88%91%E7%9A%84%E6%84%9B%E6%84%8F%E4%B8%8D%E6%98%AF%E5%A5%B9%E7%9A%84%E5%9C%A8%E6%84%8F-%E7%9B%B4%E7%94%B7%E8%88%87%E7%95%B0%E6%80%A7%E7%9B%B8%E8%99%95%E6%99%82%E7%9A%84%E5%85%A7%E5%BF%83%E6%B4%BB%E5%8B%95-feat-%E8%8E%89%E5%BA%AD/id1732062544?i=1000652253438&uo=4
-  spotify: https://open.spotify.com/episode/3JgiDungxDzE7SFzvrf3gX
-hosts: "柏文、孝成、博志"
-guests: "莉庭"
+episodeTitle: EP2：我的愛意不是她的在意？直男與異性相處時的內心活動！ feat. 莉庭
+hosts: 柏文、孝成、博志
+guests: 莉庭
 topics:
   - 情感腳本
   - 多元對話
   - 男性特權
+listenLinks:
+  soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/2cc4d0a0-56fd-44f0-a3ae-6cfe286f763b
+  apple: https://podcasts.apple.com/tw/podcast/ep2-%E6%88%91%E7%9A%84%E6%84%9B%E6%84%8F%E4%B8%8D%E6%98%AF%E5%A5%B9%E7%9A%84%E5%9C%A8%E6%84%8F-%E7%9B%B4%E7%94%B7%E8%88%87%E7%95%B0%E6%80%A7%E7%9B%B8%E8%99%95%E6%99%82%E7%9A%84%E5%85%A7%E5%BF%83%E6%B4%BB%E5%8B%95-feat-%E8%8E%89%E5%BA%AD/id1732062544?i=1000652253438&uo=4
+  spotify: https://open.spotify.com/episode/3JgiDungxDzE7SFzvrf3gX
 coverImage: ../../assets/episode-covers/ep2.jpeg
 aiGenerated: true
-draft: true
 ---
 
 約會時，男生是不是該走在馬路外側、主動付錢、把整天行程排好，還要隨時準備接過女生手上的重物？這些動作常被當成體貼的標準答案，但做得越用力，兩個人有時反而越難看見彼此真正需要什麼。
