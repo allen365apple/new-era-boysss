@@ -7,6 +7,7 @@ episodeTitle: EP3：動漫影視中的典型與「非典型」男女角色！聊
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/699045b0-37a4-4611-9b44-437e831def24
   apple: https://podcasts.apple.com/tw/podcast/ep3-%E5%8B%95%E6%BC%AB%E5%BD%B1%E8%A6%96%E4%B8%AD%E7%9A%84%E5%85%B8%E5%9E%8B%E8%88%87-%E9%9D%9E%E5%85%B8%E5%9E%8B-%E7%94%B7%E5%A5%B3%E8%A7%92%E8%89%B2-%E8%81%8A-%E9%9B%BB%E9%A6%AD%E5%8F%9B%E5%AE%A2-%E7%81%AB%E5%BD%B1%E5%BF%8D%E8%80%85-%E6%8E%92%E7%90%83%E5%B0%91%E5%B9%B4-%E5%AA%BD%E7%9A%84%E5%A4%9A%E9%87%8D%E5%AE%87%E5%AE%99-%E9%96%93%E8%AB%9C%E5%AE%B6%E5%AE%B6%E9%85%92/id1732062544?i=1000653645092&uo=4
+  spotify: https://open.spotify.com/episode/3K0oa18HuxDsD2Lx1CIbnV
 hosts: 柏文、孝成、博志、沁儒
 topics:
   - 身份認同

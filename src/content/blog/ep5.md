@@ -7,6 +7,7 @@ episodeTitle: EP5：直男中箭？厭男到底厭什麼？來自被慾望客體
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/ba116897-7639-4855-b853-395ad115b3fe
   apple: https://podcasts.apple.com/tw/podcast/ep5-%E7%9B%B4%E7%94%B7%E4%B8%AD%E7%AE%AD-%E5%8E%AD%E7%94%B7%E5%88%B0%E5%BA%95%E5%8E%AD%E4%BB%80%E9%BA%BC-%E4%BE%86%E8%87%AA%E8%A2%AB%E6%85%BE%E6%9C%9B%E5%AE%A2%E9%AB%94%E4%B8%8B%E7%9A%84%E9%98%B2%E8%A1%9B%E6%A9%9F%E5%88%B6/id1732062544?i=1000656593146&uo=4
+  spotify: https://open.spotify.com/episode/3L2bdvvJfxagW9ng55nlrs
 hosts: 柏文、孝成、博志、沁儒
 guests: 葛
 topics:

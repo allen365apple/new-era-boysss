@@ -7,6 +7,7 @@ episodeTitle: EP4：男性自我價值感、反抗傳統的矛盾和…肌肉？
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/820d0e43-3fa0-4cf7-af80-f3390089c606
   apple: https://podcasts.apple.com/tw/podcast/ep4-%E7%94%B7%E6%80%A7%E8%87%AA%E6%88%91%E5%83%B9%E5%80%BC%E6%84%9F-%E5%8F%8D%E6%8A%97%E5%82%B3%E7%B5%B1%E7%9A%84%E7%9F%9B%E7%9B%BE%E5%92%8C-%E8%82%8C%E8%82%89-%E8%81%8A-%E8%8A%AD%E6%AF%94-%E8%A3%A1%E7%9A%84%E8%89%BE%E5%80%AB%E5%92%8C%E8%82%AF%E5%B0%BC/id1732062544?i=1000655129216&uo=4
+  spotify: https://open.spotify.com/episode/0QlS437usBcaOa137enfyz
 hosts: 柏文、孝成、博志、沁儒
 topics:
   - 男性困境
