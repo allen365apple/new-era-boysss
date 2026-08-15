@@ -15,19 +15,36 @@ collections:
   - name: blog
     label: 文章
     label_singular: 文章
+    description: 先用「待審稿」篩選文章。確認內容後，關閉「草稿」並儲存，就會發布到網站。
     folder: src/content/blog
     create: true
+    delete: false
     slug: "{{slug}}"
     preview_path: "blog/{{slug}}"
     extension: md
     format: frontmatter
     media_folder: ../../assets/uploads
     public_folder: ../../assets/uploads
+    summary: "{{episode}}｜{{title}}｜草稿：{{draft}}"
+    sortable_fields: [pubDate, episode, title, commit_date]
+    view_filters:
+      - label: 待審稿
+        field: draft
+        pattern: true
+      - label: 已發布
+        field: draft
+        pattern: false
     fields:
       - label: 標題
         name: title
         widget: string
         required: true
+
+      - label: 草稿（審完關閉即可發布）
+        name: draft
+        widget: boolean
+        default: true
+        hint: 保持開啟時不會出現在公開網站；全文確認後關閉並儲存，就會自動部署上線。
 
       - label: 摘要（SEO 用）
         name: description
@@ -102,11 +119,6 @@ collections:
         widget: boolean
         default: true
         hint: 勾選表示本文由 AI 整理自 Podcast 逐字稿
-
-      - label: 草稿（不發布）
-        name: draft
-        widget: boolean
-        default: true
 
       - label: 內文
         name: body

@@ -10,7 +10,15 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync:episode-links": "node scripts/sync-episode-links.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "sync:episode-links": "node scripts/sync-episode-links.mjs",
+    "podcast:init": "node scripts/podcast-pipeline.mjs init",
+    "podcast:status": "node scripts/podcast-pipeline.mjs status",
+    "podcast:queue": "node scripts/podcast-pipeline.mjs queue",
+    "podcast:prepare": "node scripts/podcast-pipeline.mjs prepare",
+    "podcast:normalize": "node scripts/podcast-pipeline.mjs normalize",
+    "podcast:download-model": "node scripts/podcast-pipeline.mjs download-model",
+    "validate:article": "node scripts/validate-generated-article.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.0",

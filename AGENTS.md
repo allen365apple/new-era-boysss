@@ -62,6 +62,9 @@ Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見
 | `src/pages/blog/[...slug].astro` | 單篇文章動態路由。 |
 | `src/components/BaseHead.astro` | 每頁的 SEO meta + Open Graph + JSON-LD 結構化資料。 |
 | `scripts/sync-episode-links.mjs` | 從 RSS／Apple／Spotify 比對並同步文章的單集收聽連結與 RSS 封面。 |
+| `scripts/podcast-pipeline.mjs` | RSS 佇列、音檔下載與本機 Whisper 轉錄；音檔和逐字稿只留在 repo 上層。 |
+| `scripts/validate-generated-article.mjs` | 檢查自動草稿的結構、固定分類、公開暱稱與常見敏感資訊。 |
+| `Podcast自動化與審稿.md` | 自動生產線、後台待審流程與本機指令。 |
 | `.github/workflows/sync-episode-links.yml` | 每日或手動執行單集連結與封面同步。 |
 | `public/robots.txt` | **明確允許 AI 爬蟲**（GPTBot、ClaudeBot、PerplexityBot…）。 |
 | `public/admin/` | Decap CMS 後台（`index.html` + `config.yml`）。 |
@@ -80,8 +83,8 @@ Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見
 只改 `src/styles/global.css` 最上方的 `:root` 變數。細節見 `客製化指南.md`。不要在各元件檔裡零散改色。
 
 ### C. 內容生產線（Podcast → 文章）
-半自動、人工審稿：Memo AI 轉逐字稿 → 依 `部落格改寫規則.md` 用 LLM 產出 Markdown 草稿 → 進後台審核 → 發布。
-細節與成本見 `系統架構.md` 第 9 節。
+本機自動、人工審稿：RSS 下載音檔 → Whisper 轉逐字稿 → 依 `部落格改寫規則.md` 產出 Markdown 草稿 → 進後台審核 → 發布。
+細節見 `系統架構.md` 第 9 節與 `Podcast自動化與審稿.md`。
 
 ---
 
