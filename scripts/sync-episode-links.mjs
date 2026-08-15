@@ -181,7 +181,7 @@ async function fetchSpotifyEpisodes() {
 function isGenericLink(key, value) {
 	if (!value) return true;
 	if (key === 'soundon') return !value.includes('/episodes/');
-	if (key === 'spotify') return value.includes('/show/');
+	if (key === 'spotify') return !value.includes('open.spotify.com/episode/');
 	if (key === 'apple') return !value.includes('?i=');
 	return false;
 }

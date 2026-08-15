@@ -29,8 +29,26 @@ const {
 	relatedPosts = [],
 } = Astro.props;
 
-// 文章頁只顯示已確認的單集連結，避免把節目總頁誤當成單集頁。
-const effectiveListenLinks = { ...listenLinks };
+function confirmedEpisodeLink(platform: 'soundon' | 'spotify' | 'apple' | 'kkbox', value?: string) {
+	if (!value) return undefined;
+	try {
+		const url = new URL(value);
+		if (platform === 'soundon') return url.hostname === 'player.soundon.fm' && url.pathname.includes('/episodes/') ? value : undefined;
+		if (platform === 'spotify') return url.hostname === 'open.spotify.com' && url.pathname.includes('/episode/') ? value : undefined;
+		if (platform === 'apple') return url.hostname === 'podcasts.apple.com' && url.searchParams.has('i') ? value : undefined;
+		if (platform === 'kkbox') return url.hostname.endsWith('kkbox.com') && url.pathname !== '/' ? value : undefined;
+	} catch {
+		return undefined;
+	}
+}
+
+// 文章頁只顯示格式正確的單集連結，避免把平台首頁或節目總頁誤當成單集頁。
+const effectiveListenLinks = {
+	soundon: confirmedEpisodeLink('soundon', listenLinks?.soundon),
+	spotify: confirmedEpisodeLink('spotify', listenLinks?.spotify),
+	apple: confirmedEpisodeLink('apple', listenLinks?.apple),
+	kkbox: confirmedEpisodeLink('kkbox', listenLinks?.kkbox),
+};
 const hasListenLinks = Object.values(effectiveListenLinks).some(Boolean);
 
 // 只取 h2 / h3 進目錄
