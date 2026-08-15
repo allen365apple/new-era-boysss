@@ -50,6 +50,13 @@ const effectiveListenLinks = {
 	kkbox: confirmedEpisodeLink('kkbox', listenLinks?.kkbox),
 };
 const hasListenLinks = Object.values(effectiveListenLinks).some(Boolean);
+const displayEpisodeTitle = episodeTitle
+	? episode && episodeTitle.trim().toUpperCase().startsWith(episode.toUpperCase())
+		? episodeTitle
+		: episode
+			? `${episode}：${episodeTitle}`
+			: episodeTitle
+	: undefined;
 
 // 只取 h2 / h3 進目錄
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
@@ -359,7 +366,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 						<div class="listen-block">
 							<h3>🎧 收聽節目</h3>
-							{episodeTitle && <p class="ep-title">{episode}：{episodeTitle}</p>}
+							{displayEpisodeTitle && <p class="ep-title">{displayEpisodeTitle}</p>}
 							{(hosts || guests) && (
 								<p class="ep-people">
 									{hosts && `主持：${hosts}`}{hosts && guests && ' · '}{guests && `來賓：${guests}`}
