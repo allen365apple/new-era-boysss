@@ -8,10 +8,11 @@ topics:
   - 男性特權
   - 身份認同
 listenLinks:
-  soundon: https://soundon.fm
+  soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/3dc8240f-5f80-4828-b230-67537c484115
   spotify: https://spotify.com
-  apple: https://podcasts.apple.com
+  apple: https://podcasts.apple.com/tw/podcast/ep1-%E5%A5%B3%E6%AC%8A%E4%BE%86%E8%A5%B2-%E6%80%A7%E5%B9%B3%E6%B5%AA%E6%BD%AE%E4%B8%8B%E7%9A%84%E7%94%B7%E7%94%9F%E5%88%B0%E5%BA%95%E5%A7%94%E4%B8%8D%E5%A7%94%E5%B1%88-ft-%E6%94%BF%E5%A4%A7%E5%82%B3%E9%99%A2-%E6%96%B9%E5%BF%B5%E8%90%B1%E8%80%81%E5%B8%AB/id1732062544?i=1000646021858&uo=4
   kkbox: https://kkbox.com
+coverImage: ../../assets/episode-covers/ep1.jpeg
 aiGenerated: true
 draft: true
 ---
