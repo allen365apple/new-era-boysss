@@ -40,6 +40,9 @@ test('article pages expose clickable category and topic tags', async () => {
 	assert.match(layout, /grid-template-columns:\s*17\.5rem auto/);
 	assert.doesNotMatch(layout, /220px minmax\(0, var\(--content-width\)\) 190px/);
 	assert.ok(layout.indexOf('class="post-sidebar"') < layout.indexOf('class="post-article"'));
+	assert.match(layout, /\.post-article \{[\s\S]*?background:\s*transparent;[\s\S]*?box-shadow:\s*none;/);
+	assert.match(layout, /\.sidebar-card \{[\s\S]*?background:\s*transparent;[\s\S]*?box-shadow:\s*none;/);
+	assert.doesNotMatch(layout, /<SiteBanner \/>/);
 });
 
 test('homepage keeps the approved octagon copy and section order', async () => {
@@ -64,6 +67,22 @@ test('collection pages use the full Fuwari page width', async () => {
 	for (const page of [blog, topics, topicPage]) {
 		assert.match(page, /width:\s*min\(var\(--page-width\), calc\(100% - 2rem\)\)/);
 		assert.doesNotMatch(page, /max-width:\s*760px/);
+	}
+});
+
+test('all public pages use the global starfield instead of a banner', async () => {
+	const [styles, layout, blog, topics, topicPage, about] = await Promise.all([
+		read('../src/styles/global.css'),
+		read('../src/layouts/BlogPost.astro'),
+		read('../src/pages/blog/index.astro'),
+		read('../src/pages/topics/index.astro'),
+		read('../src/pages/topics/[topic].astro'),
+		read('../src/pages/about.astro'),
+	]);
+	assert.match(styles, /--starfield-background:/);
+	assert.match(styles, /body::before \{[\s\S]*?position:\s*fixed;[\s\S]*?background:\s*var\(--starfield-background\)/);
+	for (const page of [layout, blog, topics, topicPage, about]) {
+		assert.doesNotMatch(page, /SiteBanner/);
 	}
 });
 

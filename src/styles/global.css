@@ -50,12 +50,37 @@
 	--banner-star-muted: rgba(193, 208, 255, 0.48);
 	--banner-star-bright: rgba(255, 255, 255, 0.98);
 	--banner-haze: linear-gradient(90deg, transparent, rgba(130, 118, 206, 0.09), transparent);
-	--home-cosmos-background:
-		radial-gradient(circle at 14% 14%, rgba(73, 96, 173, 0.22), transparent 30rem),
-		radial-gradient(circle at 84% 20%, rgba(126, 59, 112, 0.18), transparent 32rem),
-		linear-gradient(180deg, #03040a 0%, #080b18 42%, #0d0711 68%, rgba(7, 8, 11, 0) 100%);
-	--home-star: rgba(255, 255, 255, 0.7);
-	--home-star-muted: rgba(193, 208, 255, 0.34);
+	--star-dim: rgba(223, 228, 255, 0.12);
+	--star-soft: rgba(223, 228, 255, 0.2);
+	--star-accent: rgba(189, 172, 229, 0.16);
+	--starfield-background:
+		radial-gradient(circle at 4% 9%, var(--star-soft) 0 0.7px, transparent 1.4px),
+		radial-gradient(circle at 11% 31%, var(--star-dim) 0 0.9px, transparent 1.5px),
+		radial-gradient(circle at 17% 73%, var(--star-accent) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 23% 18%, var(--star-dim) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 29% 52%, var(--star-soft) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 34% 87%, var(--star-dim) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 39% 6%, var(--star-accent) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 44% 42%, var(--star-dim) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 48% 68%, var(--star-soft) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 53% 23%, var(--star-dim) 0 0.9px, transparent 1.5px),
+		radial-gradient(circle at 58% 91%, var(--star-accent) 0 0.7px, transparent 1.4px),
+		radial-gradient(circle at 63% 57%, var(--star-dim) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 68% 12%, var(--star-soft) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 72% 77%, var(--star-dim) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 77% 36%, var(--star-accent) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 82% 64%, var(--star-dim) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 87% 16%, var(--star-soft) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 91% 84%, var(--star-dim) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 96% 47%, var(--star-accent) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 9% 92%, var(--star-dim) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 31% 29%, var(--star-accent) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 56% 48%, var(--star-dim) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 74% 95%, var(--star-soft) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 94% 4%, var(--star-dim) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 16% 14%, rgba(73, 96, 173, 0.1), transparent 34rem),
+		radial-gradient(circle at 86% 28%, rgba(126, 59, 112, 0.08), transparent 36rem),
+		linear-gradient(145deg, #020308 0%, #04050c 54%, #08040a 100%);
 	--banner-overlap: 80px;
 	--dialog-backdrop: rgba(1, 2, 6, 0.76);
 	--platform-soundon: #ff6b35;
@@ -147,6 +172,20 @@
 	--search-background: rgba(24, 20, 28, 0.04);
 	--search-background-hover: rgba(24, 20, 28, 0.06);
 	--image-hover-overlay: rgba(25, 18, 32, 0.28);
+	--star-dim: rgba(73, 67, 83, 0.1);
+	--star-soft: rgba(73, 67, 83, 0.16);
+	--star-accent: rgba(120, 93, 153, 0.12);
+	--starfield-background:
+		radial-gradient(circle at 4% 9%, var(--star-soft) 0 0.7px, transparent 1.4px),
+		radial-gradient(circle at 17% 73%, var(--star-accent) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 29% 52%, var(--star-soft) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 39% 6%, var(--star-accent) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 53% 23%, var(--star-dim) 0 0.9px, transparent 1.5px),
+		radial-gradient(circle at 68% 12%, var(--star-soft) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 77% 36%, var(--star-accent) 0 0.6px, transparent 1.2px),
+		radial-gradient(circle at 87% 16%, var(--star-soft) 0 0.7px, transparent 1.3px),
+		radial-gradient(circle at 96% 47%, var(--star-accent) 0 0.8px, transparent 1.5px),
+		linear-gradient(145deg, #f4f1f6 0%, #f7f4f8 54%, #f1edf4 100%);
 }
 
 * {
@@ -159,11 +198,12 @@ html {
 
 body {
 	font-family: var(--font-sans);
+	position: relative;
+	isolation: isolate;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: var(--page-background);
-	background-attachment: fixed;
+	background: var(--surface);
 	color: var(--text-secondary);
 	font-size: 18px;
 	line-height: 1.75;
@@ -173,17 +213,27 @@ body {
 	transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+body::before {
+	content: '';
+	position: fixed;
+	z-index: 0;
+	inset: 0;
+	pointer-events: none;
+	background: var(--starfield-background);
+}
+
+body > header,
+body > main,
+body > footer {
+	position: relative;
+	z-index: 1;
+}
+
 main {
 	width: var(--content-width);
 	max-width: calc(100% - 2.5rem);
 	margin: auto;
 	padding: 3rem 0;
-}
-
-.site-banner + main {
-	position: relative;
-	z-index: 2;
-	margin-top: calc(-1 * var(--banner-overlap));
 }
 
 .content-panel {
@@ -194,35 +244,6 @@ main {
 	border: 1px solid var(--border);
 	border-radius: var(--radius-large);
 	box-shadow: var(--box-shadow);
-}
-
-body.home-page {
-	position: relative;
-	isolation: isolate;
-	background: var(--surface);
-	background-attachment: scroll;
-}
-
-body.home-page::before {
-	content: '';
-	position: absolute;
-	z-index: 0;
-	inset: 0 0 auto;
-	height: 2200px;
-	max-height: 100%;
-	pointer-events: none;
-	background:
-		radial-gradient(circle, var(--home-star) 0 1px, transparent 1.5px) 0 0 / 89px 89px,
-		radial-gradient(circle, var(--home-star-muted) 0 0.8px, transparent 1.3px) 23px 37px / 137px 137px,
-		radial-gradient(circle, var(--home-star) 0 0.7px, transparent 1.1px) 67px 19px / 173px 173px,
-		var(--home-cosmos-background);
-	-webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
-	mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
-}
-
-body.home-page > * {
-	position: relative;
-	z-index: 1;
 }
 
 h1,
