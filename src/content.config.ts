@@ -33,8 +33,8 @@ const blog = defineCollection({
 			listenLinks: listenLinksSchema,
 			coverImage: z.optional(image()),
 			aiGenerated: z.boolean().default(true),
-			// 新文章先進草稿，人工審稿後才明確改成 false。
-			draft: z.boolean().default(true),
+			// 新文章預設直接發布；需要暫時下架時才改成 true。
+			draft: z.boolean().default(false),
 		}),
 });
 

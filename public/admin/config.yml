@@ -15,7 +15,7 @@ collections:
   - name: blog
     label: 文章
     label_singular: 文章
-    description: 先用「待審稿」篩選文章。確認內容後，關閉「草稿」並儲存，就會發布到網站。
+    description: 自動文章會直接發布；若發現錯誤，可在這裡修改並儲存。需要暫時下架時再開啟「草稿」。
     folder: src/content/blog
     create: true
     delete: false
@@ -40,11 +40,11 @@ collections:
         widget: string
         required: true
 
-      - label: 草稿（審完關閉即可發布）
+      - label: 草稿（開啟會暫停公開）
         name: draft
         widget: boolean
-        default: true
-        hint: 保持開啟時不會出現在公開網站；全文確認後關閉並儲存，就會自動部署上線。
+        default: false
+        hint: 預設關閉並直接公開；若要暫時下架文章，開啟後儲存即可。
 
       - label: 摘要（SEO 用）
         name: description

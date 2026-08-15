@@ -7,5 +7,103 @@
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+      var BlogPreview = createClass({
+        render: function () {
+          var entry = this.props.entry;
+          var topics = entry.getIn(['data', 'topics']);
+          var topicList = topics && topics.toArray ? topics.toArray() : [];
+          var coverImage = entry.getIn(['data', 'coverImage']);
+          var coverAsset = coverImage ? this.props.getAsset(coverImage) : null;
+          var platforms = [
+            ['soundon', 'SoundOn'],
+            ['spotify', 'Spotify'],
+            ['apple', 'Apple Podcasts'],
+            ['kkbox', 'KKBOX'],
+          ];
+          var links = platforms
+            .map(function (platform) {
+              return {
+                key: platform[0],
+                label: platform[1],
+                url: entry.getIn(['data', 'listenLinks', platform[0]]),
+              };
+            })
+            .filter(function (platform) {
+              return Boolean(platform.url);
+            });
+
+          return h(
+            'article',
+            { className: 'blog-preview' },
+            h('h1', {}, entry.getIn(['data', 'title']) || '未命名文章'),
+            h('p', { className: 'preview-description' }, entry.getIn(['data', 'description']) || ''),
+            h(
+              'div',
+              { className: 'preview-meta' },
+              h('span', {}, entry.getIn(['data', 'pubDate']) || ''),
+              h('span', {}, entry.getIn(['data', 'episode']) || ''),
+              h('span', {}, '主持人：' + (entry.getIn(['data', 'hosts']) || '未填')),
+              entry.getIn(['data', 'guests'])
+                ? h('span', {}, '來賓：' + entry.getIn(['data', 'guests']))
+                : null,
+            ),
+            h(
+              'div',
+              { className: 'preview-topics' },
+              topicList.map(function (topic) {
+                return h('span', { key: topic }, topic);
+              }),
+            ),
+            links.length
+              ? h(
+                  'div',
+                  { className: 'preview-links' },
+                  links.map(function (platform) {
+                    return h(
+                      'a',
+                      {
+                        key: platform.key,
+                        href: platform.url,
+                        target: '_blank',
+                        rel: 'noreferrer',
+                      },
+                      '前往 ' + platform.label,
+                    );
+                  }),
+                )
+              : null,
+            coverAsset
+              ? h('img', {
+                  className: 'preview-cover',
+                  src: coverAsset.toString(),
+                  alt: entry.getIn(['data', 'title']) || '單集封面',
+                })
+              : null,
+            h('div', { className: 'preview-body' }, this.props.widgetFor('body')),
+          );
+        },
+      });
+
+      CMS.registerPreviewTemplate('blog', BlogPreview);
+      CMS.registerPreviewStyle(
+        `
+          body { margin: 0; color: #252936; background: #fbf7f0; font-family: system-ui, sans-serif; }
+          .blog-preview { max-width: 820px; margin: 0 auto; padding: 48px 36px 80px; line-height: 1.85; }
+          .blog-preview h1 { margin: 0 0 16px; font-size: 2.4rem; line-height: 1.3; }
+          .preview-description { color: #5f6470; font-size: 1.05rem; }
+          .preview-meta, .preview-topics, .preview-links { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 16px 0; }
+          .preview-meta { color: #5f6470; }
+          .preview-topics span { padding: 3px 10px; border-radius: 999px; color: #2469bd; background: #e9f1fb; }
+          .preview-links a { color: #2469bd; font-weight: 700; }
+          .preview-cover { display: block; width: min(320px, 100%); margin: 28px 0; border-radius: 14px; }
+          .preview-body { margin-top: 36px; font-size: 1.08rem; }
+          .preview-body h2 { margin-top: 48px; color: #2469bd; font-size: 1.75rem; line-height: 1.4; }
+          .preview-body blockquote { margin: 28px 0; padding: 16px 22px; border-left: 4px solid #2f76c7; background: #f3ede3; }
+          @media (max-width: 640px) { .blog-preview { padding: 28px 20px 60px; } .blog-preview h1 { font-size: 1.9rem; } }
+        `,
+        { raw: true },
+      );
+    </script>
   </body>
 </html>

@@ -1,16 +1,9 @@
 import { readFile } from 'node:fs/promises';
-import { basename } from 'node:path';
+import { basename, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const TOPICS = new Set(['男性特權', '情感腳本', '性別凝視', '身份認同', '在地事件', '多元對話', '聽眾互動']);
 const PUBLIC_HOSTS = new Set(['柏文', '孝成', '博志', '沁儒']);
-const allowPublished = process.argv.includes('--allow-published');
-const files = process.argv.slice(2).filter((value) => !value.startsWith('--'));
-
-if (!files.length) {
-	console.error('請指定要檢查的文章，例如：node scripts/validate-generated-article.mjs src/content/blog/ep2.md');
-	process.exit(1);
-}
-
 function field(frontmatter, key) {
 	return frontmatter.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'))?.[1]?.trim().replace(/^['"]|['"]$/g, '') ?? '';
 }
@@ -29,7 +22,7 @@ function paragraphs(section) {
 		.filter((paragraph) => paragraph.replace(/[*_`]/g, '').length >= 25);
 }
 
-function inspect(content, fileName) {
+export function inspect(content, fileName, { allowDraft = false } = {}) {
 	const errors = [];
 	const warnings = [];
 	const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
@@ -37,7 +30,7 @@ function inspect(content, fileName) {
 	const [, frontmatter, body] = match;
 	const required = ['title', 'description', 'pubDate', 'episode', 'episodeTitle', 'hosts'];
 	for (const key of required) if (!field(frontmatter, key)) errors.push(`缺少 ${key}`);
-	if (!allowPublished && field(frontmatter, 'draft') !== 'true') errors.push('自動產生文章必須維持 draft: true');
+	if (!allowDraft && field(frontmatter, 'draft') !== 'false') errors.push('自動產生文章必須使用 draft: false 直接發布');
 	if (field(frontmatter, 'aiGenerated') !== 'true') errors.push('aiGenerated 必須是 true');
 
 	const topics = listField(frontmatter, 'topics');
@@ -54,6 +47,7 @@ function inspect(content, fileName) {
 		const end = headings[index + 1]?.index ?? body.length;
 		const count = paragraphs(body.slice(start, end)).length;
 		if (count < 2) errors.push(`「${headings[index][1]}」只有 ${count} 個正文段落，至少需要 2 個`);
+		if (index === headings.length - 1 && count < 3) errors.push('文章最後需要 1–2 段小結；最後一節連同正文至少應有 3 個段落');
 	}
 
 	const quoteCount = (body.match(/^>\s+/gm) ?? []).length;
@@ -75,12 +69,24 @@ function inspect(content, fileName) {
 	return { errors, warnings, textLength, headings: headings.length, quoteCount };
 }
 
-let failed = false;
-for (const file of files) {
-	const result = inspect(await readFile(file, 'utf8'), basename(file));
-	console.log(`${file}：${result.errors.length ? '未通過' : '通過'}（約 ${result.textLength ?? 0} 字、${result.headings ?? 0} 節、${result.quoteCount ?? 0} 句引用）`);
-	for (const error of result.errors) console.error(`  錯誤：${error}`);
-	for (const warning of result.warnings) console.warn(`  提醒：${warning}`);
-	if (result.errors.length) failed = true;
+async function main() {
+	const allowDraft = process.argv.includes('--allow-draft');
+	const files = process.argv.slice(2).filter((value) => !value.startsWith('--'));
+	if (!files.length) {
+		console.error('請指定要檢查的文章，例如：node scripts/validate-generated-article.mjs src/content/blog/ep2.md');
+		process.exitCode = 1;
+		return;
+	}
+
+	let failed = false;
+	for (const file of files) {
+		const result = inspect(await readFile(file, 'utf8'), basename(file), { allowDraft });
+		console.log(`${file}：${result.errors.length ? '未通過' : '通過'}（約 ${result.textLength ?? 0} 字、${result.headings ?? 0} 節、${result.quoteCount ?? 0} 句引用）`);
+		for (const error of result.errors) console.error(`  錯誤：${error}`);
+		for (const warning of result.warnings) console.warn(`  提醒：${warning}`);
+		if (result.errors.length) failed = true;
+	}
+	if (failed) process.exitCode = 1;
 }
-if (failed) process.exitCode = 1;
+
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) await main();

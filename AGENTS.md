@@ -63,7 +63,7 @@ Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見
 | `src/components/BaseHead.astro` | 每頁的 SEO meta + Open Graph + JSON-LD 結構化資料。 |
 | `scripts/sync-episode-links.mjs` | 從 RSS／Apple／Spotify 比對並同步文章的單集收聽連結與 RSS 封面。 |
 | `scripts/podcast-pipeline.mjs` | RSS 佇列、音檔下載與本機 Whisper 轉錄；音檔和逐字稿只留在 repo 上層。 |
-| `scripts/validate-generated-article.mjs` | 檢查自動草稿的結構、固定分類、公開暱稱與常見敏感資訊。 |
+| `scripts/validate-generated-article.mjs` | 檢查自動文章的結構、文末小結、固定分類、公開暱稱與常見敏感資訊。 |
 | `Podcast自動化與審稿.md` | 自動生產線、後台待審流程與本機指令。 |
 | `.github/workflows/sync-episode-links.yml` | 每日或手動執行單集連結與封面同步。 |
 | `public/robots.txt` | **明確允許 AI 爬蟲**（GPTBot、ClaudeBot、PerplexityBot…）。 |
@@ -77,13 +77,13 @@ Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見
 
 ### A. 發一篇文章
 在 `src/content/blog/` 新增 `.md`，填好 frontmatter（見 `content.config.ts` 的 schema），push 到 `main` 即自動上線。
-或由夥伴走後台 `/admin`（GitHub 登入 → 寫 → Publish）。**新文章預設 `draft: true`，審核過才改 `false` 發布。**
+或由夥伴走後台 `/admin`（GitHub 登入 → 寫 → Publish）。**新文章預設 `draft: false` 直接發布；發現錯誤可從後台修改，需要暫時下架才改成 `true`。**
 
 ### B. 改網站風格
 只改 `src/styles/global.css` 最上方的 `:root` 變數。細節見 `客製化指南.md`。不要在各元件檔裡零散改色。
 
 ### C. 內容生產線（Podcast → 文章）
-本機自動、人工審稿：RSS 下載音檔 → Whisper 轉逐字稿 → 依 `部落格改寫規則.md` 產出 Markdown 草稿 → 進後台審核 → 發布。
+本機自動發布、後台修正：RSS 下載音檔 → Whisper 轉逐字稿 → 依 `部落格改寫規則.md` 產出 Markdown → 自動檢查 → 發布；發現問題再進後台修正。
 細節見 `系統架構.md` 第 9 節與 `Podcast自動化與審稿.md`。
 
 ---
@@ -100,7 +100,7 @@ Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見
 
 - **不要把個資放進 repo 或網站**：本 repo 為 public。成員真實全名、電話、Email、地址等，一律不得出現在程式碼、文章或文件中（公開頁面只用節目公開的主持人暱稱）。
 - **設計集中管理**：改風格走 `global.css` 的 `:root`，不要硬編色碼。
-- **文章品質優先**：AI 只產草稿，一定經人工審稿才 `draft: false` 發布。
+- **文章品質優先**：自動文章必須先通過結構、來源、專有名詞與敏感資訊檢查，再以 `draft: false` 發布；發現錯誤立即從後台修正或改成草稿下架。
 - **議題分類固定 7 種**（見 schema）：男性特權／情感腳本／性別凝視／身份認同／在地事件／多元對話／聽眾互動。不要自創。
 - **繁體中文台灣用語**：文章與 UI 文字避免中國用語與八股腔（詳見 `部落格改寫規則.md`）。
 
