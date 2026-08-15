@@ -1,8 +1,8 @@
 export const TOPICS = [
 	{
-		name: '男性特權',
-		slug: 'male-privilege',
-		description: '從日常行為到制度安排，理解男性在不同情境裡享有的便利與責任。',
+		name: '男性困境',
+		slug: 'male-struggles',
+		description: '從兵役、情緒壓抑與成功焦慮出發，也理解父權結構如何同時帶來壓力、便利與責任。',
 	},
 	{
 		name: '情感腳本',

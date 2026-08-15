@@ -89,7 +89,7 @@ collections:
         multiple: true
         required: false
         options:
-          - { label: 男性特權, value: 男性特權 }
+          - { label: 男性困境, value: 男性困境 }
           - { label: 情感腳本, value: 情感腳本 }
           - { label: 性別凝視, value: 性別凝視 }
           - { label: 身份認同, value: 身份認同 }

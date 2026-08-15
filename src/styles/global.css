@@ -1,40 +1,53 @@
-/*
-  新世紀直男戰士 — 現代簡約設計系統
-  靈感取自 RicoFast 的乾淨質感:大量留白、俐落字體、單一強調色、細緻動畫。
-*/
+/* 新世紀直男戰士 —「宇宙編輯部」深色設計系統 */
 
 :root {
-	/* 色彩 — 校準至 RicoFast 官方調色盤 */
-	--accent: #2d6dc3;         /* 主藍:標題、連結 */
-	--accent-strong: #0066ff;  /* 強調藍:主要按鈕 */
-	--accent-dark: #1e4f96;
-	--accent-light: #e8f0fa;
-	--accent-gold: #fad13b;    /* 金色點綴 */
+	/* 品牌色：電光藍 × 洋紅，搭配墨黑與骨白 */
+	--accent: #82aaff;
+	--accent-strong: #5d8cff;
+	--accent-dark: #b3c9ff;
+	--accent-light: #18233d;
+	--accent-gold: #f0d35d;
+	--accent-pink: #ff5caf;
+	--accent-pink-light: #37162c;
+	--on-accent: #05060a;
+	--on-solid: #ffffff;
 
-	--text-primary: #1f2430;
-	--text-secondary: #4a4f5c;
-	--text-muted: #6f6a62;
+	--text-primary: #f4f0e8;
+	--text-secondary: #c7c5cc;
+	--text-muted: #92929e;
 
-	--surface: #fbf7f1;        /* 文章底色:暖米白 */
-	--surface-soft: #f4eee4;   /* 區塊底色:深一階米色 */
-	--border: #ddd5c8;         /* 暖灰分隔線色 */
-	--border-strong: #c9c0b0;
+	--surface: #07080b;
+	--surface-soft: #11131a;
+	--surface-raised: #171a23;
+	--surface-elevated: #1d202b;
+	--surface-glass: rgba(7, 8, 11, 0.84);
+	--border: rgba(244, 240, 232, 0.16);
+	--border-strong: rgba(244, 240, 232, 0.3);
+	--page-background:
+		radial-gradient(circle at 12% 8%, rgba(130, 170, 255, 0.08), transparent 28rem),
+		radial-gradient(circle at 88% 18%, rgba(255, 92, 175, 0.06), transparent 30rem),
+		var(--surface);
+	--hero-gradient: linear-gradient(145deg, #f4f0e8 2%, #879ee3 52%, #ff5caf 100%);
+	--hero-blue-glow: rgba(130, 170, 255, 0.28);
+	--hero-pink-glow: rgba(255, 92, 175, 0.26);
+	--hero-grid: rgba(244, 240, 232, 0.045);
+	--header-background: rgba(7, 8, 11, 0.82);
 
 	/* 字體 — 思源黑體 Noto Sans TC 為主 */
 	--font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC",
 		"Microsoft JhengHei", "Segoe UI", system-ui, sans-serif;
 
 	/* 版面 */
-	--radius: 10px;
-	--radius-lg: 16px;
+	--radius: 8px;
+	--radius-lg: 14px;
 	--content-width: 680px;
 
 	/* 相容舊變數名(部分元件仍引用) */
-	--black: 24, 24, 27;
-	--gray: 82, 82, 91;
-	--gray-dark: 39, 39, 42;
-	--gray-light: 244, 244, 245;
-	--box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+	--black: 7, 8, 11;
+	--gray: 146, 146, 158;
+	--gray-dark: 23, 26, 35;
+	--gray-light: 244, 240, 232;
+	--box-shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
 }
 
 * {
@@ -50,7 +63,8 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: var(--surface);
+	background: var(--page-background);
+	background-attachment: fixed;
 	color: var(--text-secondary);
 	font-size: 18px;
 	line-height: 1.75;

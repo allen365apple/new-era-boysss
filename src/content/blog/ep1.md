@@ -7,7 +7,7 @@ episodeTitle: "女權來襲？性平浪潮下的男生到底委不委屈！？ f
 hosts: "柏文、孝成、博志"
 guests: "方念萱（政大傳播學院副教授）"
 topics:
-  - 男性特權
+  - 男性困境
   - 身份認同
   - 多元對話
 listenLinks:

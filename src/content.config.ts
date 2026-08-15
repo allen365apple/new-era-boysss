@@ -22,7 +22,7 @@ const blog = defineCollection({
 			hosts: z.string().optional(),          // 本集主持人，如 "柏文、孝成、博志"
 			guests: z.string().optional(),         // e.g. "方念萱老師"
 			topics: z.array(z.enum([
-				'男性特權',
+				'男性困境',
 				'情感腳本',
 				'性別凝視',
 				'身份認同',

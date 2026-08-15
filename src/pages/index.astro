@@ -1,14 +1,30 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import PodcastCover from '../assets/podcast-cover.jpeg';
 import ArticleCard from '../components/ArticleCard.astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { PODCAST_LINKS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { TOPICS } from '../data/topics';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const latestPost = posts[0];
+const latestImage = latestPost?.data.coverImage ?? PodcastCover;
+const recentPosts = posts.slice(1, 4);
+
+const floatingKeywords = [
+	{ text: '直男？', className: 'keyword-1' },
+	{ text: '性別？', className: 'keyword-2' },
+	{ text: '父權？', className: 'keyword-3' },
+	{ text: '女權？', className: 'keyword-4' },
+	{ text: '女性主義？', className: 'keyword-5' },
+	{ text: '男性困境？', className: 'keyword-6' },
+];
 ---
 
 <!doctype html>
@@ -16,59 +32,401 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			.hero {
-				max-width: 760px;
+			.home-main {
+				width: 100%;
+				max-width: none;
+				padding: 0;
+			}
+			.cosmic-hero,
+			.latest-section,
+			.topic-section,
+			.recent-section {
+				max-width: 1200px;
 				margin: 0 auto;
-				padding: 5rem 1.25rem 3rem;
-				text-align: center;
+				padding-inline: 1.25rem;
 			}
-			.hero .eyebrow {
-				display: inline-block;
-				background: var(--accent-light);
-				color: var(--accent-dark);
-				font-size: 0.82rem;
-				font-weight: 600;
-				padding: 0.3rem 0.9rem;
-				border-radius: 999px;
-				margin-bottom: 1.25rem;
+			.cosmic-hero {
+				padding-top: 2.5rem;
+				padding-bottom: 4rem;
 			}
-			.hero h1 {
-				font-size: 3rem;
+			.hero-frame {
+				display: grid;
+				grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+				min-height: 620px;
+				border: 1px solid var(--border);
+				background: var(--surface-soft);
+				box-shadow: var(--box-shadow);
+				overflow: hidden;
+			}
+			.cosmos-art {
+				position: relative;
+				min-height: 620px;
+				display: grid;
+				place-items: center;
+				overflow: hidden;
+				background:
+					repeating-radial-gradient(circle at 50% 50%, transparent 0 24px, var(--hero-grid) 25px 26px),
+					radial-gradient(circle at 38% 56%, var(--hero-blue-glow), transparent 34%),
+					radial-gradient(circle at 68% 35%, var(--hero-pink-glow), transparent 30%),
+					var(--surface-raised);
+			}
+			.orbit {
+				position: absolute;
+				width: 75%;
+				aspect-ratio: 1;
+				border: 1px solid var(--border);
+				border-radius: 50%;
+				transform: rotate(-18deg) scaleY(0.46);
+			}
+			.orbit-2 {
+				width: 96%;
+				transform: rotate(28deg) scaleY(0.38);
+			}
+			.keyword-shape {
+				position: relative;
+				width: min(72%, 410px);
+				aspect-ratio: 0.82;
+				background: var(--hero-gradient);
+				clip-path: polygon(21% 0, 79% 0, 100% 24%, 86% 100%, 14% 100%, 0 24%);
+				filter: drop-shadow(0 24px 42px var(--hero-pink-glow));
+				overflow: hidden;
+			}
+			.keyword {
+				position: absolute;
+				color: var(--on-accent);
+				font-weight: 700;
+				white-space: nowrap;
+				text-shadow: 0 1px 0 var(--border);
+				animation: drift-a 7s ease-in-out infinite alternate;
+			}
+			.keyword-1 { left: 14%; top: 17%; font-size: 1.35rem; }
+			.keyword-2 { right: 14%; top: 28%; font-size: 1.05rem; animation-name: drift-b; animation-duration: 8s; }
+			.keyword-3 { left: 25%; top: 43%; font-size: 1.15rem; animation-delay: -2s; }
+			.keyword-4 { right: 18%; top: 56%; font-size: 1.25rem; animation-name: drift-c; animation-duration: 6.5s; }
+			.keyword-5 { left: 29%; bottom: 20%; font-size: 0.88rem; animation-name: drift-c; animation-delay: -4s; }
+			.keyword-6 { right: 23%; bottom: 10%; font-size: 1rem; animation-name: drift-c; animation-delay: -1s; }
+			.visual-note {
+				position: absolute;
+				left: 1rem;
+				bottom: 0.8rem;
+				margin: 0;
+				font-size: 0.72rem;
+				letter-spacing: 0.08em;
+				color: var(--text-muted);
+			}
+			.hero-copy {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: clamp(2rem, 5vw, 4.5rem);
+			}
+			.hero-eyebrow,
+			.section-kicker {
 				margin: 0 0 1rem;
+				font-size: 0.76rem;
+				font-weight: 700;
+				letter-spacing: 0.1em;
+				color: var(--accent-pink);
+				text-transform: uppercase;
 			}
-			.hero p {
-				font-size: 1.15rem;
+			.hero-copy h1 {
+				margin: 0 0 1.4rem;
+				font-size: clamp(2.4rem, 3.9vw, 3.5rem);
+				line-height: 1.08;
+				color: var(--text-primary);
+			}
+			.hero-lead {
+				margin: 0;
+				max-width: 34rem;
 				color: var(--text-secondary);
-				max-width: 560px;
-				margin: 0 auto;
+				font-size: 1.05rem;
 			}
-
-			.posts {
-				max-width: 760px;
-				margin: 0 auto;
-				padding: 1rem 1.25rem 5rem;
+			.hero-actions {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				margin-top: 2rem;
 			}
-			@media (max-width: 640px) {
-				.hero {
-					padding-top: 3rem;
+			.hero-actions a {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.7rem 1rem;
+				border: 1px solid var(--accent);
+				font-size: 0.9rem;
+				font-weight: 700;
+			}
+			.hero-actions .primary-action {
+				background: var(--accent);
+				color: var(--on-accent);
+			}
+			.hero-actions .secondary-action {
+				color: var(--text-primary);
+			}
+			.section-heading {
+				display: grid;
+				grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+				gap: 2rem;
+				align-items: end;
+				padding-bottom: 1.4rem;
+				border-bottom: 1px solid var(--border);
+			}
+			.section-heading h2 {
+				margin: 0;
+				padding: 0;
+				border: 0;
+				color: var(--text-primary);
+			}
+			.latest-section,
+			.topic-section,
+			.recent-section {
+				padding-top: 4rem;
+				padding-bottom: 4rem;
+			}
+			.latest-card {
+				display: grid;
+				grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+				color: inherit;
+				background: var(--surface-soft);
+				border-bottom: 1px solid var(--border);
+				text-decoration: none;
+			}
+			.latest-image {
+				min-height: 420px;
+				overflow: hidden;
+				background: var(--surface-raised);
+			}
+			.latest-image img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 0;
+				transition: transform 0.45s ease;
+			}
+			.latest-card:hover .latest-image img {
+				transform: scale(1.035);
+			}
+			.latest-copy {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding: clamp(1.5rem, 4vw, 3.5rem);
+			}
+			.latest-meta,
+			.latest-date {
+				color: var(--text-muted);
+				font-size: 0.82rem;
+			}
+			.latest-meta {
+				color: var(--accent-pink);
+				font-weight: 700;
+			}
+			.latest-copy h3 {
+				margin: 0.75rem 0 1rem;
+				font-size: clamp(1.65rem, 3.2vw, 2.7rem);
+				color: var(--text-primary);
+			}
+			.latest-description {
+				color: var(--text-secondary);
+			}
+			.latest-arrow {
+				margin-top: auto;
+				padding-top: 1rem;
+				color: var(--accent);
+				font-weight: 700;
+			}
+			.topic-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				margin-top: 1.5rem;
+				border-top: 1px solid var(--border);
+			}
+			.topic-link {
+				display: grid;
+				grid-template-columns: auto 1fr auto;
+				align-items: center;
+				gap: 1rem;
+				padding: 1.1rem 0.9rem;
+				border-bottom: 1px solid var(--border);
+				color: var(--text-primary);
+			}
+			.topic-link:nth-child(odd) {
+				border-right: 1px solid var(--border);
+			}
+			.topic-number {
+				color: var(--accent-pink);
+				font-size: 0.78rem;
+			}
+			.topic-arrow {
+				color: var(--accent);
+			}
+			.topic-link:hover {
+				background: var(--surface-soft);
+			}
+			.recent-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 1rem;
+				margin-top: 1.5rem;
+			}
+			@keyframes drift-a {
+				from { transform: translate3d(-8px, -4px, 0) rotate(-2deg); }
+				to { transform: translate3d(12px, 10px, 0) rotate(2deg); }
+			}
+			@keyframes drift-b {
+				from { transform: translate3d(8px, -10px, 0) rotate(2deg); }
+				to { transform: translate3d(-12px, 8px, 0) rotate(-3deg); }
+			}
+			@keyframes drift-c {
+				from { transform: translate3d(-5px, 9px, 0); }
+				to { transform: translate3d(10px, -8px, 0); }
+			}
+			@media (max-width: 860px) {
+				.hero-frame,
+				.latest-card {
+					grid-template-columns: 1fr;
 				}
-				.hero h1 {
-					font-size: 2.1rem;
+				.cosmos-art {
+					min-height: 520px;
+				}
+				.hero-copy {
+					padding-block: 3rem;
+				}
+				.latest-image {
+					min-height: 360px;
+				}
+				.recent-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+			@media (max-width: 600px) {
+				.cosmic-hero,
+				.latest-section,
+				.topic-section,
+				.recent-section {
+					padding-inline: 0.85rem;
+				}
+				.cosmic-hero {
+					padding-top: 1rem;
+					padding-bottom: 2.5rem;
+				}
+				.hero-frame {
+					min-height: auto;
+				}
+				.cosmos-art {
+					min-height: 420px;
+				}
+				.keyword-shape {
+					width: min(76%, 300px);
+				}
+				.keyword-1 { font-size: 1.1rem; }
+				.keyword-2,
+				.keyword-5 { font-size: 0.88rem; }
+				.keyword-3,
+				.keyword-4,
+				.keyword-6 { font-size: 0.96rem; }
+				.section-heading,
+				.topic-grid {
+					grid-template-columns: 1fr;
+				}
+				.topic-link:nth-child(odd) {
+					border-right: 0;
+				}
+				.latest-image {
+					min-height: 280px;
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.keyword {
+					animation: none;
 				}
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
-		<main id="main-content" style="width: 100%; max-width: 100%; padding: 0;">
-			<section class="hero">
-				<h1>{SITE_TITLE}</h1>
-				<p>用男性視角，認真討論性別這件事。每篇文章整理自節目對談，讓更多人看見這些對話。</p>
+		<main id="main-content" class="home-main">
+			<section class="cosmic-hero">
+				<div class="hero-frame">
+					<div class="cosmos-art" role="img" aria-label="直男、性別、父權、女權、女性主義與男性困境等關鍵字在幾何形中漂浮">
+						<span class="orbit orbit-1" aria-hidden="true"></span>
+						<span class="orbit orbit-2" aria-hidden="true"></span>
+						<div class="keyword-shape" aria-hidden="true">
+							{floatingKeywords.map((keyword) => (
+								<span class={`keyword ${keyword.className}`}>{keyword.text}</span>
+							))}
+						</div>
+						<p class="visual-note">QUESTIONS IN ORBIT / 2026</p>
+					</div>
+					<div class="hero-copy">
+						<p class="hero-eyebrow">NEW ERA BOYS / PODCAST EDITORIAL</p>
+						<h1>關於性別的<br />煩惱與矛盾，<br />在這裡聊吧</h1>
+						<p class="hero-lead">從直男視角開始，把說不清楚的困惑、衝突與改變整理成可以慢慢讀、繼續想的對話。</p>
+						<div class="hero-actions">
+							{latestPost && <a class="primary-action" href={`/blog/${latestPost.id}/`}>閱讀最新文章 ↗</a>}
+							<a class="secondary-action" href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer">收聽 Podcast</a>
+						</div>
+					</div>
+				</div>
 			</section>
 
-			<section class="posts">
-				{posts.map((post) => <ArticleCard post={post} />)}
+			{latestPost && (
+				<section class="latest-section" aria-labelledby="latest-heading">
+					<div class="section-heading">
+						<div>
+							<p class="section-kicker">LATEST TRANSMISSION</p>
+							<h2 id="latest-heading">最新一集</h2>
+						</div>
+						<p>不只整理重點，也保留對話裡的猶豫、矛盾與重新理解的空間。</p>
+					</div>
+					<a class="latest-card" href={`/blog/${latestPost.id}/`}>
+						<div class="latest-image">
+							<Image width={720} height={720} src={latestImage} alt={latestPost.data.title} />
+						</div>
+						<div class="latest-copy">
+							<span class="latest-meta">{latestPost.data.episode ?? '最新文章'}{latestPost.data.topics?.length ? `・${latestPost.data.topics.join('／')}` : ''}</span>
+							<h3>{latestPost.data.title}</h3>
+							<p class="latest-description">{latestPost.data.description}</p>
+							<span class="latest-date"><FormattedDate date={latestPost.data.pubDate} /></span>
+							<span class="latest-arrow">進入本集文章 →</span>
+						</div>
+					</a>
+				</section>
+			)}
+
+			<section class="topic-section" aria-labelledby="topic-heading">
+				<div class="section-heading">
+					<div>
+						<p class="section-kicker">SEVEN QUESTIONS</p>
+						<h2 id="topic-heading">從哪個問題開始？</h2>
+					</div>
+					<p>不必先選邊站。挑一個你最近真正困惑的問題，從那裡開始讀。</p>
+				</div>
+				<nav class="topic-grid" aria-label="七大議題">
+					{TOPICS.map((topic, index) => (
+						<a class="topic-link" href={`/topics/${topic.slug}/`}>
+							<span class="topic-number">{String(index + 1).padStart(2, '0')}</span>
+							<span>{topic.name}</span>
+							<span class="topic-arrow">↗</span>
+						</a>
+					))}
+				</nav>
 			</section>
+
+			{recentPosts.length > 0 && (
+				<section class="recent-section" aria-labelledby="recent-heading">
+					<div class="section-heading">
+						<div>
+							<p class="section-kicker">RECENT STORIES</p>
+							<h2 id="recent-heading">最近的對話紀錄</h2>
+						</div>
+						<p>把 Podcast 裡還沒聊完的問題，留成可以被搜尋、被引用，也能重新回來閱讀的文字。</p>
+					</div>
+					<div class="recent-grid">
+						{recentPosts.map((post) => <ArticleCard post={post} variant="grid" />)}
+					</div>
+				</section>
+			)}
 		</main>
 		<Footer />
 	</body>

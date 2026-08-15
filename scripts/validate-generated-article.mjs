@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { basename, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const TOPICS = new Set(['男性特權', '情感腳本', '性別凝視', '身份認同', '在地事件', '多元對話', '聽眾互動']);
+const TOPICS = new Set(['男性困境', '情感腳本', '性別凝視', '身份認同', '在地事件', '多元對話', '聽眾互動']);
 const PUBLIC_HOSTS = new Set(['柏文', '孝成', '博志', '沁儒']);
 function field(frontmatter, key) {
 	return frontmatter.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'))?.[1]?.trim().replace(/^['"]|['"]$/g, '') ?? '';

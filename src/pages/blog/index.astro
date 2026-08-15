@@ -16,7 +16,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 	<head>
 		<BaseHead
 			title={`所有文章 — ${SITE_TITLE}`}
-			description={`整理《${SITE_TITLE}》Podcast 對談文章，從男性特權、情感腳本到多元對話，讀懂台灣性別議題。`}
+			description={`整理《${SITE_TITLE}》Podcast 對談文章，從男性困境、情感腳本到多元對話，讀懂台灣性別議題。`}
 			pageKind="collection"
 			jsonLdExtra={{
 				mainEntity: {

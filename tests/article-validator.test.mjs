@@ -5,7 +5,7 @@ import { inspect } from '../scripts/validate-generated-article.mjs';
 
 const paragraph = '約會中的體貼不能只靠既定性別規則判斷，真正需要的是先看見對方的處境，再透過詢問確認彼此是否舒服。'.repeat(3);
 
-function article({ draft = false, includeConclusion = true } = {}) {
+function article({ draft = false, includeConclusion = true, topic = '男性困境' } = {}) {
 	const finalParagraphs = includeConclusion
 		? `${paragraph}\n\n${paragraph}\n\n---\n\n${paragraph}`
 		: `${paragraph}\n\n${paragraph}`;
@@ -17,7 +17,7 @@ episode: EP99
 episodeTitle: "EP99：測試集數"
 hosts: "柏文、孝成、博志"
 topics:
-  - 情感腳本
+  - ${topic}
 aiGenerated: true
 draft: ${draft}
 ---
@@ -68,4 +68,11 @@ test('final section must include an additional closing-summary paragraph', () =>
 	const result = inspect(article({ includeConclusion: false }), 'ep99.md');
 	assert.ok(result.errors.some((error) => error.includes('文章最後需要')));
 	assert.ok(result.errors.some((error) => error.includes('Markdown 分隔線')));
+});
+
+test('男性困境是固定分類，舊分類男性特權不再接受', () => {
+	assert.deepEqual(inspect(article({ topic: '男性困境' }), 'ep99.md').errors, []);
+	assert.ok(
+		inspect(article({ topic: '男性特權' }), 'ep99.md').errors.some((error) => error.includes('不允許的議題分類')),
+	);
 });

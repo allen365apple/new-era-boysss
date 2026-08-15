@@ -6,15 +6,16 @@ import FormattedDate from './FormattedDate.astro';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
+	variant?: 'list' | 'grid';
 }
 
-const { post } = Astro.props;
+const { post, variant = 'list' } = Astro.props;
 const image = post.data.coverImage ?? PodcastCover;
 const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士 Podcast 封面';
 ---
 
-<a href={`/blog/${post.id}/`} class="card-link">
-	<article class="post-card">
+<a href={`/blog/${post.id}/`} class:list={['card-link', variant]}>
+	<article class:list={['post-card', variant]}>
 		<div class="thumb">
 			<Image width={300} height={300} src={image} alt={imageAlt} />
 		</div>
@@ -44,7 +45,7 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 		border-top: 1px dashed var(--border);
 		align-items: center;
 	}
-	.card-link:last-child .post-card {
+	.card-link.list:last-child .post-card {
 		border-bottom: 1px dashed var(--border);
 	}
 	.thumb {
@@ -80,7 +81,7 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 	}
 	.episode-tag {
 		background: var(--accent);
-		color: #fff;
+		color: var(--on-accent);
 		font-weight: 600;
 	}
 	.topic-tag {
@@ -111,8 +112,38 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 		color: var(--text-muted);
 		font-size: 0.85rem;
 	}
+	.card-link.grid {
+		height: 100%;
+	}
+	.post-card.grid {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 0;
+		gap: 0;
+		border: 1px solid var(--border);
+		background: var(--surface-soft);
+		overflow: hidden;
+	}
+	.post-card.grid .thumb {
+		aspect-ratio: 16 / 11;
+		border-radius: 0;
+	}
+	.post-card.grid .body {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		padding: 1.15rem;
+	}
+	.post-card.grid h2 {
+		font-size: 1.12rem;
+	}
+	.post-card.grid .date {
+		margin-top: auto;
+		padding-top: 0.35rem;
+	}
 	@media (max-width: 640px) {
-		.post-card {
+		.post-card.list {
 			grid-template-columns: 96px minmax(0, 1fr);
 			gap: 1rem;
 		}

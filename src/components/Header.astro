@@ -6,7 +6,10 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<a href="#main-content" class="skip-link">跳到主要內容</a>
 	<nav>
-		<a href="/" class="brand">{SITE_TITLE}</a>
+		<a href="/" class="brand">
+			<img src="/favicon-192x192.png" alt="" width="38" height="38" />
+			<span>{SITE_TITLE}</span>
+		</a>
 		<div class="internal-links">
 			<HeaderLink href="/blog/">文章</HeaderLink>
 			<HeaderLink href="/topics/">議題</HeaderLink>
@@ -19,7 +22,7 @@ import HeaderLink from './HeaderLink.astro';
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: rgba(255, 255, 255, 0.8);
+		background: var(--header-background);
 		backdrop-filter: saturate(180%) blur(12px);
 		border-bottom: 1px solid var(--border);
 	}
@@ -40,20 +43,29 @@ import HeaderLink from './HeaderLink.astro';
 		transform: translateY(0);
 	}
 	nav {
-		max-width: 1080px;
+		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 1.25rem;
-		height: 60px;
+		height: 68px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
 		font-weight: 700;
 		font-size: 1.1rem;
 		color: var(--text-primary);
 		letter-spacing: -0.02em;
 		text-decoration: none;
+	}
+	.brand img {
+		width: 38px;
+		height: 38px;
+		object-fit: cover;
+		border-radius: 4px;
 	}
 	.internal-links {
 		display: flex;
@@ -71,5 +83,20 @@ import HeaderLink from './HeaderLink.astro';
 	nav :global(a:not(.brand):hover) {
 		color: var(--text-primary);
 		background: var(--surface-soft);
+	}
+	@media (max-width: 520px) {
+		nav {
+			padding: 0 0.8rem;
+		}
+		.brand span {
+			display: none;
+		}
+		.internal-links {
+			gap: 0;
+		}
+		nav :global(a:not(.brand)) {
+			padding-inline: 0.55rem;
+			font-size: 0.86rem;
+		}
 	}
 </style>
