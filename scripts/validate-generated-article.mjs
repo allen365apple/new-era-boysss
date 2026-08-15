@@ -45,9 +45,13 @@ export function inspect(content, fileName, { allowDraft = false } = {}) {
 	for (let index = 0; index < headings.length; index += 1) {
 		const start = headings[index].index + headings[index][0].length;
 		const end = headings[index + 1]?.index ?? body.length;
-		const count = paragraphs(body.slice(start, end)).length;
+		const section = body.slice(start, end);
+		const count = paragraphs(section).length;
 		if (count < 2) errors.push(`「${headings[index][1]}」只有 ${count} 個正文段落，至少需要 2 個`);
-		if (index === headings.length - 1 && count < 3) errors.push('文章最後需要 1–2 段小結；最後一節連同正文至少應有 3 個段落');
+		if (index === headings.length - 1) {
+			if (!/^---\s*$/m.test(section)) errors.push('最後一節正文與文末小結之間必須加入 Markdown 分隔線（---）');
+			if (count < 3) errors.push('文章最後需要 1–2 段小結；最後一節連同正文至少應有 3 個段落');
+		}
 	}
 
 	const quoteCount = (body.match(/^>\s+/gm) ?? []).length;

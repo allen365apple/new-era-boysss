@@ -54,7 +54,7 @@ Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見
 | `src/consts.ts` | 網站標題、描述、節目名等品牌常數。 |
 | `src/styles/global.css` | **設計變數（design tokens）**。改顏色/字體/間距只改這裡的 `:root`，全站連動。 |
 | `src/components/ArticleCard.astro` | 首頁、文章總覽與議題頁共用的文章卡片。 |
-| `src/layouts/BlogPost.astro` | **文章版型**。含頂部 AI 標示、左側目錄+捲動高亮、金句引用、文末收聽區塊。 |
+| `src/layouts/BlogPost.astro` | **文章版型**。含頂部 AI 來源與收聽按鈕、左側目錄+捲動高亮、金句引用、文末完整集名與文字收聽連結。 |
 | `src/pages/index.astro` | 首頁（文章列表，正方形縮圖）。 |
 | `src/pages/about.astro` | 關於節目頁。 |
 | `src/pages/blog/index.astro` | 所有文章總覽頁。 |

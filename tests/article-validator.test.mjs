@@ -7,7 +7,7 @@ const paragraph = '約會中的體貼不能只靠既定性別規則判斷，真�
 
 function article({ draft = false, includeConclusion = true } = {}) {
 	const finalParagraphs = includeConclusion
-		? `${paragraph}\n\n${paragraph}\n\n${paragraph}`
+		? `${paragraph}\n\n${paragraph}\n\n---\n\n${paragraph}`
 		: `${paragraph}\n\n${paragraph}`;
 	return `---
 title: "測試文章"
@@ -67,4 +67,5 @@ test('direct-publish validation rejects drafts by default', () => {
 test('final section must include an additional closing-summary paragraph', () => {
 	const result = inspect(article({ includeConclusion: false }), 'ep99.md');
 	assert.ok(result.errors.some((error) => error.includes('文章最後需要')));
+	assert.ok(result.errors.some((error) => error.includes('Markdown 分隔線')));
 });
