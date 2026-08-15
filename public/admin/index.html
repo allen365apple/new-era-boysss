@@ -13,8 +13,6 @@
           var entry = this.props.entry;
           var topics = entry.getIn(['data', 'topics']);
           var topicList = topics && topics.toArray ? topics.toArray() : [];
-          var coverImage = entry.getIn(['data', 'coverImage']);
-          var coverAsset = coverImage ? this.props.getAsset(coverImage) : null;
           var platforms = [
             ['soundon', 'SoundOn'],
             ['spotify', 'Spotify'],
@@ -73,13 +71,6 @@
                   }),
                 )
               : null,
-            coverAsset
-              ? h('img', {
-                  className: 'preview-cover',
-                  src: coverAsset.toString(),
-                  alt: entry.getIn(['data', 'title']) || '單集封面',
-                })
-              : null,
             h('div', { className: 'preview-body' }, this.props.widgetFor('body')),
           );
         },
@@ -96,7 +87,6 @@
           .preview-meta { color: #5f6470; }
           .preview-topics span { padding: 3px 10px; border-radius: 999px; color: #2469bd; background: #e9f1fb; }
           .preview-links a { color: #2469bd; font-weight: 700; }
-          .preview-cover { display: block; width: min(320px, 100%); margin: 28px 0; border-radius: 14px; }
           .preview-body { margin-top: 36px; font-size: 1.08rem; }
           .preview-body h2 { margin-top: 48px; color: #2469bd; font-size: 1.75rem; line-height: 1.4; }
           .preview-body blockquote { margin: 28px 0; padding: 16px 22px; border-left: 4px solid #2f76c7; background: #f3ede3; }
