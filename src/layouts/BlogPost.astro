@@ -6,7 +6,6 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { PODCAST_LINKS } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	headings?: MarkdownHeading[];
@@ -30,7 +29,8 @@ const {
 	relatedPosts = [],
 } = Astro.props;
 
-const effectiveListenLinks = { kkbox: undefined, ...PODCAST_LINKS, ...listenLinks };
+// 文章頁只顯示已確認的單集連結，避免把節目總頁誤當成單集頁。
+const effectiveListenLinks = { ...listenLinks };
 const hasListenLinks = Object.values(effectiveListenLinks).some(Boolean);
 
 // 只取 h2 / h3 進目錄

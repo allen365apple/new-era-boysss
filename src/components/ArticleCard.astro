@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import FallbackImage from '../assets/blog-placeholder-1.jpg';
+import PodcastCover from '../assets/podcast-cover.jpeg';
 import FormattedDate from './FormattedDate.astro';
 
 interface Props {
@@ -9,13 +9,14 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const image = post.data.coverImage ?? FallbackImage;
+const image = post.data.coverImage ?? PodcastCover;
+const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士 Podcast 封面';
 ---
 
 <a href={`/blog/${post.id}/`} class="card-link">
 	<article class="post-card">
 		<div class="thumb">
-			<Image width={300} height={300} src={image} alt={post.data.title} />
+			<Image width={300} height={300} src={image} alt={imageAlt} />
 		</div>
 		<div class="body">
 			<div class="tags">

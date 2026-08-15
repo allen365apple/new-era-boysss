@@ -37,9 +37,10 @@ cd new-era-boysss
 npm install
 npm run dev          # 開發預覽 http://localhost:4321
 npm run build        # 產生正式靜態檔到 dist/（部署用）
+npm run sync:episode-links  # 預覽同步單集連結與 SoundOn RSS 封面
 ```
 
-Node 18+ 即可。沒有資料庫、沒有後端伺服器（後台登入除外，見下）。
+Node 22.12+。沒有資料庫、沒有後端伺服器（後台登入除外，見下）。
 
 ---
 
@@ -60,6 +61,8 @@ Node 18+ 即可。沒有資料庫、沒有後端伺服器（後台登入除外�
 | `src/pages/topics/` | 議題索引與七種議題的文章彙整頁。 |
 | `src/pages/blog/[...slug].astro` | 單篇文章動態路由。 |
 | `src/components/BaseHead.astro` | 每頁的 SEO meta + Open Graph + JSON-LD 結構化資料。 |
+| `scripts/sync-episode-links.mjs` | 從 RSS／Apple／Spotify 比對並同步文章的單集收聽連結與 RSS 封面。 |
+| `.github/workflows/sync-episode-links.yml` | 每日或手動執行單集連結與封面同步。 |
 | `public/robots.txt` | **明確允許 AI 爬蟲**（GPTBot、ClaudeBot、PerplexityBot…）。 |
 | `public/admin/` | Decap CMS 後台（`index.html` + `config.yml`）。 |
 | `functions/api/` | Cloudflare Pages Functions，處理 GitHub OAuth 登入握手。 |
@@ -85,6 +88,7 @@ Node 18+ 即可。沒有資料庫、沒有後端伺服器（後台登入除外�
 ## 部署與密鑰
 
 - **部署**：push 到 GitHub `main` → Cloudflare Pages 自動 `npm run build` 並上線（約 20–60 秒）。不需 GitHub Actions。
+- **單集資料同步**：GitHub Actions 每日或手動同步單集連結與 RSS 封面；Spotify 需要設定 `SPOTIFY_CLIENT_ID` 與 `SPOTIFY_CLIENT_SECRET` secrets，不能寫入 repo。
 - **後台登入密鑰**：GitHub OAuth 的 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` 存在 **Cloudflare 專案的環境變數**，**不在 repo 裡**。改動 `functions/api/` 後要確認這兩個變數還在。
 
 ---

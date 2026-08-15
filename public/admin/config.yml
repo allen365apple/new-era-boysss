@@ -95,6 +95,7 @@ collections:
         name: coverImage
         widget: image
         required: false
+        hint: 可手動上傳；若留白，同步工具會依集數使用 SoundOn RSS 的該集封面
 
       - label: AI 整理內容
         name: aiGenerated
