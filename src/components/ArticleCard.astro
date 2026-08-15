@@ -172,8 +172,12 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 		overflow: hidden;
 	}
 	.post-card.grid .thumb {
-		aspect-ratio: 16 / 11;
+		width: 100%;
+		aspect-ratio: 1 / 1;
 		border-radius: 0;
+	}
+	.post-card.grid .thumb img {
+		object-fit: contain;
 	}
 	.post-card.grid .body {
 		display: flex;

@@ -5,10 +5,11 @@ import { readFile } from 'node:fs/promises';
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
 
 test('Fuwari interaction primitives and license notice stay connected', async () => {
-	const [config, header, styles, notices] = await Promise.all([
+	const [config, header, styles, articleStyles, notices] = await Promise.all([
 		read('../astro.config.mjs'),
 		read('../src/components/Header.astro'),
 		read('../src/styles/global.css'),
+		read('../src/styles/fuwari-article.css'),
 		read('../THIRD_PARTY_NOTICES.md'),
 	]);
 
@@ -16,10 +17,26 @@ test('Fuwari interaction primitives and license notice stay connected', async ()
 	assert.match(config, /containers:\s*\['main'\]/);
 	assert.match(header, /card-base/);
 	assert.match(header, /astro:page-load/);
+	assert.match(header, /navbar-hidden/);
 	assert.match(styles, /\.expand-animation::before/);
 	assert.match(styles, /transform:\s*scale\(0\.85\)/);
+	assert.match(articleStyles, /@tailwind utilities/);
+	assert.match(articleStyles, /\.custom-md blockquote/);
 	assert.match(notices, /Fuwari/);
 	assert.match(notices, /MIT License/);
+});
+
+test('recent article cards keep complete square covers', async () => {
+	const cards = await read('../src/components/ArticleCard.astro');
+	assert.match(cards, /\.post-card\.grid \.thumb \{[\s\S]*aspect-ratio:\s*1 \/ 1/);
+	assert.match(cards, /\.post-card\.grid \.thumb img \{[\s\S]*object-fit:\s*contain/);
+});
+
+test('article pages expose clickable category and topic tags', async () => {
+	const layout = await read('../src/layouts/BlogPost.astro');
+	assert.match(layout, /aria-label="文章分類與議題標籤"/);
+	assert.match(layout, /href="\/blog\/">節目文章/);
+	assert.match(layout, /href={`\/topics\/\$\{topic\.slug\}\//);
 });
 
 test('homepage keeps the approved octagon copy and section order', async () => {

@@ -88,6 +88,11 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		padding: 0 1rem;
 		background: transparent;
 		pointer-events: none;
+		transition: opacity 0.25s ease, transform 0.25s ease;
+	}
+	header.navbar-hidden {
+		opacity: 0 !important;
+		transform: translateY(-4rem) !important;
 	}
 	.skip-link {
 		position: absolute;
@@ -478,10 +483,21 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			headingMap.forEach((_, heading) => spyObserver.observe(heading));
 		}
 	};
+	const updateNavbarVisibility = () => {
+		const header = document.querySelector<HTMLElement>('header');
+		const banner = document.querySelector<HTMLElement>('.site-banner');
+		if (!header || !banner) return;
+		const overlap = Number.parseFloat(
+			getComputedStyle(document.documentElement).getPropertyValue('--banner-overlap'),
+		) || 0;
+		const threshold = Math.max(48, banner.offsetHeight - 72 - overlap - 16);
+		header.classList.toggle('navbar-hidden', window.scrollY >= threshold);
+	};
 	const handlePageView = () => {
 		applyTheme(readTheme());
 		updateActiveNavigation();
 		initArticlePage();
+		requestAnimationFrame(updateNavbarVisibility);
 	};
 	if (!siteWindow.__newEraSiteShellReady) {
 		document.addEventListener('click', (event) => {
@@ -517,6 +533,8 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 				openSearch();
 			}
 		});
+		window.addEventListener('scroll', updateNavbarVisibility, { passive: true });
+		window.addEventListener('resize', updateNavbarVisibility, { passive: true });
 		document.addEventListener('astro:before-swap', () => {
 			document.querySelector<HTMLDialogElement>('[data-search-dialog]')?.close();
 		});

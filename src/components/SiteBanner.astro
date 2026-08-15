@@ -1,13 +1,11 @@
 <div class="site-banner onload-animation" aria-hidden="true">
 	<span class="banner-haze"></span>
-	<span class="banner-orbit orbit-a"></span>
-	<span class="banner-orbit orbit-b"></span>
 </div>
 
 <style>
 	.site-banner {
 		position: relative;
-		height: 220px;
+		height: 300px;
 		margin-top: -72px;
 		overflow: hidden;
 		isolation: isolate;
@@ -17,15 +15,27 @@
 	.site-banner::before {
 		content: '';
 		position: absolute;
-		inset: -25%;
+		inset: -18%;
 		background-image:
-			radial-gradient(circle, var(--banner-star) 0 1px, transparent 1.4px),
-			radial-gradient(circle, var(--banner-star-muted) 0 1px, transparent 1.5px),
-			radial-gradient(circle, var(--banner-star-muted) 0 0.8px, transparent 1.2px);
-		background-position: 18px 28px, 92px 74px, 42px 118px;
-		background-size: 196px 142px, 274px 196px, 152px 214px;
-		opacity: 0.7;
-		animation: star-drift 24s ease-in-out infinite alternate;
+			radial-gradient(circle, var(--banner-star-bright) 0 1.4px, transparent 1.8px),
+			radial-gradient(circle, var(--banner-star) 0 1px, transparent 1.45px),
+			radial-gradient(circle, var(--banner-star-muted) 0 0.8px, transparent 1.2px),
+			radial-gradient(circle, var(--banner-star-muted) 0 0.65px, transparent 1px);
+		background-position: 24px 18px, 83px 61px, 38px 107px, 119px 35px;
+		background-size: 238px 176px, 151px 127px, 103px 149px, 191px 113px;
+		opacity: 0.9;
+		animation: star-drift 30s ease-in-out infinite alternate;
+	}
+	.site-banner::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image:
+			radial-gradient(circle, var(--banner-star-bright) 0 2px, transparent 2.6px),
+			radial-gradient(circle, var(--banner-star) 0 1.2px, transparent 1.8px);
+		background-position: 8% 28%, 77% 64%;
+		background-size: 420px 260px, 330px 220px;
+		opacity: 0.65;
 	}
 	.banner-haze {
 		position: absolute;
@@ -34,27 +44,11 @@
 		filter: blur(24px);
 		transform: rotate(-3deg);
 	}
-	.banner-orbit {
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		width: min(58vw, 760px);
-		aspect-ratio: 1;
-		border: 1px solid var(--border);
-		border-radius: 50%;
-		transform: translate(-50%, -50%) scaleY(0.16) rotate(-4deg);
-		opacity: 0.55;
-	}
-	.orbit-b {
-		width: min(78vw, 1050px);
-		transform: translate(-50%, -50%) scaleY(0.12) rotate(5deg);
-		opacity: 0.32;
-	}
 	@keyframes star-drift {
 		to { transform: translate3d(24px, -8px, 0); }
 	}
 	@media (max-width: 640px) {
-		.site-banner { height: 172px; }
+		.site-banner { height: 240px; }
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.site-banner::before { animation: none; }
