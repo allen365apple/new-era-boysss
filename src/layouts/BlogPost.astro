@@ -6,6 +6,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import SiteBanner from '../components/SiteBanner.astro';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	headings?: MarkdownHeading[];
@@ -98,8 +99,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 				border-radius: 999px;
 			}
 			.topic-tag {
-				background: var(--accent-light);
-				color: var(--accent-dark);
+				background: var(--topic-chip-background);
+				color: var(--topic-chip-text);
 				font-size: 0.78rem;
 				font-weight: 500;
 				padding: 0.2rem 0.7rem;
@@ -141,7 +142,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 			}
 			.toc {
 				position: sticky;
-				top: 2rem;
+				top: 6rem;
 				font-size: 0.9rem;
 			}
 			.toc-label {
@@ -254,7 +255,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 			}
 			.article :global(h2),
 			.article :global(h3) {
-				scroll-margin-top: 1.5rem;
+				scroll-margin-top: 6.5rem;
 			}
 
 			.listen-links {
@@ -276,10 +277,10 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 				transform: translateY(-1px);
 				opacity: 0.92;
 			}
-			.btn-soundon { background: #ff6b35; }
-			.btn-spotify { background: #1db954; }
-			.btn-apple   { background: #a855f7; }
-			.btn-kkbox   { background: #009fcc; }
+			.btn-soundon { background: var(--platform-soundon); }
+			.btn-spotify { background: var(--platform-spotify); }
+			.btn-apple   { background: var(--platform-apple); }
+			.btn-kkbox   { background: var(--platform-kkbox); }
 			.no-links-notice {
 				color: var(--text-muted);
 				font-size: 0.88rem;
@@ -323,7 +324,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 	<body>
 		<Header />
-		<main id="main-content" style="width: 100%; max-width: 100%; padding: 0;">
+		<SiteBanner />
+		<main id="main-content" class="transition-swup-fade onload-animation" style="width: 100%; max-width: 100%; padding: 0;">
 			<article>
 				<div class="hero">
 					<div class="meta-top">
@@ -360,17 +362,17 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 						</nav>
 					)}
 
-					<div class="article prose">
+					<div class="article prose" data-article-body>
 						{episode && aiGenerated && (
 							<section class="episode-listen-intro" aria-label="內容來源與收聽連結">
 								<p class="source-title">本文內容由 AI 整理自《新世紀直男戰士》{displayEpisodeTitle ?? episode}</p>
 								<p class="accuracy-note">AI 整理可能有些許誤差，詳細內容歡迎收聽本集節目：</p>
 								{hasListenLinks ? (
 									<div class="listen-links">
-										{effectiveListenLinks.soundon && <a href={effectiveListenLinks.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon">SoundOn</a>}
-										{effectiveListenLinks.spotify && <a href={effectiveListenLinks.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify">Spotify</a>}
-										{effectiveListenLinks.apple && <a href={effectiveListenLinks.apple} target="_blank" rel="noopener noreferrer" class="btn-apple">Apple Podcasts</a>}
-										{effectiveListenLinks.kkbox && <a href={effectiveListenLinks.kkbox} target="_blank" rel="noopener noreferrer" class="btn-kkbox">KKBOX</a>}
+										{effectiveListenLinks.soundon && <a href={effectiveListenLinks.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon scale-animation">SoundOn</a>}
+										{effectiveListenLinks.spotify && <a href={effectiveListenLinks.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify scale-animation">Spotify</a>}
+										{effectiveListenLinks.apple && <a href={effectiveListenLinks.apple} target="_blank" rel="noopener noreferrer" class="btn-apple scale-animation">Apple Podcasts</a>}
+										{effectiveListenLinks.kkbox && <a href={effectiveListenLinks.kkbox} target="_blank" rel="noopener noreferrer" class="btn-kkbox scale-animation">KKBOX</a>}
 									</div>
 								) : (
 									<p class="no-links-notice">收聽連結將於整理完成後加入。</p>
@@ -421,52 +423,5 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 		</main>
 		<Footer />
 
-		<script>
-			// 捲動淡入
-			const revealEls = document.querySelectorAll('.article > *');
-			revealEls.forEach((el) => el.classList.add('reveal'));
-			const revealObserver = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							entry.target.classList.add('is-visible');
-							revealObserver.unobserve(entry.target);
-						}
-					});
-				},
-				{ threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-			);
-			revealEls.forEach((el) => revealObserver.observe(el));
-
-			// 目錄 scroll-spy:捲動時高亮當前章節
-			const tocLinks = document.querySelectorAll('[data-toc-link]');
-			const headingMap = new Map();
-			tocLinks.forEach((link) => {
-				const id = link.getAttribute('data-toc-link');
-				const heading = id ? document.getElementById(id) : null;
-				if (heading) headingMap.set(heading, link);
-			});
-
-			let activeLink = null;
-			const setActive = (link) => {
-				if (activeLink === link) return;
-				if (activeLink) activeLink.classList.remove('active');
-				if (link) link.classList.add('active');
-				activeLink = link;
-			};
-
-			const spyObserver = new IntersectionObserver(
-				(entries) => {
-					const visible = entries
-						.filter((e) => e.isIntersecting)
-						.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-					if (visible.length > 0) {
-						setActive(headingMap.get(visible[0].target));
-					}
-				},
-				{ rootMargin: '-10% 0px -75% 0px', threshold: 0 }
-			);
-			headingMap.forEach((_, heading) => spyObserver.observe(heading));
-		</script>
 	</body>
 </html>

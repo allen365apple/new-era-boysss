@@ -2,12 +2,28 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import swup from '@swup/astro';
 import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://new-era-boysss.pages.dev',
-	integrations: [mdx(), sitemap()],
+	integrations: [
+		mdx(),
+		swup({
+			theme: false,
+			animationClass: 'transition-swup-',
+			containers: ['main'],
+			smoothScrolling: true,
+			cache: true,
+			preload: true,
+			accessibility: true,
+			updateHead: true,
+			updateBodyClass: false,
+			globalInstance: true,
+		}),
+		sitemap(),
+	],
 	fonts: [
 		{
 			provider: fontProviders.local(),

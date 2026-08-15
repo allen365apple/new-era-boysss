@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
+import SiteBanner from '../../components/SiteBanner.astro';
 import { SITE_TITLE } from '../../consts';
 import { TOPICS } from '../../data/topics';
 ---
@@ -65,7 +66,8 @@ import { TOPICS } from '../../data/topics';
 	</head>
 	<body>
 		<Header />
-		<main id="main-content">
+		<SiteBanner />
+		<main id="main-content" class="transition-swup-fade onload-animation">
 			<section class="intro">
 				<p class="eyebrow">議題索引</p>
 				<h1>從哪一個問題開始？</h1>
@@ -73,7 +75,7 @@ import { TOPICS } from '../../data/topics';
 			</section>
 			<nav class="topic-list" aria-label="議題分類">
 				{TOPICS.map((topic) => (
-					<a class="topic-card" href={`/topics/${topic.slug}/`}>
+					<a class="topic-card expand-animation scale-animation" href={`/topics/${topic.slug}/`}>
 						<h2>{topic.name}</h2>
 						<p>{topic.description}</p>
 					</a>

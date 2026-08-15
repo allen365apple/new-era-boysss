@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SiteBanner from '../components/SiteBanner.astro';
 import { PODCAST_LINKS, SITE_TITLE } from '../consts';
 import { TOPICS } from '../data/topics';
 
@@ -159,10 +160,10 @@ const features = [
 				font-size: 0.85rem;
 				color: #fff;
 			}
-			.btn-soundon { background: #ff6b35; }
-			.btn-spotify { background: #1db954; }
-			.btn-apple   { background: #a855f7; }
-			.btn-kkbox   { background: #009fcc; }
+			.btn-soundon { background: var(--platform-soundon); }
+			.btn-spotify { background: var(--platform-spotify); }
+			.btn-apple   { background: var(--platform-apple); }
+			.btn-kkbox   { background: var(--platform-kkbox); }
 			@media (max-width: 640px) {
 				.stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
 				.topic-row { grid-template-columns: 1fr; gap: 0.2rem; }
@@ -171,7 +172,8 @@ const features = [
 	</head>
 	<body>
 		<Header />
-		<main id="main-content">
+		<SiteBanner />
+		<main id="main-content" class="transition-swup-fade onload-animation">
 			<span class="eyebrow">關於節目</span>
 			<h1>新世紀直男戰士</h1>
 			<p class="subtitle">
@@ -244,9 +246,9 @@ const features = [
 				<h2>在這裡收聽節目</h2>
 				<p style="margin-bottom:0;">節目於各大平台同步更新，選擇你慣用的平台訂閱：</p>
 				<div class="listen-links">
-					<a href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon">SoundOn</a>
-					<a href={PODCAST_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify">Spotify</a>
-					<a href={PODCAST_LINKS.apple} target="_blank" rel="noopener noreferrer" class="btn-apple">Apple Podcasts</a>
+					<a href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon scale-animation">SoundOn</a>
+					<a href={PODCAST_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify scale-animation">Spotify</a>
+					<a href={PODCAST_LINKS.apple} target="_blank" rel="noopener noreferrer" class="btn-apple scale-animation">Apple Podcasts</a>
 				</div>
 			</div>
 		</main>

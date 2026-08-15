@@ -18,6 +18,8 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 	<article class:list={['post-card', variant]}>
 		<div class="thumb">
 			<Image width={300} height={300} src={image} alt={imageAlt} />
+			<span class="thumb-shade" aria-hidden="true"></span>
+			<span class="thumb-arrow" aria-hidden="true">›</span>
 		</div>
 		<div class="body">
 			<div class="tags">
@@ -49,6 +51,7 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 		border-bottom: 1px dashed var(--border);
 	}
 	.thumb {
+		position: relative;
 		border-radius: var(--radius);
 		overflow: hidden;
 		aspect-ratio: 1 / 1;
@@ -63,6 +66,36 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 	}
 	.card-link:hover .thumb img {
 		transform: scale(1.04);
+	}
+	.thumb-shade,
+	.thumb-arrow {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
+	.thumb-shade {
+		background: var(--image-hover-overlay);
+		opacity: 0;
+	}
+	.thumb-arrow {
+		display: grid;
+		place-items: center;
+		color: var(--on-solid);
+		font-size: 3rem;
+		font-weight: 300;
+		opacity: 0;
+		transform: scale(0.5);
+	}
+	.card-link:hover .thumb-shade,
+	.card-link:hover .thumb-arrow {
+		opacity: 1;
+	}
+	.card-link:hover .thumb-arrow {
+		transform: scale(1);
+	}
+	.card-link:active .thumb {
+		transform: scale(0.95);
 	}
 	.body {
 		min-width: 0;
@@ -85,8 +118,8 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 		font-weight: 600;
 	}
 	.topic-tag {
-		background: var(--accent-light);
-		color: var(--accent-dark);
+		background: var(--topic-chip-background);
+		color: var(--topic-chip-text);
 		font-weight: 500;
 	}
 	h2 {
@@ -95,6 +128,19 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 		color: var(--text-primary);
 		line-height: 1.4;
 		transition: color 0.15s ease;
+	}
+	h2::after {
+		content: '›';
+		display: inline-block;
+		margin-left: 0.2em;
+		color: var(--accent);
+		opacity: 0;
+		transform: translateX(-0.25rem);
+		transition: opacity 0.2s ease, transform 0.2s ease;
+	}
+	.card-link:hover h2::after {
+		opacity: 1;
+		transform: translateX(0);
 	}
 	.card-link:hover h2 {
 		color: var(--accent);

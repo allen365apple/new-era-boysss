@@ -1,6 +1,8 @@
 /* 新世紀直男戰士 —「宇宙編輯部」深色設計系統 */
 
 :root {
+	color-scheme: dark;
+
 	/* 品牌色：洋紅為主、電光藍為輔，搭配墨黑與骨白 */
 	--accent: #ff75bd;
 	--accent-strong: #ff4fa3;
@@ -11,6 +13,11 @@
 	--accent-pink-light: #37162c;
 	--accent-blue: #82aaff;
 	--accent-blue-light: #18233d;
+	--heading-secondary: #9baeff;
+	--heading-tertiary: #ff91c9;
+	--title-gradient: linear-gradient(100deg, #ff75bd 8%, #ba8ee8 48%, #82aaff 92%);
+	--topic-chip-background: #1b2440;
+	--topic-chip-text: #b8c7ff;
 	--on-accent: #05060a;
 	--on-solid: #ffffff;
 
@@ -35,6 +42,28 @@
 	--hero-pink-glow: rgba(255, 92, 175, 0.26);
 	--hero-grid: rgba(244, 240, 232, 0.045);
 	--header-background: rgba(7, 8, 11, 0.82);
+	--banner-background:
+		radial-gradient(circle at 14% 38%, rgba(130, 170, 255, 0.18), transparent 26rem),
+		radial-gradient(circle at 84% 54%, rgba(255, 117, 189, 0.16), transparent 28rem),
+		linear-gradient(118deg, #090b13 0%, #111329 48%, #180d1c 100%);
+	--banner-star: rgba(255, 255, 255, 0.42);
+	--banner-star-muted: rgba(184, 199, 255, 0.24);
+	--banner-haze: linear-gradient(90deg, transparent, rgba(186, 142, 232, 0.12), transparent);
+	--dialog-backdrop: rgba(1, 2, 6, 0.76);
+	--platform-soundon: #ff6b35;
+	--platform-spotify: #1db954;
+	--platform-apple: #a855f7;
+	--platform-kkbox: #009fcc;
+
+	/* Fuwari 導覽列與按鈕互動變數（MIT，來源見 THIRD_PARTY_NOTICES.md） */
+	--radius-large: 1rem;
+	--card-bg: #171a23;
+	--btn-plain-bg-hover: #232737;
+	--btn-plain-bg-active: #1d202c;
+	--search-background: rgba(255, 255, 255, 0.05);
+	--search-background-hover: rgba(255, 255, 255, 0.1);
+	--image-hover-overlay: rgba(5, 6, 10, 0.34);
+	--content-delay: 150ms;
 
 	/* 字體 — 思源黑體 Noto Sans TC 為主 */
 	--font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC",
@@ -51,6 +80,54 @@
 	--gray-dark: 23, 26, 35;
 	--gray-light: 244, 240, 232;
 	--box-shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+	--accent: #d83f87;
+	--accent-strong: #c72f76;
+	--accent-dark: #9f2862;
+	--accent-light: #f9ddeb;
+	--accent-pink: #d83f87;
+	--accent-pink-light: #f9ddeb;
+	--accent-blue: #536bd7;
+	--accent-blue-light: #e5e9ff;
+	--heading-secondary: #536bd7;
+	--heading-tertiary: #c72f76;
+	--title-gradient: linear-gradient(100deg, #d83f87 8%, #9164c9 48%, #536bd7 92%);
+	--topic-chip-background: #e7eaff;
+	--topic-chip-text: #4659b9;
+	--on-accent: #ffffff;
+	--text-primary: #28242d;
+	--text-secondary: #514b58;
+	--text-muted: #7f7785;
+	--surface: #f7f4f8;
+	--surface-soft: #ffffff;
+	--surface-raised: #f0ecf4;
+	--surface-elevated: #eae4ef;
+	--surface-glass: rgba(247, 244, 248, 0.86);
+	--border: rgba(52, 42, 58, 0.14);
+	--border-strong: rgba(52, 42, 58, 0.25);
+	--page-background:
+		radial-gradient(circle at 12% 8%, rgba(83, 107, 215, 0.08), transparent 28rem),
+		radial-gradient(circle at 88% 18%, rgba(216, 63, 135, 0.07), transparent 30rem),
+		var(--surface);
+	--header-background: rgba(247, 244, 248, 0.84);
+	--banner-background:
+		radial-gradient(circle at 14% 38%, rgba(83, 107, 215, 0.2), transparent 26rem),
+		radial-gradient(circle at 84% 54%, rgba(216, 63, 135, 0.17), transparent 28rem),
+		linear-gradient(118deg, #e9ecff 0%, #f2eafa 48%, #f9e8f1 100%);
+	--banner-star: rgba(65, 70, 118, 0.28);
+	--banner-star-muted: rgba(83, 107, 215, 0.2);
+	--banner-haze: linear-gradient(90deg, transparent, rgba(145, 100, 201, 0.14), transparent);
+	--dialog-backdrop: rgba(27, 23, 33, 0.42);
+	--box-shadow: 0 18px 54px rgba(76, 55, 88, 0.15);
+	--card-bg: #ffffff;
+	--btn-plain-bg-hover: #f1edf6;
+	--btn-plain-bg-active: #faf8fb;
+	--search-background: rgba(24, 20, 28, 0.04);
+	--search-background-hover: rgba(24, 20, 28, 0.06);
+	--image-hover-overlay: rgba(25, 18, 32, 0.28);
 }
 
 * {
@@ -74,6 +151,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
+	transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 main {
@@ -97,19 +175,27 @@ h6 {
 }
 h1 {
 	font-size: 2.5rem;
+	color: var(--text-primary);
+	background: var(--title-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 h2 {
 	font-size: 1.7rem;
 	margin-top: 2.5rem;
 	padding-bottom: 0.6rem;
 	border-bottom: 1px dashed var(--border);
+	color: var(--heading-secondary);
 }
 h3 {
 	font-size: 1.3rem;
 	margin-top: 1.8rem;
+	color: var(--heading-tertiary);
 }
 h4 {
 	font-size: 1.1rem;
+	color: var(--heading-secondary);
 }
 
 p {
@@ -123,6 +209,40 @@ a {
 }
 a:hover {
 	color: var(--accent-dark);
+}
+
+/* Fuwari main.css：按鈕背景由 85% 展開，按下時縮放回饋 */
+.btn-plain,
+.expand-animation {
+	position: relative;
+	z-index: 0;
+	border-radius: 0.65rem;
+	transition: color 0.2s ease, transform 0.15s ease;
+}
+.btn-plain::before,
+.expand-animation::before {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	border-radius: inherit;
+	background: var(--btn-plain-bg-hover);
+	transform: scale(0.85);
+	opacity: 0;
+	transition: transform 0.2s ease-out, opacity 0.2s ease-out, background 0.15s ease;
+}
+.btn-plain:hover::before,
+.btn-plain.active::before,
+.expand-animation:hover::before {
+	transform: scale(1);
+	opacity: 1;
+}
+.scale-animation:active {
+	transform: scale(0.95);
+}
+.btn-plain:active::before,
+.expand-animation:active::before {
+	background: var(--btn-plain-bg-active);
 }
 
 a:focus-visible,
@@ -185,6 +305,33 @@ table {
 	border-collapse: collapse;
 }
 
+/* 直接採用 Fuwari 的 Swup 淡出與向上位移節奏 */
+html.is-changing .transition-swup-fade {
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+html.is-animating .transition-swup-fade {
+	opacity: 0;
+	transform: translateY(1rem);
+}
+
+/* 直接採用 Fuwari 的元件初次載入動畫 */
+@keyframes fade-in-up {
+	0% {
+		transform: translateY(2rem);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.onload-animation {
+	opacity: 0;
+	animation: 300ms fade-in-up forwards;
+}
+
 @media (max-width: 720px) {
 	body {
 		font-size: 17px;
@@ -215,6 +362,14 @@ table {
 		opacity: 1;
 		transform: none;
 		transition: none;
+	}
+}
+
+@media (forced-colors: active) {
+	h1 {
+		color: CanvasText;
+		background: none;
+		-webkit-text-fill-color: currentColor;
 	}
 }
 

@@ -7,6 +7,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import SiteBanner from '../components/SiteBanner.astro';
 import { PODCAST_LINKS, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { TOPICS } from '../data/topics';
 
@@ -51,7 +52,7 @@ const floatingKeywords = [
 			}
 			.hero-frame {
 				display: grid;
-				grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+				grid-template-columns: minmax(0, 1fr) minmax(360px, 1.05fr);
 				min-height: 620px;
 				border: 1px solid var(--border);
 				background: var(--surface-soft);
@@ -87,7 +88,7 @@ const floatingKeywords = [
 				width: min(78%, 460px);
 				aspect-ratio: 1;
 				background: var(--hero-gradient);
-				clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+				clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
 				filter: drop-shadow(0 24px 42px var(--hero-pink-glow));
 				overflow: hidden;
 			}
@@ -118,9 +119,8 @@ const floatingKeywords = [
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
-				padding: clamp(2rem, 5vw, 4.5rem);
+				padding: clamp(2rem, 3.2vw, 3rem);
 			}
-			.hero-eyebrow,
 			.section-kicker {
 				margin: 0 0 1rem;
 				font-size: 0.76rem;
@@ -131,9 +131,12 @@ const floatingKeywords = [
 			}
 			.hero-copy h1 {
 				margin: 0 0 1.4rem;
-				font-size: clamp(2.4rem, 3.9vw, 3.5rem);
-				line-height: 1.08;
-				color: var(--text-primary);
+				font-size: clamp(2rem, 2.65vw, 2.35rem);
+				line-height: 1.12;
+			}
+			.hero-title-line {
+				display: block;
+				white-space: nowrap;
 			}
 			.hero-lead {
 				margin: 0;
@@ -155,6 +158,7 @@ const floatingKeywords = [
 				border: 1px solid var(--accent);
 				font-size: 0.9rem;
 				font-weight: 700;
+				border-radius: 0.65rem;
 			}
 			.hero-actions .primary-action {
 				background: var(--accent);
@@ -175,7 +179,7 @@ const floatingKeywords = [
 				margin: 0;
 				padding: 0;
 				border: 0;
-				color: var(--text-primary);
+				color: var(--heading-secondary);
 			}
 			.latest-section,
 			.topic-section,
@@ -260,8 +264,16 @@ const floatingKeywords = [
 			.topic-arrow {
 				color: var(--accent);
 			}
-			.topic-link:hover {
-				background: var(--surface-soft);
+			.topic-link::before {
+				border-radius: 0;
+			}
+			.topic-link:hover .topic-arrow,
+			.latest-card:hover .latest-arrow {
+				transform: translateX(0.3rem);
+			}
+			.topic-arrow,
+			.latest-arrow {
+				transition: color 0.2s ease, transform 0.2s ease;
 			}
 			.recent-grid {
 				display: grid;
@@ -335,6 +347,9 @@ const floatingKeywords = [
 				.latest-image {
 					min-height: 280px;
 				}
+				.hero-copy h1 {
+					font-size: clamp(1.35rem, 5.85vw, 1.55rem);
+				}
 			}
 			@media (prefers-reduced-motion: reduce) {
 				.keyword {
@@ -345,10 +360,11 @@ const floatingKeywords = [
 	</head>
 	<body>
 		<Header />
-		<main id="main-content" class="home-main">
+		<SiteBanner />
+		<main id="main-content" class="home-main transition-swup-fade onload-animation">
 			<section class="cosmic-hero">
 				<div class="hero-frame">
-					<div class="cosmos-art" role="img" aria-label="直男、性別、父權、女權、女性主義與男性困境等關鍵字在幾何形中漂浮">
+					<div class="cosmos-art" role="img" aria-label="直男、性別、父權、女權、女性主義與男性困境等關鍵字在八角形中漂浮">
 						<span class="orbit orbit-1" aria-hidden="true"></span>
 						<span class="orbit orbit-2" aria-hidden="true"></span>
 						<div class="keyword-shape" aria-hidden="true">
@@ -359,12 +375,11 @@ const floatingKeywords = [
 						<p class="visual-note">QUESTIONS IN ORBIT / 2026</p>
 					</div>
 					<div class="hero-copy">
-						<p class="hero-eyebrow">台灣第一個由直男視角出發的性別議題 Podcast</p>
-						<h1>關於性別的<br />煩惱與矛盾，<br />我們在這裡聊</h1>
-						<p class="hero-lead">從直男視角開始，把說不清楚的困惑、衝突與改變整理成可以慢慢讀、繼續想的對話。</p>
+						<h1><span class="hero-title-line">台灣第一個由直男視角出發的</span><span class="hero-title-line">性別 Podcast</span></h1>
+						<p class="hero-lead">關於性別的煩惱與矛盾，我們在這裡聊</p>
 						<div class="hero-actions">
-							{latestPost && <a class="primary-action" href={`/blog/${latestPost.id}/`}>閱讀最新文章 ↗</a>}
-							<a class="secondary-action" href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer">收聽 Podcast</a>
+							{latestPost && <a class="primary-action scale-animation" href={`/blog/${latestPost.id}/`}>閱讀最新文章 ↗</a>}
+							<a class="secondary-action expand-animation scale-animation" href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer">收聽 Podcast</a>
 						</div>
 					</div>
 				</div>
@@ -379,7 +394,7 @@ const floatingKeywords = [
 						</div>
 						<p>不只整理重點，也保留對話裡的猶豫、矛盾與重新理解的空間。</p>
 					</div>
-					<a class="latest-card" href={`/blog/${latestPost.id}/`}>
+					<a class="latest-card scale-animation" href={`/blog/${latestPost.id}/`}>
 						<div class="latest-image">
 							<Image width={720} height={720} src={latestImage} alt={latestPost.data.title} />
 						</div>
@@ -394,6 +409,21 @@ const floatingKeywords = [
 				</section>
 			)}
 
+			{recentPosts.length > 0 && (
+				<section class="recent-section" aria-labelledby="recent-heading">
+					<div class="section-heading">
+						<div>
+							<p class="section-kicker">RECENT STORIES</p>
+							<h2 id="recent-heading">最近的節目文章</h2>
+						</div>
+						<p>把 Podcast 裡還沒聊完的問題，留成可以被搜尋、被引用，也能重新回來閱讀的文字。</p>
+					</div>
+					<div class="recent-grid">
+						{recentPosts.map((post) => <ArticleCard post={post} variant="grid" />)}
+					</div>
+				</section>
+			)}
+
 			<section class="topic-section" aria-labelledby="topic-heading">
 				<div class="section-heading">
 					<div>
@@ -404,7 +434,7 @@ const floatingKeywords = [
 				</div>
 				<nav class="topic-grid" aria-label="七大議題">
 					{TOPICS.map((topic, index) => (
-						<a class="topic-link" href={`/topics/${topic.slug}/`}>
+						<a class="topic-link expand-animation scale-animation" href={`/topics/${topic.slug}/`}>
 							<span class="topic-number">{String(index + 1).padStart(2, '0')}</span>
 							<span>{topic.name}</span>
 							<span class="topic-arrow">↗</span>
@@ -412,21 +442,6 @@ const floatingKeywords = [
 					))}
 				</nav>
 			</section>
-
-			{recentPosts.length > 0 && (
-				<section class="recent-section" aria-labelledby="recent-heading">
-					<div class="section-heading">
-						<div>
-							<p class="section-kicker">RECENT STORIES</p>
-							<h2 id="recent-heading">最近的對話紀錄</h2>
-						</div>
-						<p>把 Podcast 裡還沒聊完的問題，留成可以被搜尋、被引用，也能重新回來閱讀的文字。</p>
-					</div>
-					<div class="recent-grid">
-						{recentPosts.map((post) => <ArticleCard post={post} variant="grid" />)}
-					</div>
-				</section>
-			)}
 		</main>
 		<Footer />
 	</body>

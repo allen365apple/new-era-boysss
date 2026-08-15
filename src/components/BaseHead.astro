@@ -104,6 +104,21 @@ const siteJsonLd = !isArticle
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+<meta name="color-scheme" content="dark light" />
+
+<script is:inline>
+	(() => {
+		const applySavedTheme = () => {
+			let theme = 'dark';
+			try {
+				theme = localStorage.getItem('site-theme') === 'light' ? 'light' : 'dark';
+			} catch {}
+			document.documentElement.dataset.theme = theme;
+		};
+
+		applySavedTheme();
+	})();
+</script>
 
 <!-- 思源黑體 Noto Sans TC（Google Fonts，CJK 動態子集化） -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -1,30 +1,93 @@
 ---
+import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
+
+const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.map((post) => ({
+		href: `/blog/${post.id}/`,
+		title: post.data.title,
+		description: post.data.description,
+		episode: post.data.episode,
+		topics: post.data.topics ?? [],
+		searchText: [
+			post.data.title,
+			post.data.description,
+			post.data.episode,
+			...(post.data.topics ?? []),
+			post.body,
+		]
+			.filter(Boolean)
+			.join(' ')
+			.replace(/\s+/g, ' ')
+			.toLocaleLowerCase('zh-TW'),
+	}));
 ---
 
-<header>
+<!-- 導覽列結構與 expand/scale 動畫移植自 Fuwari（MIT） -->
+<header class="onload-animation">
 	<a href="#main-content" class="skip-link">跳到主要內容</a>
-	<nav>
-		<a href="/" class="brand">
+	<nav class="card-base">
+		<a href="/" class="brand btn-plain scale-animation">
 			<img src="/favicon-192x192.png" alt="" width="38" height="38" />
 			<span>{SITE_TITLE}</span>
 		</a>
-		<div class="internal-links">
-			<HeaderLink href="/blog/">文章</HeaderLink>
-			<HeaderLink href="/topics/">議題</HeaderLink>
-			<HeaderLink href="/about/">關於節目</HeaderLink>
+		<div class="nav-right">
+			<div class="internal-links">
+				<HeaderLink href="/blog/" class="btn-plain scale-animation">文章</HeaderLink>
+				<HeaderLink href="/topics/" class="btn-plain scale-animation">議題</HeaderLink>
+				<HeaderLink href="/about/" class="btn-plain scale-animation">關於節目</HeaderLink>
+			</div>
+			<div class="utility-links">
+				<button type="button" class="utility-button search-button btn-plain scale-animation" data-search-open aria-label="搜尋文章" aria-keyshortcuts="/">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+					<span class="search-label">搜尋</span>
+					<kbd>/</kbd>
+				</button>
+				<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-toggle aria-label="切換淺色模式">
+					<span data-theme-symbol aria-hidden="true">☀</span>
+				</button>
+			</div>
 		</div>
 	</nav>
 </header>
+
+<dialog class="search-dialog" data-search-dialog aria-labelledby="search-title">
+	<div class="search-panel">
+		<div class="search-heading">
+			<div>
+				<p>SEARCH THE ARCHIVE</p>
+				<h2 id="search-title">搜尋節目文章</h2>
+			</div>
+			<button type="button" class="close-search" data-search-close aria-label="關閉搜尋">×</button>
+		</div>
+		<label class="search-field">
+			<span class="sr-only">輸入關鍵字</span>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+			<input type="search" data-search-input placeholder="搜尋集數、標題、議題或文章內容…" autocomplete="off" />
+		</label>
+		<div class="search-results" data-search-results>
+			{searchPosts.map((post) => (
+				<a class="search-result" href={post.href} data-search-item data-search-text={post.searchText}>
+					<span class="search-meta">{[post.episode, ...post.topics].filter(Boolean).join(' · ')}</span>
+					<strong>{post.title}</strong>
+					<span class="search-description">{post.description}</span>
+				</a>
+			))}
+			<p class="no-search-results" data-search-empty hidden>找不到符合的文章，換一組關鍵字試試看。</p>
+		</div>
+	</div>
+</dialog>
+
 <style>
 	header {
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: var(--header-background);
-		backdrop-filter: saturate(180%) blur(12px);
-		border-bottom: 1px solid var(--border);
+		padding: 0 1rem;
+		background: transparent;
+		pointer-events: none;
 	}
 	.skip-link {
 		position: absolute;
@@ -45,11 +108,27 @@ import HeaderLink from './HeaderLink.astro';
 	nav {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0 1.25rem;
-		height: 68px;
+		padding: 0 1rem;
+		height: 72px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		background: var(--card-bg);
+		border: 1px solid var(--border);
+		border-top: 0;
+		border-radius: 0 0 var(--radius-large) var(--radius-large);
+		box-shadow: var(--box-shadow);
+		pointer-events: auto;
+		transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+	}
+	.card-base {
+		overflow: visible;
+	}
+	.btn-plain,
+	nav :global(.btn-plain) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.brand {
 		display: inline-flex;
@@ -60,6 +139,8 @@ import HeaderLink from './HeaderLink.astro';
 		color: var(--text-primary);
 		letter-spacing: -0.02em;
 		text-decoration: none;
+		height: 52px;
+		padding: 0 0.75rem;
 	}
 	.brand img {
 		width: 38px;
@@ -71,22 +152,216 @@ import HeaderLink from './HeaderLink.astro';
 		display: flex;
 		gap: 0.5rem;
 	}
-	nav :global(a:not(.brand)) {
-		padding: 0.4rem 0.75rem;
+	.nav-right,
+	.utility-links {
+		display: flex;
+		align-items: center;
+	}
+	.nav-right {
+		gap: 0.7rem;
+	}
+	.utility-links {
+		gap: 0.35rem;
+		padding-left: 0.7rem;
+		border-left: 1px solid var(--border);
+	}
+	.utility-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.35rem;
+		min-width: 44px;
+		height: 44px;
+		padding: 0 0.75rem;
+		border: 0;
+		background: transparent;
 		color: var(--text-secondary);
-		border-radius: var(--radius);
+		font: inherit;
+		cursor: pointer;
+		transition: color 0.2s ease, transform 0.15s ease;
+	}
+	.utility-button:hover {
+		color: var(--text-primary);
+	}
+	.search-button {
+		width: 148px;
+		justify-content: flex-start;
+		gap: 0.65rem;
+		background: var(--search-background);
+	}
+	.search-button:hover {
+		background: var(--search-background-hover);
+	}
+	.search-button::before {
+		display: none;
+	}
+	.search-label {
+		color: var(--text-muted);
+		font-size: 0.9rem;
+	}
+	.utility-button svg,
+	.search-field svg {
+		width: 18px;
+		height: 18px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+	}
+	.utility-button kbd {
+		margin-left: auto;
+		font: inherit;
+		font-size: 0.72rem;
+		color: var(--text-muted);
+	}
+	.theme-button {
+		font-size: 1.15rem;
+	}
+	nav :global(a:not(.brand)) {
+		height: 44px;
+		padding: 0 1rem;
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-size: 0.95rem;
-		transition: background 0.15s ease, color 0.15s ease;
+		font-weight: 700;
 	}
 	nav :global(a.active),
 	nav :global(a:not(.brand):hover) {
-		color: var(--text-primary);
+		color: var(--accent);
+	}
+	.search-dialog {
+		width: min(720px, calc(100% - 2rem));
+		max-height: min(760px, calc(100vh - 3rem));
+		margin: auto;
+		padding: 0;
+		border: 1px solid var(--border-strong);
+		border-radius: var(--radius-lg);
 		background: var(--surface-soft);
+		color: var(--text-secondary);
+		box-shadow: var(--box-shadow);
+		overflow: hidden;
+	}
+	.search-dialog::backdrop {
+		background: var(--dialog-backdrop);
+		backdrop-filter: blur(8px);
+	}
+	.search-panel {
+		padding: 1.35rem;
+	}
+	.search-heading {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+	.search-heading p {
+		margin: 0 0 0.2rem;
+		color: var(--accent);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+	}
+	.search-heading h2 {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 1.35rem;
+	}
+	.close-search {
+		width: 36px;
+		height: 36px;
+		border: 1px solid var(--border);
+		border-radius: 50%;
+		background: transparent;
+		color: var(--text-secondary);
+		font: inherit;
+		font-size: 1.4rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+	.search-field {
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--border-strong);
+		border-radius: var(--radius);
+		background: var(--surface);
+		color: var(--text-muted);
+	}
+	.search-field:focus-within {
+		border-color: var(--accent-blue);
+		box-shadow: 0 0 0 3px var(--accent-blue-light);
+	}
+	.search-field input {
+		width: 100%;
+		border: 0;
+		outline: 0;
+		background: transparent;
+		color: var(--text-primary);
+		font: inherit;
+		font-size: 1rem;
+	}
+	.search-results {
+		display: grid;
+		gap: 0.5rem;
+		max-height: min(520px, 58vh);
+		margin-top: 1rem;
+		overflow-y: auto;
+	}
+	.search-result {
+		display: grid;
+		padding: 0.85rem 0.95rem;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		color: inherit;
+		background: var(--surface-raised);
+	}
+	.search-result[hidden],
+	.no-search-results[hidden] {
+		display: none;
+	}
+	.search-result:hover {
+		border-color: var(--accent);
+	}
+	.search-result strong {
+		color: var(--text-primary);
+		font-size: 0.98rem;
+	}
+	.search-meta {
+		color: var(--heading-secondary);
+		font-size: 0.72rem;
+		font-weight: 700;
+	}
+	.search-description {
+		color: var(--text-muted);
+		font-size: 0.82rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.no-search-results {
+		padding: 1.2rem;
+		text-align: center;
+		color: var(--text-muted);
+	}
+	@media (max-width: 900px) {
+		.search-button {
+			width: 44px;
+			justify-content: center;
+			padding: 0;
+			background: transparent;
+		}
+		.search-label,
+		.search-button kbd {
+			display: none;
+		}
 	}
 	@media (max-width: 520px) {
+		header { padding: 0 0.55rem; }
 		nav {
-			padding: 0 0.8rem;
+			padding: 0 0.45rem;
 		}
 		.brand span {
 			display: none;
@@ -94,9 +369,160 @@ import HeaderLink from './HeaderLink.astro';
 		.internal-links {
 			gap: 0;
 		}
-		nav :global(a:not(.brand)) {
-			padding-inline: 0.55rem;
-			font-size: 0.86rem;
+		.nav-right { gap: 0.25rem; }
+		.utility-links {
+			gap: 0;
+			padding-left: 0.2rem;
 		}
+		nav :global(a:not(.brand)) {
+			padding-inline: 0.42rem;
+			font-size: 0.8rem;
+		}
+		.utility-button { min-width: 38px; width: 38px; height: 38px; padding: 0; }
+		.search-button { background: transparent; }
+		.search-label { display: none; }
+		.utility-button kbd { display: none; }
+		.search-panel { padding: 1rem; }
 	}
 </style>
+
+<script>
+	type SiteTheme = 'dark' | 'light';
+	type SiteShellWindow = Window & {
+		__newEraSiteShellReady?: boolean;
+	};
+
+	const siteWindow = window as SiteShellWindow;
+	const readTheme = (): SiteTheme => {
+		try {
+			return localStorage.getItem('site-theme') === 'light' ? 'light' : 'dark';
+		} catch {
+			return 'dark';
+		}
+	};
+	const updateThemeButtons = (theme: SiteTheme) => {
+		document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((button) => {
+			const nextTheme = theme === 'dark' ? '淺色' : '深色';
+			button.setAttribute('aria-label', `切換${nextTheme}模式`);
+			const symbol = button.querySelector<HTMLElement>('[data-theme-symbol]');
+			if (symbol) symbol.textContent = theme === 'dark' ? '☀' : '☾';
+		});
+	};
+	const applyTheme = (theme: SiteTheme, persist = false) => {
+		document.documentElement.dataset.theme = theme;
+		if (persist) {
+			try { localStorage.setItem('site-theme', theme); } catch {}
+		}
+		updateThemeButtons(theme);
+	};
+	const openSearch = () => {
+		const dialog = document.querySelector<HTMLDialogElement>('[data-search-dialog]');
+		if (!dialog) return;
+		dialog.showModal();
+		const input = dialog.querySelector<HTMLInputElement>('[data-search-input]');
+		if (input) {
+			input.value = '';
+			input.dispatchEvent(new Event('input', { bubbles: true }));
+			requestAnimationFrame(() => input.focus());
+		}
+	};
+	const updateActiveNavigation = () => {
+		const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/';
+		const currentPath = normalizePath(window.location.pathname);
+		document.querySelectorAll<HTMLAnchorElement>('.internal-links a').forEach((link) => {
+			const targetPath = normalizePath(new URL(link.href, window.location.origin).pathname);
+			const isActive = targetPath === currentPath || (targetPath !== '/' && currentPath.startsWith(`${targetPath}/`));
+			link.classList.toggle('active', isActive);
+		});
+	};
+	const initArticlePage = () => {
+		const article = document.querySelector<HTMLElement>('[data-article-body]');
+		if (!article || article.dataset.interactionsReady === 'true') return;
+		article.dataset.interactionsReady = 'true';
+
+		const revealEls = article.querySelectorAll(':scope > *');
+		revealEls.forEach((element) => element.classList.add('reveal'));
+		if ('IntersectionObserver' in window) {
+			const revealObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					entry.target.classList.add('is-visible');
+					revealObserver.unobserve(entry.target);
+				});
+			}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+			revealEls.forEach((element) => revealObserver.observe(element));
+		} else {
+			revealEls.forEach((element) => element.classList.add('is-visible'));
+		}
+
+		const tocLinks = document.querySelectorAll<HTMLElement>('[data-toc-link]');
+		const headingMap = new Map<Element, HTMLElement>();
+		tocLinks.forEach((link) => {
+			const id = link.getAttribute('data-toc-link');
+			const heading = id ? document.getElementById(id) : null;
+			if (heading) headingMap.set(heading, link);
+		});
+		let activeLink: HTMLElement | null = null;
+		const setActive = (link?: HTMLElement) => {
+			activeLink?.classList.remove('active');
+			link?.classList.add('active');
+			activeLink = link ?? null;
+		};
+		if ('IntersectionObserver' in window) {
+			const spyObserver = new IntersectionObserver((entries) => {
+				const visible = entries
+					.filter((entry) => entry.isIntersecting)
+					.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+				if (visible.length > 0) setActive(headingMap.get(visible[0].target));
+			}, { rootMargin: '-10% 0px -75% 0px', threshold: 0 });
+			headingMap.forEach((_, heading) => spyObserver.observe(heading));
+		}
+	};
+	const handlePageView = () => {
+		applyTheme(readTheme());
+		updateActiveNavigation();
+		initArticlePage();
+	};
+	if (!siteWindow.__newEraSiteShellReady) {
+		document.addEventListener('click', (event) => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			if (target.closest('[data-search-open]')) openSearch();
+			if (target.closest('[data-search-close]')) target.closest('dialog')?.close();
+			if (target.closest('[data-theme-toggle]')) {
+				applyTheme(readTheme() === 'dark' ? 'light' : 'dark', true);
+			}
+			if (target.closest('.search-result')) target.closest('dialog')?.close();
+			if (target instanceof HTMLDialogElement && target.matches('[data-search-dialog]')) target.close();
+		});
+		document.addEventListener('input', (event) => {
+			const input = event.target;
+			if (!(input instanceof HTMLInputElement) || !input.matches('[data-search-input]')) return;
+			const dialog = input.closest<HTMLDialogElement>('dialog');
+			const query = input.value.trim().toLocaleLowerCase('zh-TW');
+			let visibleCount = 0;
+			dialog?.querySelectorAll<HTMLElement>('[data-search-item]').forEach((item) => {
+				const visible = !query || (item.dataset.searchText ?? '').includes(query);
+				item.hidden = !visible;
+				if (visible) visibleCount += 1;
+			});
+			const empty = dialog?.querySelector<HTMLElement>('[data-search-empty]');
+			if (empty) empty.hidden = visibleCount > 0;
+		});
+		document.addEventListener('keydown', (event) => {
+			const target = event.target;
+			const isTyping = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
+			if (event.key === '/' && !isTyping && !event.metaKey && !event.ctrlKey && !event.altKey) {
+				event.preventDefault();
+				openSearch();
+			}
+		});
+		document.addEventListener('astro:before-swap', () => {
+			document.querySelector<HTMLDialogElement>('[data-search-dialog]')?.close();
+		});
+		document.addEventListener('astro:page-load', handlePageView);
+		siteWindow.__newEraSiteShellReady = true;
+	}
+
+	handlePageView();
+</script>
