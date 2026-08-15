@@ -32,10 +32,39 @@
 	--surface-glass: rgba(7, 8, 11, 0.84);
 	--border: rgba(244, 240, 232, 0.16);
 	--border-strong: rgba(244, 240, 232, 0.3);
+	--star-core: rgba(248, 249, 255, 0.7);
+	--star-dim: rgba(226, 231, 255, 0.2);
+	--star-soft: rgba(226, 231, 255, 0.4);
+	--star-pink: rgba(255, 160, 211, 0.28);
+	--star-blue-glow: rgba(130, 170, 255, 0.42);
+	--star-pink-glow: rgba(255, 117, 189, 0.34);
 	--page-background:
-		radial-gradient(circle at 12% 8%, rgba(130, 170, 255, 0.08), transparent 28rem),
-		radial-gradient(circle at 88% 18%, rgba(255, 92, 175, 0.06), transparent 30rem),
-		var(--surface);
+		radial-gradient(circle at 12% 3%, rgba(130, 170, 255, 0.12), transparent 34rem),
+		radial-gradient(circle at 88% 7%, rgba(255, 92, 175, 0.09), transparent 38rem),
+		linear-gradient(145deg, #03040a 0%, #070812 52%, #0b060d 100%);
+	--page-background-size: auto;
+	--page-background-position: 0 0;
+	--page-background-attachment: scroll;
+	--top-starfield-background:
+		radial-gradient(circle at 19px 23px, var(--star-soft) 0 1.15px, transparent 1.9px),
+		radial-gradient(circle at 73px 41px, var(--star-dim) 0 0.9px, transparent 1.6px),
+		radial-gradient(circle at 37px 109px, var(--star-pink) 0 1px, transparent 1.8px),
+		radial-gradient(circle at 151px 67px, var(--star-dim) 0 0.8px, transparent 1.5px),
+		radial-gradient(circle at 211px 173px, var(--star-soft) 0 1px, transparent 1.75px),
+		radial-gradient(circle at 89px 197px, var(--star-pink) 0 0.85px, transparent 1.55px),
+		radial-gradient(circle at 47px 81px, var(--star-dim) 0 0.7px, transparent 1.4px);
+	--top-starfield-size: 181px 173px, 263px 241px, 331px 293px, 419px 367px, 503px 431px, 607px 521px, 137px 149px;
+	--top-starfield-position: 0 0, 37px 71px, 113px 29px, 61px 137px, 173px 83px, 241px 47px, 19px 53px;
+	--top-starfield-glow:
+		radial-gradient(circle at 8% 17%, var(--star-core) 0 0.8px, var(--star-blue-glow) 1.5px, transparent 5px),
+		radial-gradient(circle at 24% 7%, var(--star-core) 0 0.7px, var(--star-soft) 1.4px, transparent 4.5px),
+		radial-gradient(circle at 41% 24%, var(--star-core) 0 0.9px, var(--star-pink-glow) 1.8px, transparent 6px),
+		radial-gradient(circle at 57% 11%, var(--star-core) 0 0.75px, var(--star-soft) 1.5px, transparent 5px),
+		radial-gradient(circle at 72% 31%, var(--star-core) 0 0.8px, var(--star-blue-glow) 1.6px, transparent 5.5px),
+		radial-gradient(circle at 91% 13%, var(--star-core) 0 0.7px, var(--star-pink-glow) 1.5px, transparent 5px),
+		radial-gradient(circle at 33% 43%, var(--star-core) 0 0.65px, var(--star-blue-glow) 1.4px, transparent 5px),
+		radial-gradient(circle at 83% 48%, var(--star-core) 0 0.65px, var(--star-soft) 1.35px, transparent 4.5px);
+	--top-starfield-mask: linear-gradient(to bottom, #000 0%, #000 54%, rgba(0, 0, 0, 0.72) 72%, transparent 100%);
 	--hero-gradient: linear-gradient(145deg, rgba(244, 240, 232, 0.9) 2%, rgba(135, 158, 227, 0.88) 52%, rgba(255, 117, 189, 0.88) 100%);
 	--hero-keyword: rgba(255, 255, 255, 0.28);
 	--hero-blue-glow: rgba(130, 170, 255, 0.28);
@@ -63,6 +92,7 @@
 	--search-background: rgba(255, 255, 255, 0.05);
 	--search-background-hover: rgba(255, 255, 255, 0.1);
 	--image-hover-overlay: rgba(5, 6, 10, 0.34);
+	--tag-hover-shadow: 0 8px 22px rgba(130, 170, 255, 0.14);
 	--content-delay: 150ms;
 
 	/* 字體 — 思源黑體 Noto Sans TC 為主 */
@@ -108,10 +138,19 @@
 	--surface-glass: rgba(247, 244, 248, 0.86);
 	--border: rgba(52, 42, 58, 0.14);
 	--border-strong: rgba(52, 42, 58, 0.25);
+	--star-core: rgba(76, 83, 145, 0.32);
+	--star-dim: rgba(75, 82, 139, 0.12);
+	--star-soft: rgba(83, 107, 215, 0.2);
+	--star-pink: rgba(216, 63, 135, 0.14);
+	--star-blue-glow: rgba(83, 107, 215, 0.19);
+	--star-pink-glow: rgba(216, 63, 135, 0.16);
 	--page-background:
-		radial-gradient(circle at 12% 8%, rgba(83, 107, 215, 0.08), transparent 28rem),
-		radial-gradient(circle at 88% 18%, rgba(216, 63, 135, 0.07), transparent 30rem),
-		var(--surface);
+		radial-gradient(circle at 12% 0%, rgba(83, 107, 215, 0.1), transparent 34rem),
+		radial-gradient(circle at 88% 4%, rgba(216, 63, 135, 0.09), transparent 36rem),
+		linear-gradient(180deg, #f1edf7 0%, #f8f5fa 34rem, #ffffff 76rem, #ffffff 100%);
+	--page-background-size: auto;
+	--page-background-position: 0 0;
+	--page-background-attachment: scroll;
 	--header-background: rgba(247, 244, 248, 0.84);
 	--banner-background:
 		radial-gradient(circle at 14% 38%, rgba(83, 107, 215, 0.2), transparent 26rem),
@@ -128,6 +167,7 @@
 	--search-background: rgba(24, 20, 28, 0.04);
 	--search-background-hover: rgba(24, 20, 28, 0.06);
 	--image-hover-overlay: rgba(25, 18, 32, 0.28);
+	--tag-hover-shadow: 0 8px 22px rgba(83, 107, 215, 0.13);
 }
 
 * {
@@ -140,11 +180,16 @@ html {
 
 body {
 	font-family: var(--font-sans);
+	position: relative;
+	isolation: isolate;
+	min-height: 100vh;
 	margin: 0;
 	padding: 0;
 	text-align: left;
 	background: var(--page-background);
-	background-attachment: fixed;
+	background-size: var(--page-background-size);
+	background-position: var(--page-background-position);
+	background-attachment: var(--page-background-attachment);
 	color: var(--text-secondary);
 	font-size: 18px;
 	line-height: 1.75;
@@ -152,6 +197,62 @@ body {
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* 星空只停留在頁面上方，往下閱讀時自然淡出，不形成規則點陣。 */
+body::before,
+body::after {
+	content: '';
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	right: 0;
+	left: 0;
+	height: 920px;
+	pointer-events: none;
+	-webkit-mask-image: var(--top-starfield-mask);
+	mask-image: var(--top-starfield-mask);
+}
+
+body::before {
+	background: var(--top-starfield-background);
+	background-size: var(--top-starfield-size);
+	background-position: var(--top-starfield-position);
+	opacity: 0.96;
+	animation: starfield-drift 14s ease-in-out infinite alternate;
+}
+
+body::after {
+	background: var(--top-starfield-glow);
+	opacity: 0.86;
+	animation: starfield-twinkle 7s ease-in-out infinite alternate;
+}
+
+body > header,
+body > main,
+body > footer {
+	position: relative;
+	z-index: 1;
+}
+
+@keyframes starfield-drift {
+	from {
+		opacity: 0.82;
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 6px, 0);
+	}
+}
+
+@keyframes starfield-twinkle {
+	from {
+		opacity: 0.62;
+	}
+	to {
+		opacity: 0.96;
+	}
 }
 
 main {
@@ -357,6 +458,10 @@ html.is-animating .transition-swup-fade {
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+	body::before,
+	body::after {
+		animation: none;
 	}
 	.reveal {
 		opacity: 1;

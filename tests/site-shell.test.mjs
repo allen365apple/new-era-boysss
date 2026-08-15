@@ -16,6 +16,8 @@ test('Fuwari interaction primitives and license notice stay connected', async ()
 	assert.match(config, /containers:\s*\['main'\]/);
 	assert.match(header, /card-base/);
 	assert.match(header, /astro:page-load/);
+	assert.match(header, /header\s*\{[\s\S]*?position:\s*relative/);
+	assert.doesNotMatch(header, /position:\s*sticky/);
 	assert.match(styles, /\.expand-animation::before/);
 	assert.match(styles, /transform:\s*scale\(0\.85\)/);
 	assert.match(notices, /Fuwari/);
@@ -31,6 +33,46 @@ test('homepage keeps the approved octagon copy and section order', async () => {
 	assert.match(homepage, /台灣第一個由直男視角出發的/);
 	assert.match(homepage, /關於性別的煩惱與矛盾，我們在這裡聊/);
 	assert.ok(recentPosition > -1 && topicsPosition > recentPosition);
+});
+
+test('article sidebar keeps category, tags and episode below the table of contents', async () => {
+	const layout = await read('../src/layouts/BlogPost.astro');
+	const tocPosition = layout.indexOf('class="toc"');
+	const taxonomyPosition = layout.indexOf('class="taxonomy"');
+	assert.ok(tocPosition > -1 && taxonomyPosition > tocPosition);
+	assert.match(layout, />CATEGORY</);
+	assert.match(layout, />TAGS</);
+	assert.match(layout, />EPISODE</);
+	assert.match(layout, /taxonomy-tag expand-animation scale-animation/);
+	assert.match(layout, /\.taxonomy-tag::before\s*\{[\s\S]*?z-index:\s*0/);
+	assert.match(layout, /\.taxonomy-tag:hover\s*\{[\s\S]*?translateY\(-2px\)/);
+	assert.doesNotMatch(layout, /class="meta-top"/);
+});
+
+test('homepage grid cards keep episode artwork square and uncropped', async () => {
+	const card = await read('../src/components/ArticleCard.astro');
+	assert.match(card, /\.post-card\.grid \.thumb\s*\{[\s\S]*?aspect-ratio:\s*1 \/ 1/);
+	assert.match(card, /\.post-card\.grid \.thumb img\s*\{[\s\S]*?object-fit:\s*contain/);
+});
+
+test('public pages use page backgrounds without rendering the standalone banner', async () => {
+	const [styles, layout, homepage, blog, topics, topicPage, about] = await Promise.all([
+		read('../src/styles/global.css'),
+		read('../src/layouts/BlogPost.astro'),
+		read('../src/pages/index.astro'),
+		read('../src/pages/blog/index.astro'),
+		read('../src/pages/topics/index.astro'),
+		read('../src/pages/topics/[topic].astro'),
+		read('../src/pages/about.astro'),
+	]);
+	assert.match(styles, /--page-background-size:/);
+	assert.match(styles, /--page-background-attachment:\s*scroll/);
+	assert.match(styles, /--top-starfield-background:/);
+	assert.match(styles, /body::before,[\s\S]*?height:\s*920px/);
+	assert.match(styles, /@keyframes starfield-twinkle/);
+	for (const page of [layout, homepage, blog, topics, topicPage, about]) {
+		assert.doesNotMatch(page, /SiteBanner/);
+	}
 });
 
 test('footer retains the subtle CMS entry point', async () => {
