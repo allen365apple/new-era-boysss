@@ -50,8 +50,9 @@ const { topic, posts } = Astro.props as Props;
 			}}
 		/>
 		<style>
-			main {
-				max-width: 760px;
+			.content-panel {
+				width: min(var(--page-width), calc(100% - 2rem));
+				max-width: none;
 			}
 			.breadcrumb {
 				margin: 0 0 1.5rem;

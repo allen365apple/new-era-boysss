@@ -16,8 +16,9 @@ import { TOPICS } from '../../data/topics';
 			pageKind="collection"
 		/>
 		<style>
-			main {
-				max-width: 760px;
+			.content-panel {
+				width: min(var(--page-width), calc(100% - 2rem));
+				max-width: none;
 			}
 			.intro {
 				margin-bottom: 2.5rem;
@@ -35,7 +36,11 @@ import { TOPICS } from '../../data/topics';
 			}
 			.topic-list {
 				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
 				gap: 1rem;
+			}
+			@media (max-width: 720px) {
+				.topic-list { grid-template-columns: 1fr; }
 			}
 			.topic-card {
 				display: block;

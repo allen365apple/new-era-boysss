@@ -486,11 +486,13 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	const updateNavbarVisibility = () => {
 		const header = document.querySelector<HTMLElement>('header');
 		const banner = document.querySelector<HTMLElement>('.site-banner');
-		if (!header || !banner) return;
+		if (!header) return;
 		const overlap = Number.parseFloat(
 			getComputedStyle(document.documentElement).getPropertyValue('--banner-overlap'),
 		) || 0;
-		const threshold = Math.max(48, banner.offsetHeight - 72 - overlap - 16);
+		const threshold = banner
+			? Math.max(48, banner.offsetHeight - 72 - overlap - 16)
+			: 180;
 		header.classList.toggle('navbar-hidden', window.scrollY >= threshold);
 	};
 	const handlePageView = () => {

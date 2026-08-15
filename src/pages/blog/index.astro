@@ -32,8 +32,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 			}}
 		/>
 		<style>
-			main {
-				max-width: 760px;
+			.content-panel {
+				width: min(var(--page-width), calc(100% - 2rem));
+				max-width: none;
 			}
 			.intro {
 				margin-bottom: 2.5rem;

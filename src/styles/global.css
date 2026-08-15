@@ -50,6 +50,12 @@
 	--banner-star-muted: rgba(193, 208, 255, 0.48);
 	--banner-star-bright: rgba(255, 255, 255, 0.98);
 	--banner-haze: linear-gradient(90deg, transparent, rgba(130, 118, 206, 0.09), transparent);
+	--home-cosmos-background:
+		radial-gradient(circle at 14% 14%, rgba(73, 96, 173, 0.22), transparent 30rem),
+		radial-gradient(circle at 84% 20%, rgba(126, 59, 112, 0.18), transparent 32rem),
+		linear-gradient(180deg, #03040a 0%, #080b18 42%, #0d0711 68%, rgba(7, 8, 11, 0) 100%);
+	--home-star: rgba(255, 255, 255, 0.7);
+	--home-star-muted: rgba(193, 208, 255, 0.34);
 	--banner-overlap: 80px;
 	--dialog-backdrop: rgba(1, 2, 6, 0.76);
 	--platform-soundon: #ff6b35;
@@ -84,6 +90,7 @@
 	--radius: 8px;
 	--radius-lg: 14px;
 	--content-width: 680px;
+	--page-width: 1200px;
 
 	/* 相容舊變數名(部分元件仍引用) */
 	--black: 7, 8, 11;
@@ -180,11 +187,42 @@ main {
 }
 
 .content-panel {
+	width: min(var(--page-width), calc(100% - 2rem));
+	max-width: none;
 	padding: clamp(2rem, 4vw, 3rem) clamp(1.1rem, 4vw, 3rem);
 	background: var(--surface-soft);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-large);
 	box-shadow: var(--box-shadow);
+}
+
+body.home-page {
+	position: relative;
+	isolation: isolate;
+	background: var(--surface);
+	background-attachment: scroll;
+}
+
+body.home-page::before {
+	content: '';
+	position: absolute;
+	z-index: 0;
+	inset: 0 0 auto;
+	height: 2200px;
+	max-height: 100%;
+	pointer-events: none;
+	background:
+		radial-gradient(circle, var(--home-star) 0 1px, transparent 1.5px) 0 0 / 89px 89px,
+		radial-gradient(circle, var(--home-star-muted) 0 0.8px, transparent 1.3px) 23px 37px / 137px 137px,
+		radial-gradient(circle, var(--home-star) 0 0.7px, transparent 1.1px) 67px 19px / 173px 173px,
+		var(--home-cosmos-background);
+	-webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+	mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+}
+
+body.home-page > * {
+	position: relative;
+	z-index: 1;
 }
 
 h1,
