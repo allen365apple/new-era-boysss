@@ -1,14 +1,16 @@
 /* 新世紀直男戰士 —「宇宙編輯部」深色設計系統 */
 
 :root {
-	/* 品牌色：電光藍 × 洋紅，搭配墨黑與骨白 */
-	--accent: #82aaff;
-	--accent-strong: #5d8cff;
-	--accent-dark: #b3c9ff;
-	--accent-light: #18233d;
+	/* 品牌色：洋紅為主、電光藍為輔，搭配墨黑與骨白 */
+	--accent: #ff75bd;
+	--accent-strong: #ff4fa3;
+	--accent-dark: #ffb5da;
+	--accent-light: #35172b;
 	--accent-gold: #f0d35d;
-	--accent-pink: #ff5caf;
+	--accent-pink: #ff75bd;
 	--accent-pink-light: #37162c;
+	--accent-blue: #82aaff;
+	--accent-blue-light: #18233d;
 	--on-accent: #05060a;
 	--on-solid: #ffffff;
 
@@ -27,7 +29,8 @@
 		radial-gradient(circle at 12% 8%, rgba(130, 170, 255, 0.08), transparent 28rem),
 		radial-gradient(circle at 88% 18%, rgba(255, 92, 175, 0.06), transparent 30rem),
 		var(--surface);
-	--hero-gradient: linear-gradient(145deg, #f4f0e8 2%, #879ee3 52%, #ff5caf 100%);
+	--hero-gradient: linear-gradient(145deg, rgba(244, 240, 232, 0.9) 2%, rgba(135, 158, 227, 0.88) 52%, rgba(255, 117, 189, 0.88) 100%);
+	--hero-keyword: rgba(255, 255, 255, 0.28);
 	--hero-blue-glow: rgba(130, 170, 255, 0.28);
 	--hero-pink-glow: rgba(255, 92, 175, 0.26);
 	--hero-grid: rgba(244, 240, 232, 0.045);

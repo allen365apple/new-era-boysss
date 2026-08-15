@@ -18,12 +18,12 @@ const latestImage = latestPost?.data.coverImage ?? PodcastCover;
 const recentPosts = posts.slice(1, 4);
 
 const floatingKeywords = [
-	{ text: '直男？', className: 'keyword-1' },
-	{ text: '性別？', className: 'keyword-2' },
-	{ text: '父權？', className: 'keyword-3' },
-	{ text: '女權？', className: 'keyword-4' },
-	{ text: '女性主義？', className: 'keyword-5' },
-	{ text: '男性困境？', className: 'keyword-6' },
+	{ text: '直男', className: 'keyword-1' },
+	{ text: '性別', className: 'keyword-2' },
+	{ text: '父權', className: 'keyword-3' },
+	{ text: '女權', className: 'keyword-4' },
+	{ text: '女性主義', className: 'keyword-5' },
+	{ text: '男性困境', className: 'keyword-6' },
 ];
 ---
 
@@ -84,27 +84,27 @@ const floatingKeywords = [
 			}
 			.keyword-shape {
 				position: relative;
-				width: min(72%, 410px);
-				aspect-ratio: 0.82;
+				width: min(78%, 460px);
+				aspect-ratio: 1;
 				background: var(--hero-gradient);
-				clip-path: polygon(21% 0, 79% 0, 100% 24%, 86% 100%, 14% 100%, 0 24%);
+				clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
 				filter: drop-shadow(0 24px 42px var(--hero-pink-glow));
 				overflow: hidden;
 			}
 			.keyword {
 				position: absolute;
-				color: var(--on-accent);
+				color: var(--hero-keyword);
 				font-weight: 700;
+				letter-spacing: 0.06em;
 				white-space: nowrap;
-				text-shadow: 0 1px 0 var(--border);
 				animation: drift-a 7s ease-in-out infinite alternate;
 			}
-			.keyword-1 { left: 14%; top: 17%; font-size: 1.35rem; }
-			.keyword-2 { right: 14%; top: 28%; font-size: 1.05rem; animation-name: drift-b; animation-duration: 8s; }
-			.keyword-3 { left: 25%; top: 43%; font-size: 1.15rem; animation-delay: -2s; }
-			.keyword-4 { right: 18%; top: 56%; font-size: 1.25rem; animation-name: drift-c; animation-duration: 6.5s; }
-			.keyword-5 { left: 29%; bottom: 20%; font-size: 0.88rem; animation-name: drift-c; animation-delay: -4s; }
-			.keyword-6 { right: 23%; bottom: 10%; font-size: 1rem; animation-name: drift-c; animation-delay: -1s; }
+			.keyword-1 { left: 30%; top: 11%; font-size: 2.15rem; }
+			.keyword-2 { right: 20%; top: 27%; font-size: 1.8rem; animation-name: drift-b; animation-duration: 8s; }
+			.keyword-3 { left: 22%; top: 42%; font-size: 2.25rem; animation-delay: -2s; }
+			.keyword-4 { right: 22%; top: 56%; font-size: 2rem; animation-name: drift-c; animation-duration: 6.5s; }
+			.keyword-5 { left: 21%; bottom: 18%; font-size: 1.55rem; animation-name: drift-c; animation-delay: -4s; }
+			.keyword-6 { right: 24%; bottom: 6%; font-size: 1.45rem; animation-name: drift-c; animation-delay: -1s; }
 			.visual-note {
 				position: absolute;
 				left: 1rem;
@@ -270,16 +270,16 @@ const floatingKeywords = [
 				margin-top: 1.5rem;
 			}
 			@keyframes drift-a {
-				from { transform: translate3d(-8px, -4px, 0) rotate(-2deg); }
-				to { transform: translate3d(12px, 10px, 0) rotate(2deg); }
+				from { transform: translate3d(-4px, -3px, 0) rotate(-1deg); }
+				to { transform: translate3d(7px, 6px, 0) rotate(1deg); }
 			}
 			@keyframes drift-b {
-				from { transform: translate3d(8px, -10px, 0) rotate(2deg); }
-				to { transform: translate3d(-12px, 8px, 0) rotate(-3deg); }
+				from { transform: translate3d(5px, -6px, 0) rotate(1deg); }
+				to { transform: translate3d(-7px, 5px, 0) rotate(-2deg); }
 			}
 			@keyframes drift-c {
-				from { transform: translate3d(-5px, 9px, 0); }
-				to { transform: translate3d(10px, -8px, 0); }
+				from { transform: translate3d(-4px, 5px, 0); }
+				to { transform: translate3d(6px, -5px, 0); }
 			}
 			@media (max-width: 860px) {
 				.hero-frame,
@@ -317,14 +317,14 @@ const floatingKeywords = [
 					min-height: 420px;
 				}
 				.keyword-shape {
-					width: min(76%, 300px);
+					width: min(80%, 310px);
 				}
-				.keyword-1 { font-size: 1.1rem; }
-				.keyword-2,
-				.keyword-5 { font-size: 0.88rem; }
-				.keyword-3,
-				.keyword-4,
-				.keyword-6 { font-size: 0.96rem; }
+				.keyword-1 { font-size: 1.5rem; }
+				.keyword-2 { font-size: 1.25rem; }
+				.keyword-3 { font-size: 1.55rem; }
+				.keyword-4 { font-size: 1.4rem; }
+				.keyword-5 { font-size: 1.02rem; }
+				.keyword-6 { font-size: 0.98rem; }
 				.section-heading,
 				.topic-grid {
 					grid-template-columns: 1fr;
@@ -359,8 +359,8 @@ const floatingKeywords = [
 						<p class="visual-note">QUESTIONS IN ORBIT / 2026</p>
 					</div>
 					<div class="hero-copy">
-						<p class="hero-eyebrow">NEW ERA BOYS / PODCAST EDITORIAL</p>
-						<h1>關於性別的<br />煩惱與矛盾，<br />在這裡聊吧</h1>
+						<p class="hero-eyebrow">台灣第一個由直男視角出發的性別議題 Podcast</p>
+						<h1>關於性別的<br />煩惱與矛盾，<br />我們在這裡聊</h1>
 						<p class="hero-lead">從直男視角開始，把說不清楚的困惑、衝突與改變整理成可以慢慢讀、繼續想的對話。</p>
 						<div class="hero-actions">
 							{latestPost && <a class="primary-action" href={`/blog/${latestPost.id}/`}>閱讀最新文章 ↗</a>}
