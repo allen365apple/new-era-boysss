@@ -88,7 +88,7 @@ AGENTS.md 與 docs/HANDOFF.md。commit message 要清楚描述改動。」
 
 #### 2026-08-16
 
-- `fix(mobile): 修正文章列表與關於頁溢出`：線上量測發現 `/blog/` 與 `/about/` 的 scoped `max-width` 蓋過全域手機寬度，造成主內容固定為 680px；改用 `min(var(--content-width), calc(100% - 2.5rem))`，並把首頁、列表、關於頁、所有文章與單一議題頁納入 390px 實測。
+- `68d5711`：線上量測發現 `/blog/` 與 `/about/` 的 scoped `max-width` 蓋過全域手機寬度，造成主內容固定為 680px；改用 `min(var(--content-width), calc(100% - 2.5rem))`，並把首頁、列表、關於頁、所有文章與單一議題頁納入 390px 實測。
 - `6ef29ec`：修正議題索引與單一議題頁在手機上超出畫面的問題；`部落格改寫規則.md` 更新到 v3.7，加入 `speak-human-tw`、台灣用語、全形標點、AI 痕跡與保真檢查。
 - `1fe07ab`、`2e3e978`：完成 EP3、EP4、EP5 文章並直接發布；同步 EP1–EP5 等既有文章的正確單集連結與 RSS 封面。
 - `199869d`、`651a291`：依使用者決定回到 `680f880` 的版面基線，再加入頂部星空漸淡背景、文章左側 CATEGORY／TAGS／EPISODE、導覽列捲動行為、tag 動畫與完整正方形縮圖；維持雙欄而非三欄文章版面。
