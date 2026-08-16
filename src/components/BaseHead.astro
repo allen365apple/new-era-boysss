@@ -109,11 +109,17 @@ const siteJsonLd = !isArticle
 <script is:inline>
 	(() => {
 		const applySavedTheme = () => {
-			let theme = 'dark';
+			// 偏好可為 dark／light／system；system 依作業系統設定決定實際外觀。
+			let preference = 'dark';
 			try {
-				theme = localStorage.getItem('site-theme') === 'light' ? 'light' : 'dark';
+				const stored = localStorage.getItem('site-theme');
+				if (stored === 'light' || stored === 'dark' || stored === 'system') preference = stored;
 			} catch {}
+			const theme = preference === 'system'
+				? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+				: preference;
 			document.documentElement.dataset.theme = theme;
+			document.documentElement.dataset.themePreference = preference;
 		};
 
 		applySavedTheme();

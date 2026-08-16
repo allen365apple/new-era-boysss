@@ -10,7 +10,7 @@ import { LISTEN_PLATFORMS } from '../data/listen-platforms';
 const about = await getEntry('pages', 'about');
 if (!about) throw new Error('缺少 src/content/pages/about.md，關於節目頁無法產生。');
 const { Content } = await render(about);
-const { title, subtitle, description, missionTitle, statsTitle, stats, listenTitle, listenIntro } = about.data;
+const { title, subtitle, description, missionTitle, statsTitle, statsNote, stats, listenTitle, listenIntro } = about.data;
 ---
 
 <!doctype html>
@@ -65,6 +65,12 @@ const { title, subtitle, description, missionTitle, statsTitle, stats, listenTit
 			}
 			.mission :global(p:last-child) {
 				margin-bottom: 0;
+			}
+			.stats-note {
+				margin-left: 0.6rem;
+				font-size: 0.8rem;
+				font-weight: 400;
+				color: var(--text-muted);
 			}
 			.stats {
 				display: grid;
@@ -163,7 +169,10 @@ const { title, subtitle, description, missionTitle, statsTitle, stats, listenTit
 				<>
 					<hr class="rule" />
 					<section class="about-section" aria-labelledby="stats-heading">
-						<h2 id="stats-heading">{statsTitle}</h2>
+						<h2 id="stats-heading">
+							{statsTitle}
+							{statsNote && <span class="stats-note">{statsNote}</span>}
+						</h2>
 						<div class="stats">
 							{stats.map((s) => (
 								<div class="stat">

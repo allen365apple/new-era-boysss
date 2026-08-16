@@ -2,7 +2,28 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
-## 最新交接 — 2026-08-16 by Claude（修正關於頁後台編輯崩潰）
+## 最新交接 — 2026-08-16 by Claude（恢復富文字、數據附註、三段主題）
+
+- 這次做了什麼:
+  - **恢復關於頁的富文字編輯**：移除上一筆的 `modes: [raw]`。改以「不使用會觸發崩潰的結構」來規避——把「兩種關鍵聲音缺席」從「編號清單＋粗體」改寫為兩個粗體標號段落（**（1）…**、**（2）…**），視覺不變但不會建立會崩潰的 list-item 節點。
+  - **節目數據附註**：schema 新增 `statsNote`，顯示在「節目數據」標題旁的淺色小字（目前為「截至 2026.08」）；四筆數據的 label 已移除各自的「（截至 2026.04）」。後台新增「數據附註」欄位，日後只需改這一處。
+  - **主題切換改為三段循環**：深色 ☾ → 淺色 ☀ → 同系統預設 ◐。偏好值存在 `localStorage['site-theme']`，可為 `dark`／`light`／`system`；`system` 依 `prefers-color-scheme` 解析，且已註冊 media query 監聽，作業系統切換時即時跟著變。`documentElement` 同時帶 `data-theme`（實際外觀）與 `data-theme-preference`（使用者選擇）。
+- 為什麼這樣做 / 重要決策:
+  - 富文字模式對非技術編輯者是必要的，因此選擇改內容結構而不是關閉編輯器；崩潰的觸發點是 Decap 3.x 在 list-item 合併時的 stale selection，段落結構不會走到那條路徑。
+  - 首次到訪的預設維持 `dark`，不改變既有訪客體驗；`system` 是使用者可選的第三種，而非新預設。若要改成預設同系統，只需調整 `readPreference()` 與 BaseHead inline script 的 fallback。
+  - BaseHead 的 inline script 也同步支援三種偏好，避免載入時閃爍。
+- 目前狀態(能不能跑 / 有無已知問題):
+  - `npm test` 14 項通過、`npm run build` 20 頁成功、`git diff --check` 無誤。
+  - 已在瀏覽器實測：主題按鈕連點三次可正確循環並更新圖示與 aria-label；`statsNote` 以 12.8px 淺灰顯示；關於頁六段落與兩個標號段落渲染正常。
+  - ⚠️ 殘留風險：若編輯者日後在富文字模式**自行插入編號／項目清單並在其中使用粗體**，仍可能觸發同一個上游崩潰。崩潰時錯誤視窗底部會提供完整內容可直接救回。`blog` 集合的內文同樣是富文字，風險相同。
+- 尚未完成 / TODO:
+  - 觀察 Decap 上游修正；修好後可考慮把清單結構改回。
+  - 若團隊希望「同系統」成為預設外觀，需同時改 Header 的 `readPreference()` 與 `BaseHead.astro` 的 inline fallback。
+- 給下一位 agent 的建議:
+  - 主題相關邏輯有兩處必須同步：`BaseHead.astro` 的 inline script（防閃爍）與 `Header.astro` 的 `applyTheme`／`readPreference`。只改一處會造成載入時閃爍或狀態不一致。
+  - 使用者回報後台崩潰時，先請他複製錯誤視窗最下方「已恢復的內容」，那是完整檔案內容，可直接存回 repo。
+
+## 前次交接 — 2026-08-16 by Claude（修正關於頁後台編輯崩潰）
 
 - 這次做了什麼:
   - 使用者從 `/admin` 編輯「關於節目」時，Decap 富文字編輯器丟出 `Cannot find a descendant at path [3,2,0,1]` 並中止。已把錯誤視窗保留下來的使用者版本存回 `src/content/pages/about.md`（第一、二段改寫與第一點的措辭都已保留）。

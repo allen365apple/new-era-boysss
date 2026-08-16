@@ -50,6 +50,8 @@ const pages = defineCollection({
 		description: z.string(),               // SEO meta 用
 		missionTitle: z.string().default('節目初衷'),
 		statsTitle: z.string().default('節目數據'),
+		// 數據區塊的統一附註，例如「截至 2026.08」，免得每筆數據各寫一次。
+		statsNote: z.string().optional(),
 		stats: z.array(z.object({
 			num: z.string(),
 			label: z.string(),

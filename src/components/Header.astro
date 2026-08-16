@@ -387,32 +387,54 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 
 <script>
 	type SiteTheme = 'dark' | 'light';
+	type ThemePreference = SiteTheme | 'system';
 	type SiteShellWindow = Window & {
 		__newEraSiteShellReady?: boolean;
 	};
 
 	const siteWindow = window as SiteShellWindow;
-	const readTheme = (): SiteTheme => {
-		try {
-			return localStorage.getItem('site-theme') === 'light' ? 'light' : 'dark';
-		} catch {
-			return 'dark';
-		}
+	// 三段循環：深色 → 淺色 → 同系統。
+	const THEME_ORDER: ThemePreference[] = ['dark', 'light', 'system'];
+	const THEME_LABEL: Record<ThemePreference, string> = {
+		dark: '深色',
+		light: '淺色',
+		system: '同系統預設',
 	};
-	const updateThemeButtons = (theme: SiteTheme) => {
+	const THEME_SYMBOL: Record<ThemePreference, string> = {
+		dark: '☾',
+		light: '☀',
+		system: '◐',
+	};
+
+	const systemPrefersLight = () => window.matchMedia('(prefers-color-scheme: light)').matches;
+	const resolveTheme = (preference: ThemePreference): SiteTheme =>
+		preference === 'system' ? (systemPrefersLight() ? 'light' : 'dark') : preference;
+
+	const readPreference = (): ThemePreference => {
+		try {
+			const stored = localStorage.getItem('site-theme');
+			if (stored === 'light' || stored === 'dark' || stored === 'system') return stored;
+		} catch {}
+		return 'dark';
+	};
+
+	const updateThemeButtons = (preference: ThemePreference) => {
+		const next = THEME_ORDER[(THEME_ORDER.indexOf(preference) + 1) % THEME_ORDER.length];
 		document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((button) => {
-			const nextTheme = theme === 'dark' ? '淺色' : '深色';
-			button.setAttribute('aria-label', `切換${nextTheme}模式`);
+			button.setAttribute('aria-label', `外觀：${THEME_LABEL[preference]}，點擊切換為${THEME_LABEL[next]}`);
+			button.setAttribute('title', `外觀：${THEME_LABEL[preference]}`);
 			const symbol = button.querySelector<HTMLElement>('[data-theme-symbol]');
-			if (symbol) symbol.textContent = theme === 'dark' ? '☀' : '☾';
+			if (symbol) symbol.textContent = THEME_SYMBOL[preference];
 		});
 	};
-	const applyTheme = (theme: SiteTheme, persist = false) => {
-		document.documentElement.dataset.theme = theme;
+
+	const applyTheme = (preference: ThemePreference, persist = false) => {
+		document.documentElement.dataset.theme = resolveTheme(preference);
+		document.documentElement.dataset.themePreference = preference;
 		if (persist) {
-			try { localStorage.setItem('site-theme', theme); } catch {}
+			try { localStorage.setItem('site-theme', preference); } catch {}
 		}
-		updateThemeButtons(theme);
+		updateThemeButtons(preference);
 	};
 	const openSearch = () => {
 		const dialog = document.querySelector<HTMLDialogElement>('[data-search-dialog]');
@@ -478,7 +500,7 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		}
 	};
 	const handlePageView = () => {
-		applyTheme(readTheme());
+		applyTheme(readPreference());
 		updateActiveNavigation();
 		initArticlePage();
 	};
@@ -489,7 +511,9 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			if (target.closest('[data-search-open]')) openSearch();
 			if (target.closest('[data-search-close]')) target.closest('dialog')?.close();
 			if (target.closest('[data-theme-toggle]')) {
-				applyTheme(readTheme() === 'dark' ? 'light' : 'dark', true);
+				const current = readPreference();
+				const next = THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length];
+				applyTheme(next, true);
 			}
 			if (target.closest('.search-result')) target.closest('dialog')?.close();
 			if (target instanceof HTMLDialogElement && target.matches('[data-search-dialog]')) target.close();
@@ -520,6 +544,11 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			document.querySelector<HTMLDialogElement>('[data-search-dialog]')?.close();
 		});
 		document.addEventListener('astro:page-load', handlePageView);
+		// 選擇「同系統預設」時，作業系統切換深淺色要立即反映。
+		window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+			if (readPreference() === 'system') applyTheme('system');
+		});
+
 		siteWindow.__newEraSiteShellReady = true;
 	}
 

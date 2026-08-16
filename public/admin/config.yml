@@ -170,6 +170,12 @@ collections:
             widget: string
             default: 節目數據
 
+          - label: 數據附註
+            name: statsNote
+            widget: string
+            required: false
+            hint: 顯示在「節目數據」旁的小字，例如 截至 2026.08；更新數據時只要改這裡
+
           - label: 節目數據
             name: stats
             widget: list
@@ -194,8 +200,6 @@ collections:
             name: body
             widget: markdown
             required: true
-            # 富文字模式在「編號清單內含粗體」時會觸發 Decap 3.x 的已知崩潰，
-            # 因此這個欄位固定使用純 Markdown 模式，避免編輯到一半整份內容遺失。
-            modes:
-              - raw
-            hint: 直接編輯文字即可。空一行＝分段；**兩個星號包住**＝粗體；行首「1. 」＝編號清單
+            # 保留富文字模式（多數編輯者不熟 Markdown）。注意 Decap 3.x 在
+            # 「編號清單項目內含粗體」時合併項目會崩潰，因此本文改用段落呈現重點。
+            hint: 可直接編輯文字。若編輯器出現異常，可切到 Markdown 模式繼續
