@@ -4,13 +4,16 @@ interface Props {
 }
 
 const { date } = Astro.props;
+
+// 以台北時區輸出 2026.8.16 這種簡潔格式（月／日不補零）。
+const parts = new Intl.DateTimeFormat('zh-TW', {
+	year: 'numeric',
+	month: 'numeric',
+	day: 'numeric',
+	timeZone: 'Asia/Taipei',
+}).formatToParts(date);
+const pick = (type: 'year' | 'month' | 'day') => parts.find((part) => part.type === type)?.value ?? '';
+const formatted = `${pick('year')}.${pick('month')}.${pick('day')}`;
 ---
 
-<time datetime={date.toISOString()}>
-	{date.toLocaleDateString('zh-TW', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-		timeZone: 'Asia/Taipei',
-	})}
-</time>
+<time datetime={date.toISOString()}>{formatted}</time>
