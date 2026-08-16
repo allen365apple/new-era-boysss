@@ -32,12 +32,12 @@
 	--surface-glass: rgba(7, 8, 11, 0.84);
 	--border: rgba(244, 240, 232, 0.16);
 	--border-strong: rgba(244, 240, 232, 0.3);
-	--star-core: rgba(248, 249, 255, 0.7);
-	--star-dim: rgba(226, 231, 255, 0.2);
-	--star-soft: rgba(226, 231, 255, 0.4);
-	--star-pink: rgba(255, 160, 211, 0.28);
-	--star-blue-glow: rgba(130, 170, 255, 0.42);
-	--star-pink-glow: rgba(255, 117, 189, 0.34);
+	--star-core: rgba(248, 249, 255, 0.92);
+	--star-dim: rgba(226, 231, 255, 0.32);
+	--star-soft: rgba(226, 231, 255, 0.58);
+	--star-pink: rgba(255, 160, 211, 0.44);
+	--star-blue-glow: rgba(130, 170, 255, 0.56);
+	--star-pink-glow: rgba(255, 117, 189, 0.5);
 	--page-background:
 		radial-gradient(circle at 12% 3%, rgba(130, 170, 255, 0.12), transparent 34rem),
 		radial-gradient(circle at 88% 7%, rgba(255, 92, 175, 0.09), transparent 38rem),
@@ -52,9 +52,14 @@
 		radial-gradient(circle at 151px 67px, var(--star-dim) 0 0.8px, transparent 1.5px),
 		radial-gradient(circle at 211px 173px, var(--star-soft) 0 1px, transparent 1.75px),
 		radial-gradient(circle at 89px 197px, var(--star-pink) 0 0.85px, transparent 1.55px),
-		radial-gradient(circle at 47px 81px, var(--star-dim) 0 0.7px, transparent 1.4px);
-	--top-starfield-size: 181px 173px, 263px 241px, 331px 293px, 419px 367px, 503px 431px, 607px 521px, 137px 149px;
-	--top-starfield-position: 0 0, 37px 71px, 113px 29px, 61px 137px, 173px 83px, 241px 47px, 19px 53px;
+		radial-gradient(circle at 47px 81px, var(--star-dim) 0 0.7px, transparent 1.4px),
+		radial-gradient(circle at 127px 131px, var(--star-soft) 0 0.95px, transparent 1.7px),
+		radial-gradient(circle at 179px 29px, var(--star-dim) 0 0.75px, transparent 1.45px),
+		radial-gradient(circle at 59px 163px, var(--star-pink) 0 0.9px, transparent 1.6px),
+		radial-gradient(circle at 233px 113px, var(--star-soft) 0 0.85px, transparent 1.55px),
+		radial-gradient(circle at 101px 59px, var(--star-dim) 0 0.8px, transparent 1.5px);
+	--top-starfield-size: 181px 173px, 263px 241px, 331px 293px, 419px 367px, 503px 431px, 607px 521px, 137px 149px, 293px 271px, 457px 389px, 349px 317px, 541px 463px, 227px 199px;
+	--top-starfield-position: 0 0, 37px 71px, 113px 29px, 61px 137px, 173px 83px, 241px 47px, 19px 53px, 91px 111px, 149px 19px, 23px 91px, 199px 137px, 131px 67px;
 	--top-starfield-glow:
 		radial-gradient(circle at 8% 17%, var(--star-core) 0 0.8px, var(--star-blue-glow) 1.5px, transparent 5px),
 		radial-gradient(circle at 24% 7%, var(--star-core) 0 0.7px, var(--star-soft) 1.4px, transparent 4.5px),
@@ -63,7 +68,11 @@
 		radial-gradient(circle at 72% 31%, var(--star-core) 0 0.8px, var(--star-blue-glow) 1.6px, transparent 5.5px),
 		radial-gradient(circle at 91% 13%, var(--star-core) 0 0.7px, var(--star-pink-glow) 1.5px, transparent 5px),
 		radial-gradient(circle at 33% 43%, var(--star-core) 0 0.65px, var(--star-blue-glow) 1.4px, transparent 5px),
-		radial-gradient(circle at 83% 48%, var(--star-core) 0 0.65px, var(--star-soft) 1.35px, transparent 4.5px);
+		radial-gradient(circle at 83% 48%, var(--star-core) 0 0.65px, var(--star-soft) 1.35px, transparent 4.5px),
+		radial-gradient(circle at 15% 33%, var(--star-core) 0 0.75px, var(--star-blue-glow) 1.5px, transparent 5px),
+		radial-gradient(circle at 49% 9%, var(--star-core) 0 0.75px, var(--star-soft) 1.5px, transparent 5px),
+		radial-gradient(circle at 64% 40%, var(--star-core) 0 0.8px, var(--star-pink-glow) 1.6px, transparent 5.5px),
+		radial-gradient(circle at 97% 37%, var(--star-core) 0 0.7px, var(--star-soft) 1.45px, transparent 4.5px);
 	--top-starfield-mask: linear-gradient(to bottom, #000 0%, #000 54%, rgba(0, 0, 0, 0.72) 72%, transparent 100%);
 	--hero-gradient: linear-gradient(145deg, rgba(244, 240, 232, 0.9) 2%, rgba(135, 158, 227, 0.88) 52%, rgba(255, 117, 189, 0.88) 100%);
 	--hero-keyword: rgba(255, 255, 255, 0.28);
@@ -224,7 +233,7 @@ body::before {
 
 body::after {
 	background: var(--top-starfield-glow);
-	opacity: 0.86;
+	opacity: 0.96;
 	animation: starfield-twinkle 7s ease-in-out infinite alternate;
 }
 
@@ -248,10 +257,10 @@ body > footer {
 
 @keyframes starfield-twinkle {
 	from {
-		opacity: 0.62;
+		opacity: 0.72;
 	}
 	to {
-		opacity: 0.96;
+		opacity: 1;
 	}
 }
 

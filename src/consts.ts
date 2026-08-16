@@ -3,9 +3,12 @@ export const SITE_DESCRIPTION = '台灣第一個由直男視角出發、系統�
 export const PODCAST_NAME = '新世紀直男戰士';
 export const PODCAST_HOST = '新世紀直男戰士製作團隊';
 
-// 目前已確認的節目入口；缺少直接節目頁的服務先不放空連結。
+// 節目各平台入口，來源為官方導覽頁 https://portaly.cc/new.era.boys
 export const PODCAST_LINKS = {
-	soundon: 'https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a',
 	spotify: 'https://open.spotify.com/show/1BAWRDklXg5vdIUxMoPCkr',
-	apple: 'https://podcasts.apple.com/podcast/1732062544',
+	apple: 'https://podcasts.apple.com/tw/podcast/%E6%96%B0%E4%B8%96%E7%B4%80%E7%9B%B4%E7%94%B7%E6%88%B0%E5%A3%AB/id1732062544',
+	youtube: 'https://www.youtube.com/@new-era-boys',
+	kkbox: 'https://podcast.kkbox.com/tw/channel/KtY2U76NqwOGIvnr0S',
+	mixerbox: 'https://www.mbplayer.com/podcast/1463356',
+	soundon: 'https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a',
 } as const;

@@ -2,6 +2,29 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-16 by Claude（首頁收聽彈窗與星空）
+
+- 這次做了什麼:
+  - 首頁「收聽 Podcast」按鈕從直接外連改為開啟彈出式視窗（原生 `<dialog>`），內含 6 個平台，依序：Spotify、Apple Podcasts、YouTube、KKBOX、MixerBox、SoundOn，每個都有品牌 icon。
+  - `src/consts.ts` 的 `PODCAST_LINKS` 從 3 個擴充為 6 個平台的節目主頁連結，來源為官方導覽頁 `https://portaly.cc/new.era.boys`。
+  - 平台 icon：Spotify／Apple／YouTube 使用 Simple Icons 官方 logo（內嵌 SVG，品牌色）；KKBOX、MixerBox 的真 logo 從 portaly 下載，SoundOn 使用使用者提供的節目頭像圖，存於 `src/assets/platform-icons/`。
+  - 首頁星空（全站 `body::before/after`，定義在 `global.css`）加多、加亮：小星點從 7 層增為 12 層、發光星從 8 顆增為 12 顆，並上調暗色模式 `--star-*` 透明度與 `body::after`／twinkle 峰值。往下淡出的遮罩維持不變。
+- 為什麼這樣做 / 重要決策:
+  - 用原生 `<dialog>` + `showModal()`，Esc 與背景點擊皆可關閉，無需額外套件；icon 全部內嵌／本機化，不依賴外部載入。
+  - 星空只調暗色模式的亮度（`:root`），淺色模式 token 不動，避免白底星點變髒；「更多」則是兩種模式共用的圖層數量增加。
+  - ⚠️ SoundOn 那張圖其實是節目在 YouTube 的頭像（使用者指定使用），並非 SoundOn 平台官方 logo；若要更精準可日後替換。KKBOX／MixerBox 為 portaly 上的真 logo。
+- 目前狀態(能不能跑 / 有無已知問題):
+  - `npm test` 14 項全部通過；`npm run build` 成功產生 20 頁；`git diff --check` 無空白錯誤。
+  - 已在本機 `localhost:4321` 用瀏覽器實測：彈窗可開、6 平台 icon 與連結正確、✕ 可關；首頁頂部星空明顯變多變亮。
+  - 變更**已在本機提交，但尚未 push 到 `main`**（等使用者確認是否上線）。
+- 尚未完成 / TODO:
+  - 等使用者確認後再 `git push origin HEAD:main` 讓 Cloudflare 部署。
+  - 關於頁（`src/pages/about.astro`）的收聽區仍是舊的三顆平台按鈕，未套用此彈窗；若要一致化可後續處理。
+  - SoundOn icon 若要換成官方 logo，替換 `src/assets/platform-icons/soundon.jpeg` 即可。
+- 給下一位 agent 的建議:
+  - 平台連結正本在 `src/consts.ts` 的 `PODCAST_LINKS`；彈窗與 icon 在 `src/pages/index.astro`。
+  - 星空參數集中在 `global.css` 的 `--star-*`、`--top-starfield-*`；三個 `--top-starfield-background/size/position` 清單的圖層數必須一致。
+
 ## 最新交接 — 2026-08-16 by Codex（全站手機版修正）
 
 - 這次做了什麼:
