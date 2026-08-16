@@ -75,13 +75,15 @@ test('public pages use page backgrounds without rendering the standalone banner'
 	}
 });
 
-test('topic pages keep their content inside the mobile viewport', async () => {
-	const [topics, topicPage] = await Promise.all([
+test('collection and about pages keep their content inside the mobile viewport', async () => {
+	const [blog, topics, topicPage, about] = await Promise.all([
+		read('../src/pages/blog/index.astro'),
 		read('../src/pages/topics/index.astro'),
 		read('../src/pages/topics/[topic].astro'),
+		read('../src/pages/about.astro'),
 	]);
-	for (const page of [topics, topicPage]) {
-		assert.match(page, /main\s*\{[\s\S]*?width:\s*min\(760px, calc\(100% - 2\.5rem\)\)/);
+	for (const page of [blog, topics, topicPage, about]) {
+		assert.match(page, /main\s*\{[\s\S]*?width:\s*min\([^,]+, calc\(100% - 2\.5rem\)\)/);
 	}
 });
 

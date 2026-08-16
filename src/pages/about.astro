@@ -30,7 +30,8 @@ const features = [
 		/>
 		<style>
 			main {
-				max-width: 760px;
+				width: min(var(--content-width), calc(100% - 2.5rem));
+				max-width: none;
 			}
 			.eyebrow {
 				display: inline-block;
