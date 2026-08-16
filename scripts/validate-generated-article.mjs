@@ -54,7 +54,8 @@ export function inspect(content, fileName, { allowDraft = false } = {}) {
 		}
 	}
 
-	const quoteCount = (body.match(/^>\s+/gm) ?? []).length;
+	// 只數真正的金句（以「開頭的引用行）；引用區塊內的署名行「> —— 姓名」與空的 > 分隔行不計入
+	const quoteCount = (body.match(/^>\s*[「『]/gm) ?? []).length;
 	if (quoteCount < 3 || quoteCount > 4) errors.push(`金句引用必須是 3–4 句，目前 ${quoteCount} 句`);
 	const textLength = body.replace(/[#>*_`\[\]()\s—「」『』，。！？：；、]/g, '').length;
 	if (textLength < 1100) errors.push(`內文過短：約 ${textLength} 字，至少應接近 1200 字`);
