@@ -75,6 +75,16 @@ test('public pages use page backgrounds without rendering the standalone banner'
 	}
 });
 
+test('topic pages keep their content inside the mobile viewport', async () => {
+	const [topics, topicPage] = await Promise.all([
+		read('../src/pages/topics/index.astro'),
+		read('../src/pages/topics/[topic].astro'),
+	]);
+	for (const page of [topics, topicPage]) {
+		assert.match(page, /main\s*\{[\s\S]*?width:\s*min\(760px, calc\(100% - 2\.5rem\)\)/);
+	}
+});
+
 test('footer retains the subtle CMS entry point', async () => {
 	const footer = await read('../src/components/Footer.astro');
 	assert.match(footer, /href="\/admin\/"/);
