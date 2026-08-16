@@ -18,6 +18,7 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 	href={`/blog/${post.id}/`}
 	class:list={['card-link', variant]}
 	data-pub-date={post.data.pubDate.toISOString()}
+	data-episode-date={(post.data.episodeDate ?? post.data.pubDate).toISOString()}
 >
 	<article class:list={['post-card', variant]}>
 		<div class="thumb">

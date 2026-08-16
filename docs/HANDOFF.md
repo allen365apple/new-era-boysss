@@ -6,7 +6,7 @@
 
 - 這次做了什麼:
   - **修正 `/blog/` 排序在換頁後失效**：原本排序 script 寫在頁面層。swup 換頁不會重新執行頁面自己的 `<script>`，所以從導覽列點「文章」進來時監聽器根本沒掛上，點選單毫無反應；只有直接輸入網址載入才有效。已把排序邏輯搬進 `Header.astro` 的共用 shell：`applySortOrder()`／`restoreSortOrder()` 加上 document 層 `change` 事件委派（與既有 theme／search 的做法一致），並在 `handlePageView()` 還原上次選擇。
-  - 排序選項依使用者要求精簡為兩項：「最新文章」「最舊文章」，移除集數排序；`ArticleCard` 同步移除不再使用的 `data-episode-date`。
+  - 排序選項提供四種：「最新文章」「最舊文章」「最新集數」「最舊集數」；文章日期讀 `data-pub-date`，集數日期讀 `data-episode-date`（未填 `episodeDate` 時退回 `pubDate`）。
   - 首頁移除三個區塊標題右側的說明長句（最新一集／最近的節目文章／從哪個問題開始），`.section-heading` 由雙欄 grid 改為單欄。
   - 英文小標改為看得懂的字：`LATEST TRANSMISSION` → `LATEST EPISODE`、`RECENT STORIES` → `RECENT ARTICLES`（`SEVEN QUESTIONS` 對應七大議題，保留）；移除 hero 左下角無實際意義的裝飾字 `QUESTIONS IN ORBIT / 2026` 與其樣式。
 - 為什麼這樣做 / 重要決策:

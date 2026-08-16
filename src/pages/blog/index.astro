@@ -92,6 +92,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 				<select id="sort-order" data-sort-order>
 					<option value="newest">最新文章</option>
 					<option value="oldest">最舊文章</option>
+					<option value="episode-newest">最新集數</option>
+					<option value="episode-oldest">最舊集數</option>
 				</select>
 			</div>
 			<section class="posts" aria-label="文章列表" data-post-list>

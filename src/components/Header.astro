@@ -442,8 +442,11 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	const applySortOrder = (order: string) => {
 		const list = document.querySelector<HTMLElement>('[data-post-list]');
 		if (!list) return;
-		const timeOf = (card: HTMLElement) => Date.parse(card.dataset.pubDate ?? '') || 0;
-		const ascending = order === 'oldest';
+		// order 形如 newest／oldest／episode-newest／episode-oldest。
+		const byEpisode = order.startsWith('episode');
+		const timeOf = (card: HTMLElement) =>
+			Date.parse((byEpisode ? card.dataset.episodeDate : card.dataset.pubDate) ?? '') || 0;
+		const ascending = order.endsWith('oldest');
 		([...list.children] as HTMLElement[])
 			.sort((a, b) => (ascending ? timeOf(a) - timeOf(b) : timeOf(b) - timeOf(a)))
 			.forEach((card) => list.append(card));
