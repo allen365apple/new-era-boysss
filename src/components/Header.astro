@@ -436,6 +436,28 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		}
 		updateThemeButtons(preference);
 	};
+	// 文章列表排序。放在共用 shell 而非頁面層 script，
+	// 因為 swup 換頁不會重新執行頁面自己的 script，會導致監聽器沒掛上。
+	const SORT_KEY = 'blog-sort-order';
+	const applySortOrder = (order: string) => {
+		const list = document.querySelector<HTMLElement>('[data-post-list]');
+		if (!list) return;
+		const timeOf = (card: HTMLElement) => Date.parse(card.dataset.pubDate ?? '') || 0;
+		const ascending = order === 'oldest';
+		([...list.children] as HTMLElement[])
+			.sort((a, b) => (ascending ? timeOf(a) - timeOf(b) : timeOf(b) - timeOf(a)))
+			.forEach((card) => list.append(card));
+	};
+	const restoreSortOrder = () => {
+		const select = document.querySelector<HTMLSelectElement>('[data-sort-order]');
+		if (!select) return;
+		let saved: string | null = null;
+		try { saved = localStorage.getItem(SORT_KEY); } catch {}
+		if (saved && [...select.options].some((option) => option.value === saved)) {
+			select.value = saved;
+			applySortOrder(saved);
+		}
+	};
 	const openSearch = () => {
 		const dialog = document.querySelector<HTMLDialogElement>('[data-search-dialog]');
 		if (!dialog) return;
@@ -503,6 +525,7 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		applyTheme(readPreference());
 		updateActiveNavigation();
 		initArticlePage();
+		restoreSortOrder();
 	};
 	if (!siteWindow.__newEraSiteShellReady) {
 		document.addEventListener('click', (event) => {
@@ -544,6 +567,13 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			document.querySelector<HTMLDialogElement>('[data-search-dialog]')?.close();
 		});
 		document.addEventListener('astro:page-load', handlePageView);
+		document.addEventListener('change', (event) => {
+			const select = event.target;
+			if (!(select instanceof HTMLSelectElement) || !select.matches('[data-sort-order]')) return;
+			applySortOrder(select.value);
+			try { localStorage.setItem(SORT_KEY, select.value); } catch {}
+		});
+
 		// 選擇「同系統預設」時，作業系統切換深淺色要立即反映。
 		window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
 			if (readPreference() === 'system') applyTheme('system');

@@ -111,15 +111,6 @@ const floatingKeywords = [
 			.keyword-4 { right: 22%; top: 56%; font-size: 2rem; animation-name: drift-c; animation-duration: 6.5s; }
 			.keyword-5 { left: 21%; bottom: 18%; font-size: 1.55rem; animation-name: drift-c; animation-delay: -4s; }
 			.keyword-6 { right: 24%; bottom: 6%; font-size: 1.45rem; animation-name: drift-c; animation-delay: -1s; }
-			.visual-note {
-				position: absolute;
-				left: 1rem;
-				bottom: 0.8rem;
-				margin: 0;
-				font-size: 0.72rem;
-				letter-spacing: 0.08em;
-				color: var(--text-muted);
-			}
 			.hero-copy {
 				display: flex;
 				flex-direction: column;
@@ -177,10 +168,6 @@ const floatingKeywords = [
 				color: var(--text-primary);
 			}
 			.section-heading {
-				display: grid;
-				grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
-				gap: 2rem;
-				align-items: end;
 				padding-bottom: 1.4rem;
 				border-bottom: 1px solid var(--border);
 			}
@@ -473,7 +460,6 @@ const floatingKeywords = [
 								<span class={`keyword ${keyword.className}`}>{keyword.text}</span>
 							))}
 						</div>
-						<p class="visual-note">QUESTIONS IN ORBIT / 2026</p>
 					</div>
 					<div class="hero-copy">
 						<h1><span class="hero-title-line">台灣第一個由直男視角出發的</span><span class="hero-title-line">性別 Podcast</span></h1>
@@ -490,10 +476,9 @@ const floatingKeywords = [
 				<section class="latest-section" aria-labelledby="latest-heading">
 					<div class="section-heading">
 						<div>
-							<p class="section-kicker">LATEST TRANSMISSION</p>
+							<p class="section-kicker">LATEST EPISODE</p>
 							<h2 id="latest-heading">最新一集</h2>
 						</div>
-						<p>不只整理重點，也保留對話裡的猶豫、矛盾與重新理解的空間。</p>
 					</div>
 					<a class="latest-card scale-animation" href={`/blog/${latestPost.id}/`}>
 						<div class="latest-image">
@@ -514,10 +499,9 @@ const floatingKeywords = [
 				<section class="recent-section" aria-labelledby="recent-heading">
 					<div class="section-heading">
 						<div>
-							<p class="section-kicker">RECENT STORIES</p>
+							<p class="section-kicker">RECENT ARTICLES</p>
 							<h2 id="recent-heading">最近的節目文章</h2>
 						</div>
-						<p>把 Podcast 裡還沒聊完的問題，留成可以被搜尋、被引用，也能重新回來閱讀的文字。</p>
 					</div>
 					<div class="recent-grid">
 						{recentPosts.map((post) => <ArticleCard post={post} variant="grid" />)}
@@ -531,7 +515,6 @@ const floatingKeywords = [
 						<p class="section-kicker">SEVEN QUESTIONS</p>
 						<h2 id="topic-heading">從哪個問題開始？</h2>
 					</div>
-					<p>不必先選邊站。挑一個你最近真正困惑的問題，從那裡開始讀。</p>
 				</div>
 				<nav class="topic-grid" aria-label="七大議題">
 					{TOPICS.map((topic, index) => (

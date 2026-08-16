@@ -2,7 +2,26 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
-## 最新交接 — 2026-08-16 by Claude（恢復富文字、數據附註、三段主題）
+## 最新交接 — 2026-08-16 by Claude（修好排序失效、精簡首頁文案）
+
+- 這次做了什麼:
+  - **修正 `/blog/` 排序在換頁後失效**：原本排序 script 寫在頁面層。swup 換頁不會重新執行頁面自己的 `<script>`，所以從導覽列點「文章」進來時監聽器根本沒掛上，點選單毫無反應；只有直接輸入網址載入才有效。已把排序邏輯搬進 `Header.astro` 的共用 shell：`applySortOrder()`／`restoreSortOrder()` 加上 document 層 `change` 事件委派（與既有 theme／search 的做法一致），並在 `handlePageView()` 還原上次選擇。
+  - 排序選項依使用者要求精簡為兩項：「最新文章」「最舊文章」，移除集數排序；`ArticleCard` 同步移除不再使用的 `data-episode-date`。
+  - 首頁移除三個區塊標題右側的說明長句（最新一集／最近的節目文章／從哪個問題開始），`.section-heading` 由雙欄 grid 改為單欄。
+  - 英文小標改為看得懂的字：`LATEST TRANSMISSION` → `LATEST EPISODE`、`RECENT STORIES` → `RECENT ARTICLES`（`SEVEN QUESTIONS` 對應七大議題，保留）；移除 hero 左下角無實際意義的裝飾字 `QUESTIONS IN ORBIT / 2026` 與其樣式。
+- 為什麼這樣做 / 重要決策:
+  - 這個 repo 有 swup 客戶端換頁，**任何需要互動的 JS 都不能只放在單一頁面的 `<script>`**，否則只有直接載入該頁才會生效。共用 shell（Header）＋事件委派是本專案既定模式，之後新增互動功能都應照這個做。
+  - 除錯過程留下的教訓：用 `new Event('change')` 測試事件委派會誤判為壞掉，因為它預設 `bubbles: false`；驗證委派時必須用 `new Event('change', { bubbles: true })`，真實使用者操作本來就會冒泡。
+- 目前狀態(能不能跑 / 有無已知問題):
+  - `npm test` 14 項通過、`npm run build` 20 頁成功、`git diff --check` 無誤。
+  - 已實測兩種進入方式：直接載入 `/blog/`、以及從首頁點導覽列「文章」（swup 換頁），排序都正確作用並記住選擇。
+  - 首頁確認：三個區塊已無說明長句、小標為 LATEST EPISODE／RECENT ARTICLES／SEVEN QUESTIONS、hero 裝飾字已移除。
+- 尚未完成 / TODO:
+  - 首頁 `index.astro` 的收聽彈窗 script 仍在頁面層。目前彈窗只出現在首頁，且首頁多為初次載入，暫時可用；若日後發現從其他頁 swup 回首頁時彈窗打不開，要用同樣方式搬進共用 shell。
+- 給下一位 agent 的建議:
+  - 新增任何需要事件監聽的前端功能前，先確認它在 swup 換頁後仍會初始化；優先放進 `Header.astro` 的 shell 並用 document 事件委派。
+
+## 前次交接 — 2026-08-16 by Claude（恢復富文字、數據附註、三段主題）
 
 - 這次做了什麼:
   - **恢復關於頁的富文字編輯**：移除上一筆的 `modes: [raw]`。改以「不使用會觸發崩潰的結構」來規避——把「兩種關鍵聲音缺席」從「編號清單＋粗體」改寫為兩個粗體標號段落（**（1）…**、**（2）…**），視覺不變但不會建立會崩潰的 list-item 節點。
