@@ -33,7 +33,7 @@ const { topic, posts } = Astro.props as Props;
 <html lang="zh-TW">
 	<head>
 		<BaseHead
-			title={`${topic.name} — ${SITE_TITLE}`}
+			title={topic.name}
 			description={`${topic.description} 閱讀《${SITE_TITLE}》相關文章。`}
 			pageKind="collection"
 			jsonLdExtra={{

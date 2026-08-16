@@ -17,6 +17,7 @@ const {
 	title,
 	description,
 	pubDate,
+	episodeDate,
 	updatedDate,
 	coverImage,
 	episode,
@@ -369,7 +370,8 @@ const topicLinks = (topics ?? [])
 				<div class="hero">
 					<h1>{title}</h1>
 					<div class="date">
-						<FormattedDate date={pubDate} />
+						<span>文章發布 <FormattedDate date={pubDate} /></span>
+						{episodeDate && <span> · 節目上線 <FormattedDate date={episodeDate} /></span>}
 						{updatedDate && <span> · 最後更新 <FormattedDate date={updatedDate} /></span>}
 					</div>
 					{guests && <p class="guests">來賓:{guests}</p>}

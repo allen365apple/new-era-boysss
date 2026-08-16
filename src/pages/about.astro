@@ -1,255 +1,198 @@
 ---
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { PODCAST_LINKS, SITE_TITLE } from '../consts';
-import { TOPICS } from '../data/topics';
+import { LISTEN_PLATFORMS } from '../data/listen-platforms';
 
-const stats = [
-	{ num: '55+', label: '已發布集數（截至 2026.04）' },
-	{ num: '222,000+', label: '累積下載（截至 2026.04）' },
-	{ num: '雙週', label: '更新頻率' },
-	{ num: '2024.02', label: '開播至今' },
-];
-
-const features = [
-	{ title: '持續學習，用生活語言聊', desc: '我們不是專家，是持續做功課的人。會去讀相關的研究、報導和不同立場的討論，再用生活化的口語聊出來——不掉書袋、不需要任何背景知識就能聽。' },
-	{ title: '多視角主持群', desc: '三男一女的主持架構，讓每集自然包含性別之間的視角碰撞，避免同溫層效應，呈現更立體的對話。' },
-	{ title: '台灣在地關懷', desc: '關注台灣脈絡下的特殊性——嘻哈圈性別論戰、男性兵役經驗與陽剛化、本地性別事件，而非移植西方框架。' },
-	{ title: '聽眾參與機制', desc: '固定的聽眾投稿單元，讓真實的男性故事持續流入節目，形成有機的群體記憶累積。' },
-];
+// 頁面文字由 /admin 的「關於節目」單頁維護，見 src/content/pages/about.md。
+const about = await getEntry('pages', 'about');
+if (!about) throw new Error('缺少 src/content/pages/about.md，關於節目頁無法產生。');
+const { Content } = await render(about);
+const { title, subtitle, description, missionTitle, statsTitle, stats, listenTitle, listenIntro } = about.data;
 ---
 
 <!doctype html>
 <html lang="zh-TW">
 	<head>
-		<BaseHead
-			title={`關於節目 — ${SITE_TITLE}`}
-			description="《新世紀直男戰士》是台灣第一個由直男視角出發、系統性探討性別平等與女性主義議題的 Podcast。我們相信，改變不是透過說教達成，而是透過理解。"
-			pageKind="about"
-		/>
+		<BaseHead title={'關於節目'} description={description} pageKind="about" />
 		<style>
 			main {
 				width: min(var(--content-width), calc(100% - 2.5rem));
 				max-width: none;
 			}
-			.eyebrow {
-				display: inline-block;
-				background: var(--accent-light);
-				color: var(--accent-dark);
-				font-size: 0.82rem;
-				font-weight: 600;
-				padding: 0.3rem 0.9rem;
-				border-radius: 999px;
-				margin-bottom: 1rem;
+			.about-hero {
+				padding-block: 1rem 2.5rem;
+				text-align: center;
 			}
-			.subtitle {
+			.about-hero h1 {
+				margin: 0 0 0.9rem;
+				font-size: clamp(1.9rem, 5vw, 2.6rem);
+			}
+			.about-hero .subtitle {
+				margin: 0;
 				color: var(--text-secondary);
-				font-size: 1.2rem;
-				margin-bottom: 2.5rem;
-				line-height: 1.7;
+				font-size: clamp(1rem, 2.4vw, 1.15rem);
+			}
+			.rule {
+				margin: 0;
+				border: 0;
+				border-top: 1px solid var(--border);
+			}
+			.about-section {
+				padding-block: 2.75rem;
+			}
+			.about-section h2 {
+				margin: 0 0 1.5rem;
+				padding: 0;
+				border: 0;
+				font-size: 1.45rem;
+				color: var(--heading-secondary);
+			}
+			.mission :global(p) {
+				margin: 0 0 1.15rem;
+				line-height: 1.9;
+			}
+			.mission :global(ol) {
+				margin: 0 0 1.15rem;
+				padding-left: 1.35rem;
+				display: grid;
+				gap: 0.65rem;
+			}
+			.mission :global(li) {
+				line-height: 1.85;
+			}
+			.mission :global(p:last-child) {
+				margin-bottom: 0;
 			}
 			.stats {
 				display: grid;
-				grid-template-columns: repeat(4, 1fr);
-				gap: 1rem;
-				margin: 2.5rem 0;
-				padding: 1.5rem 0;
-				border-top: 1px dashed var(--border);
-				border-bottom: 1px dashed var(--border);
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				gap: 1.25rem;
 			}
 			.stat {
 				text-align: center;
 			}
 			.stat .num {
-				font-size: 1.6rem;
+				font-size: clamp(1.35rem, 3.4vw, 1.7rem);
 				font-weight: 700;
 				color: var(--accent);
 				line-height: 1.2;
 			}
 			.stat .label {
-				font-size: 0.82rem;
+				margin-top: 0.35rem;
+				font-size: 0.8rem;
 				color: var(--text-muted);
-				margin-top: 0.25rem;
 			}
-			h2 {
-				margin-top: 2.8rem;
-			}
-			.feature-list {
-				display: grid;
-				gap: 1.25rem;
-				margin: 1.5rem 0;
-			}
-			.feature {
-				padding: 1.25rem 1.4rem;
-				background: var(--surface-soft);
-				border: 1px dashed var(--border-strong);
-				border-radius: var(--radius-lg);
-			}
-			.feature h3 {
-				margin: 0 0 0.4rem;
-				font-size: 1.05rem;
-			}
-			.feature p {
-				margin: 0;
-				font-size: 0.95rem;
+			.listen-intro {
+				margin: 0 0 1.25rem;
 				color: var(--text-secondary);
 			}
-			.topic-list {
+			.listen-grid {
 				display: grid;
-				gap: 0.75rem;
-				margin: 1.5rem 0;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+				gap: 0.7rem;
 			}
-			.topic-row {
-				display: grid;
-				grid-template-columns: 110px 1fr;
-				gap: 1rem;
-				padding-bottom: 0.75rem;
-				border-bottom: 1px dashed var(--border);
-				align-items: baseline;
-			}
-			.topic-row .t-name {
-				font-weight: 700;
-				color: var(--accent);
-				font-size: 0.95rem;
-			}
-			.topic-row .t-desc {
-				font-size: 0.92rem;
-				color: var(--text-secondary);
-			}
-			.hosts {
+			.listen-grid a {
 				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5rem;
-				margin: 1.25rem 0;
+				align-items: center;
+				gap: 0.8rem;
+				padding: 0.7rem 0.9rem;
+				border: 1px solid var(--border);
+				border-radius: 0.7rem;
+				color: var(--text-primary);
+				text-decoration: none;
+				transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
 			}
-			.host {
-				background: var(--accent-light);
-				color: var(--accent-dark);
-				padding: 0.4rem 1rem;
-				border-radius: 999px;
-				font-size: 0.92rem;
-				font-weight: 500;
+			.listen-grid a:hover {
+				border-color: var(--accent);
+				background: var(--surface-raised);
+				transform: translateY(-1px);
 			}
-			blockquote.vision {
-				font-size: 1.15rem;
-				font-weight: 500;
-			}
-			.listen-section {
-				margin-top: 2.5rem;
-				padding: 1.75rem;
-				background: var(--surface-soft);
-				border: 1px dashed var(--border-strong);
-				border-radius: var(--radius-lg);
-			}
-			.listen-section h2 {
-				margin-top: 0;
-				font-size: 1.15rem;
-			}
-			.listen-links {
-				display: flex;
-				gap: 0.6rem;
-				flex-wrap: wrap;
-				margin-top: 1rem;
-			}
-			.listen-links a {
+			.platform-icon {
 				display: inline-flex;
-				padding: 0.5rem 1.1rem;
-				border-radius: 999px;
-				font-weight: 600;
-				font-size: 0.85rem;
-				color: #fff;
+				width: 1.9rem;
+				height: 1.9rem;
+				flex: none;
+				align-items: center;
+				justify-content: center;
 			}
-			.btn-soundon { background: var(--platform-soundon); }
-			.btn-spotify { background: var(--platform-spotify); }
-			.btn-apple   { background: var(--platform-apple); }
-			.btn-kkbox   { background: var(--platform-kkbox); }
+			.platform-icon :global(svg) {
+				width: 100%;
+				height: 100%;
+			}
+			.platform-icon :global(img) {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 0.4rem;
+			}
+			.platform-name {
+				flex: 1;
+				font-weight: 700;
+				font-size: 0.95rem;
+			}
+			.platform-go {
+				color: var(--text-muted);
+			}
 			@media (max-width: 640px) {
-				.stats { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
-				.topic-row { grid-template-columns: 1fr; gap: 0.2rem; }
+				.stats {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					gap: 1.4rem;
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
 		<main id="main-content" class="transition-swup-fade onload-animation">
-			<span class="eyebrow">關於節目</span>
-			<h1>新世紀直男戰士</h1>
-			<p class="subtitle">
-				台灣第一個由直男視角出發、系統性探討性別平等與女性主義議題的 Podcast。
-			</p>
+			<section class="about-hero">
+				<h1>{title}</h1>
+				{subtitle && <p class="subtitle">{subtitle}</p>}
+			</section>
 
-			<div class="stats">
-				{stats.map((s) => (
-					<div class="stat">
-						<div class="num">{s.num}</div>
-						<div class="label">{s.label}</div>
-					</div>
-				))}
-			</div>
+			<hr class="rule" />
 
-			<p>
-				自 2024 年 2 月創辦以來，節目以雙週更新的頻率，截至 2026 年 4 月已累積超過 55 集內容，涵蓋男性困境、情感腳本、父權結構、性別凝視、交友文化、多元性別等核心議題。由三位直男主持人與一位直女主持人共同錄製，透過輕鬆生活化的對話，把我們讀到的觀點與自身經驗放在一起聊，讓嚴肅的性別議題得以被更廣泛地討論與理解。
-			</p>
+			<section class="about-section mission" aria-labelledby="mission-heading">
+				<h2 id="mission-heading">{missionTitle}</h2>
+				<Content />
+			</section>
 
-			<h2>為什麼台灣需要這個節目？</h2>
-			<p>
-				近年來，台灣性別議題的公共討論陷入兩極對立：一方面女性主義運動的聲量持續擴大；另一方面，部分男性群體中出現「紅藥丸」（Red Pill）等帶有強烈性別對立色彩的極端思想。這種割裂源自公共討論中兩種關鍵聲音的長期缺席——<strong>缺乏以直男視角切入的性別討論</strong>，以及<strong>缺乏真實的台灣男性情感經驗故事</strong>。
-			</p>
-			<p>
-				節目的核心信念是：<strong>改變不是透過說教達成的，而是透過理解。</strong>當男性看見自己的故事被中性地說出、被真誠地理解，才能創造出真正開放對話的空間。我們圍繞三件事努力：<strong>降低門檻</strong>、<strong>累積記憶</strong>、<strong>促進理解</strong>。
-			</p>
+			{stats.length > 0 && (
+				<>
+					<hr class="rule" />
+					<section class="about-section" aria-labelledby="stats-heading">
+						<h2 id="stats-heading">{statsTitle}</h2>
+						<div class="stats">
+							{stats.map((s) => (
+								<div class="stat">
+									<div class="num">{s.num}</div>
+									<div class="label">{s.label}</div>
+								</div>
+							))}
+						</div>
+					</section>
+				</>
+			)}
 
-			<h2>節目特色</h2>
-			<div class="feature-list">
-				{features.map((f) => (
-					<div class="feature">
-						<h3>{f.title}</h3>
-						<p>{f.desc}</p>
-					</div>
-				))}
-			</div>
+			<hr class="rule" />
 
-			<h2>我們談的議題</h2>
-			<div class="topic-list">
-				{TOPICS.map((t) => (
-					<div class="topic-row">
-						<span class="t-name">{t.name}</span>
-						<span class="t-desc">{t.description}</span>
-					</div>
-				))}
-			</div>
-
-			<h2>主持群</h2>
-			<p>三位直男主持人，加上一位直女主持人，組成三男一女的多視角陣容：</p>
-			<div class="hosts">
-				<span class="host">柏文</span>
-				<span class="host">孝成</span>
-				<span class="host">博志</span>
-				<span class="host">沁儒</span>
-			</div>
-
-			<h2>節目願景</h2>
-			<p>
-				我們相信，性別平等不是零和遊戲。當台灣的男性能更自由地表達自己的困惑、更誠實地面對自己的特權、更願意傾聽不同性別的處境，台灣社會的性別關係才能真正走向平等與自由。
-			</p>
-			<blockquote class="vision">
-				我們不強調立場對抗，而是補上被忽略的敘事——讓不同性別都能更自由地生活。
-			</blockquote>
-
-			<p>
-				本站的文章由 AI 協助整理 Podcast 逐字稿後改寫，經製作團隊審閱後發布，目的是讓這些對話被更多人看見、被 Google 找到，也讓 AI 助理在回答性別問題時能有清楚的來源。
-			</p>
-
-			<div class="listen-section">
-				<h2>在這裡收聽節目</h2>
-				<p style="margin-bottom:0;">節目於各大平台同步更新，選擇你慣用的平台訂閱：</p>
-				<div class="listen-links">
-					<a href={PODCAST_LINKS.soundon} target="_blank" rel="noopener noreferrer" class="btn-soundon scale-animation">SoundOn</a>
-					<a href={PODCAST_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="btn-spotify scale-animation">Spotify</a>
-					<a href={PODCAST_LINKS.apple} target="_blank" rel="noopener noreferrer" class="btn-apple scale-animation">Apple Podcasts</a>
+			<section class="about-section" aria-labelledby="listen-heading">
+				<h2 id="listen-heading">{listenTitle}</h2>
+				{listenIntro && <p class="listen-intro">{listenIntro}</p>}
+				<div class="listen-grid">
+					{LISTEN_PLATFORMS.map((p) => (
+						<a href={p.url} target="_blank" rel="noopener noreferrer" class="scale-animation">
+							<span class="platform-icon" style={p.color ? `color:${p.color}` : undefined}>
+								{p.icon ? <Fragment set:html={p.icon} /> : <Image src={p.img!} width={72} height={72} alt="" />}
+							</span>
+							<span class="platform-name">{p.name}</span>
+							<span class="platform-go" aria-hidden="true">↗</span>
+						</a>
+					))}
 				</div>
-			</div>
+			</section>
 		</main>
 		<Footer />
 	</body>

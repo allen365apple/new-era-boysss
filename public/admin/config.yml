@@ -52,12 +52,21 @@ collections:
         required: true
         hint: 建議 50–160 字，會顯示在 Google 搜尋結果
 
-      - label: 發布日期
+      - label: 文章發布日期
         name: pubDate
         widget: datetime
         required: true
         date_format: YYYY-MM-DD
         time_format: false
+        hint: 這篇文章在本站發布的日期
+
+      - label: 節目上線日期
+        name: episodeDate
+        widget: datetime
+        required: false
+        date_format: YYYY-MM-DD
+        time_format: false
+        hint: 該集 Podcast 在各平台上線的日期
 
       - label: 集數
         name: episode
@@ -124,3 +133,65 @@ collections:
         name: body
         widget: markdown
         required: true
+
+  - name: pages
+    label: 頁面
+    label_singular: 頁面
+    description: 網站固定頁面的文字內容，儲存後會自動重新部署。
+    files:
+      - name: about
+        label: 關於節目
+        file: src/content/pages/about.md
+        preview_path: about
+        fields:
+          - label: 標題
+            name: title
+            widget: string
+            hint: 頁面最上方的大標
+
+          - label: 副標
+            name: subtitle
+            widget: string
+            required: false
+            hint: 大標下方那一行
+
+          - label: 頁面摘要（SEO）
+            name: description
+            widget: text
+            hint: 給 Google 與分享預覽使用，不會顯示在頁面上
+
+          - label: 初衷區塊標題
+            name: missionTitle
+            widget: string
+            default: 節目初衷
+
+          - label: 數據區塊標題
+            name: statsTitle
+            widget: string
+            default: 節目數據
+
+          - label: 節目數據
+            name: stats
+            widget: list
+            required: false
+            label_singular: 一筆數據
+            summary: "{{fields.num}}｜{{fields.label}}"
+            fields:
+              - { label: 數字, name: num, widget: string, hint: 例如 55+ }
+              - { label: 說明, name: label, widget: string, hint: 例如 已發布集數 }
+
+          - label: 收聽區塊標題
+            name: listenTitle
+            widget: string
+            default: 在這裡收聽節目
+
+          - label: 收聽區塊說明
+            name: listenIntro
+            widget: string
+            required: false
+
+          - label: 節目初衷內文
+            name: body
+            widget: markdown
+            required: true
+            hint: 這段就是頁面「節目初衷」下方的文字

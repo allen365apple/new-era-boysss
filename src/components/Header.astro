@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE_TITLE } from '../consts';
+import { SITE_BRAND } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 
 const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -31,7 +31,7 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	<nav class="card-base">
 		<a href="/" class="brand btn-plain scale-animation">
 			<img src="/favicon-192x192.png" alt="" width="38" height="38" />
-			<span>{SITE_TITLE}</span>
+			<span>{SITE_BRAND}</span>
 		</a>
 		<div class="nav-right">
 			<div class="internal-links">

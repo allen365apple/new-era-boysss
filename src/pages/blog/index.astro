@@ -15,7 +15,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 <html lang="zh-TW">
 	<head>
 		<BaseHead
-			title={`所有文章 — ${SITE_TITLE}`}
+			title={'所有文章'}
 			description={`整理《${SITE_TITLE}》Podcast 對談文章，從男性困境、情感腳本到多元對話，讀懂台灣性別議題。`}
 			pageKind="collection"
 			jsonLdExtra={{
@@ -52,6 +52,31 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 			.posts {
 				margin-top: 1.5rem;
 			}
+			.list-toolbar {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				gap: 0.6rem;
+				padding-bottom: 0.9rem;
+				border-bottom: 1px solid var(--border);
+			}
+			.list-toolbar label {
+				font-size: 0.85rem;
+				color: var(--text-muted);
+			}
+			.list-toolbar select {
+				padding: 0.4rem 0.6rem;
+				border: 1px solid var(--border);
+				border-radius: 0.5rem;
+				background: var(--surface-soft);
+				color: var(--text-primary);
+				font-family: inherit;
+				font-size: 0.85rem;
+				cursor: pointer;
+			}
+			.list-toolbar select:hover {
+				border-color: var(--accent);
+			}
 		</style>
 	</head>
 	<body>
@@ -62,10 +87,61 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 				<h1>所有文章</h1>
 				<p>把 Podcast 裡那些還沒聊完的性別問題，整理成可以慢慢讀、慢慢想的文字。</p>
 			</section>
-			<section class="posts" aria-label="文章列表">
+			<div class="list-toolbar">
+				<label for="sort-order">排序</label>
+				<select id="sort-order" data-sort-order>
+					<option value="newest">最新文章在前</option>
+					<option value="oldest">最舊文章在前</option>
+					<option value="episode-newest">最新集數在前</option>
+					<option value="episode-oldest">最舊集數在前</option>
+				</select>
+			</div>
+			<section class="posts" aria-label="文章列表" data-post-list>
 				{posts.map((post) => <ArticleCard post={post} />)}
 			</section>
 		</main>
 		<Footer />
+		<script>
+			const SORT_KEY = 'blog-sort-order';
+
+			const setupSort = () => {
+				const select = document.querySelector<HTMLSelectElement>('[data-sort-order]');
+				const list = document.querySelector<HTMLElement>('[data-post-list]');
+				if (!select || !list) return;
+
+				const timeOf = (card: HTMLElement, mode: string) =>
+					Date.parse(
+						(mode.startsWith('episode') ? card.dataset.episodeDate : card.dataset.pubDate) ?? '',
+					) || 0;
+
+				const apply = (mode: string) => {
+					const cards = [...list.children] as HTMLElement[];
+					const ascending = mode.endsWith('oldest');
+					cards
+						.sort((a, b) => (ascending ? timeOf(a, mode) - timeOf(b, mode) : timeOf(b, mode) - timeOf(a, mode)))
+						.forEach((card) => list.append(card));
+				};
+
+				// 記住讀者上次選的排序，換頁回來時維持一致。
+				let saved: string | null = null;
+				try {
+					saved = localStorage.getItem(SORT_KEY);
+				} catch {}
+				if (saved && [...select.options].some((option) => option.value === saved)) {
+					select.value = saved;
+					apply(saved);
+				}
+
+				select.addEventListener('change', () => {
+					apply(select.value);
+					try {
+						localStorage.setItem(SORT_KEY, select.value);
+					} catch {}
+				});
+			};
+
+			setupSort();
+			document.addEventListener('astro:page-load', setupSort);
+		</script>
 	</body>
 </html>

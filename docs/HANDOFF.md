@@ -2,7 +2,36 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
-## 最新交接 — 2026-08-16 by Claude（首頁收聽彈窗與星空）
+## 最新交接 — 2026-08-16 by Claude（站名、關於頁 CMS 化、雙日期與排序）
+
+- 這次做了什麼:
+  - 站名改為「新世紀直男戰士｜部落格」（`SITE_TITLE`，用於分頁標題／OG／RSS）；新增 `SITE_BRAND`＝「新世紀直男戰士」給導覽列，避免品牌列過長。
+  - 修正既有的標題重複 bug：`about`／`blog`／`topics`／`topics/[topic]` 原本自行串接 `— SITE_TITLE`，而 `BaseHead` 也會再串一次，導致「關於節目 — 站名 — 站名」。現在頁面只傳純標題。
+  - **關於節目頁改為後台可編輯**：新增 `pages` content collection 與 `src/content/pages/about.md`，`about.astro` 改為讀取該檔；`public/admin/config.yml` 新增「頁面 → 關於節目」的 files 集合（含標題、副標、SEO 摘要、各區塊標題、節目數據 list、初衷內文 markdown）。
+  - 關於頁改版為使用者指定的順序：大標＋副標 → 分隔線 → 節目初衷 → 節目數據 → 收聽節目；移除舊的「節目特色／我們談的議題／主持群／節目願景」四個區塊。收聽區改用 6 平台清單。
+  - 收聽平台資料抽出成 `src/data/listen-platforms.ts`，首頁彈窗與關於頁共用，避免兩處各維護一份。
+  - **文章雙日期**：schema 新增 `episodeDate`（Podcast 上線日）。原本 `pubDate` 存的其實是節目上線日，已用 git 首次提交日回填為真正的文章發布日，並把舊值搬到 `episodeDate`（8 篇皆已轉換）。文章頁顯示「文章發布 X · 節目上線 Y」，列表卡片仍只顯示文章發布日。
+  - **文章列表新增排序**：`/blog/` 右上角下拉選單，可選最新／最舊文章、最新／最舊集數；選擇會記在 localStorage。
+  - 首頁「最新一集」改依 `episodeDate` 排序，維持 Podcast 時序（否則會變成最近整理的文章）。
+  - 首頁收聽彈窗與列表排序的 script 都改為同時在載入與 `astro:page-load` 初始化，避免 swup 換頁後失效。
+- 為什麼這樣做 / 重要決策:
+  - `pubDate` 的語意正式定為「文章在本站發布的日期」，`episodeDate` 為「該集節目上線日期」；未填 `episodeDate` 時退回 `pubDate`。RSS 與 JSON-LD `datePublished` 沿用 `pubDate`，符合各自語意。
+  - 關於頁內容改由 CMS 管理，是為了讓團隊自行修改文案，不必再改程式碼；頁面結構（區塊順序與樣式）仍在 `about.astro`。
+  - 排序採前端 DOM 重排，維持靜態網站、不需額外路由或建置。
+- 目前狀態(能不能跑 / 有無已知問題):
+  - `npm test` 14 項通過、`npm run build` 20 頁成功、`git diff --check` 無誤。
+  - 已在本機瀏覽器驗證：關於頁區塊順序與 6 平台、`/blog/` 四種排序實測正確、EP1 顯示「文章發布 2026年8月15日 · 節目上線 2024年2月18日」、分頁標題不再重複。
+  - 變更**已本機提交，尚未 push**（等使用者確認上線）。
+- 尚未完成 / TODO:
+  - 等使用者確認後 `git push origin HEAD:main`。
+  - `scripts/validate-generated-article.mjs` 的必填欄位尚未納入 `episodeDate`；自動產線寫新文章時應同時填寫兩個日期，`部落格改寫規則.md` 的 frontmatter 範本也還沒補上這個欄位。
+  - 關於頁移除的「節目特色／議題／主持群／願景」內容目前沒有其他頁面承接，如需保留要另行安排。
+- 給下一位 agent 的建議:
+  - 新增文章時 `pubDate` 填當天（文章發布日）、`episodeDate` 填該集上線日，不要再把節目日期填進 `pubDate`。
+  - 關於頁文案改在 `src/content/pages/about.md` 或 `/admin`，不要回頭把文字寫死在 `about.astro`。
+  - 頁面標題只傳純標題給 `BaseHead`，站名由 `BaseHead` 統一串接。
+
+## 前次交接 — 2026-08-16 by Claude（首頁收聽彈窗與星空）
 
 - 這次做了什麼:
   - 首頁「收聽 Podcast」按鈕從直接外連改為開啟彈出式視窗（原生 `<dialog>`），內含 6 個平台，依序：Spotify、Apple Podcasts、YouTube、KKBOX、MixerBox、SoundOn，每個都有品牌 icon。

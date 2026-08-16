@@ -1,7 +1,8 @@
 ---
 title: 努力變成「會被喜歡的男生」，為什麼還是不夠？
 description: 從《芭比》的肯與艾倫，談男生如何把自我價值放在戀愛、外表與保護者角色上，以及反抗主流時仍會遇到的矛盾。
-pubDate: 2024-05-10
+pubDate: 2026-08-16
+episodeDate: 2024-05-10
 episode: EP4
 episodeTitle: EP4：男性自我價值感、反抗傳統的矛盾和…肌肉？聊《芭比》裡的艾倫和肯尼
 listenLinks:
