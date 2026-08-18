@@ -439,6 +439,10 @@ const floatingKeywords = [
 				.hero-copy h1 {
 					font-size: clamp(1.35rem, 5.85vw, 1.55rem);
 				}
+				.hero-title-line {
+					/* 手機上解除強制不換行，避免系統字體放大時標題撐破容器、頂到邊 */
+					white-space: normal;
+				}
 			}
 			@media (prefers-reduced-motion: reduce) {
 				.keyword {
