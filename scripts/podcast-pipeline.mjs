@@ -25,6 +25,8 @@ const MODEL_PATH = process.env.PODCAST_WHISPER_MODEL ?? (existsSync(MEMO_MODEL_P
 const MODEL_URL = `https://huggingface.co/ggerganov/whisper.cpp/resolve/main/${MODEL_NAME}`;
 const MODEL_SHA1 = '55356645c2b361a969dfd0ef2c5a50d530afd8d5';
 const PUBLIC_HOSTS = '柏文、孝成、博志、沁儒';
+const GLOSSARY_PATH = join(SITE_DIR, 'docs', 'KB2_人名與專有名詞對照表.md');
+const REQUIRED_GLOSSARY_NAMES = ['柏文', '孝成', '博志', '沁儒', '吳英彰'];
 
 const rawArgs = process.argv.slice(2);
 const command = rawArgs[0] ?? 'status';
@@ -93,11 +95,35 @@ export function normalizeTranscriptText(content) {
 	const replacements = [
 		[/博文/g, '柏文'],
 		[/(?:博智|柏智)/g, '博志'],
-		[/(?:孝晨|孝誠|孝承|校成)/g, '孝成'],
-		[/新世界直男戰士/g, '新世紀直男戰士'],
+		[/(?:孝晨|孝誠|孝承|校成|夏晨)/g, '孝成'],
+		[/沁如/g, '沁儒'],
+		[/吳英章/g, '吳英彰'],
+		[/(?:新世界直男戰士|新世紀指南戰士)/g, '新世紀直男戰士'],
 		[/A{1,2}(?:智慧|智會|製)/gi, 'AA制'],
 	];
 	return replacements.reduce((result, [pattern, replacement]) => result.replace(pattern, replacement), content);
+}
+
+/**
+ * 讀取 Podcast 產線共用的人名與專有名詞對照表，並確認四位主持人與已校正的人名仍在表內。
+ */
+export async function loadGlossary() {
+	const glossary = await readFile(GLOSSARY_PATH, 'utf8');
+	const missingNames = REQUIRED_GLOSSARY_NAMES.filter((name) => !glossary.includes(name));
+	if (missingNames.length) {
+		throw new Error(`KB2 對照表缺少必要名稱：${missingNames.join('、')}（${GLOSSARY_PATH}）`);
+	}
+	return glossary;
+}
+
+function buildTranscriptionPrompt(episode, glossary) {
+	const glossaryRows = glossary
+		.split(/\r?\n/)
+		.filter((line) => line.startsWith('| **'))
+		.join('\n');
+	return `《新世紀直男戰士》Podcast，臺灣繁體中文。固定主持人是${PUBLIC_HOSTS}。\n` +
+		`以下是 KB2 人名與專有名詞對照表，請用來提高辨識準確度；只有發音與上下文都吻合時才採用正確寫法，不能把可能是真實人物或一般名詞的錯字無腦替換。\n` +
+		`${glossaryRows}\n本集標題：${episode.title}`;
 }
 
 async function exists(path) {
@@ -249,12 +275,12 @@ async function run(commandName, args) {
 	});
 }
 
-async function transcribe(episode, audio) {
+async function transcribe(episode, audio, glossary) {
 	const transcripts = await existingTranscripts();
 	if (transcripts.has(episode.episodeNumber)) return transcripts.get(episode.episodeNumber);
 	if (!(await exists(MODEL_PATH))) throw new Error(`找不到 Whisper 模型：${MODEL_PATH}\n請先執行 npm run podcast:download-model。`);
 	const basePath = transcriptBasePath(episode);
-	const prompt = `《新世紀直男戰士》Podcast，臺灣繁體中文。主持人公開暱稱可能包括${PUBLIC_HOSTS}。本集標題：${episode.title}`;
+	const prompt = buildTranscriptionPrompt(episode, glossary);
 	await run('whisper-cli', [
 		'--model', MODEL_PATH,
 		'--language', 'zh',
@@ -279,14 +305,16 @@ async function normalizeTranscript(path) {
 }
 
 async function prepareEpisode(episode) {
+	const glossary = await loadGlossary();
 	const metadata = await saveMetadata(episode);
 	const transcripts = await existingTranscripts();
 	if (transcripts.has(episode.episodeNumber)) {
-		return { episode: episode.episode, metadata, audio: null, transcript: transcripts.get(episode.episodeNumber), reusedTranscript: true };
+		const transcript = await normalizeTranscript(transcripts.get(episode.episodeNumber));
+		return { episode: episode.episode, metadata, audio: null, transcript, glossary: GLOSSARY_PATH, reusedTranscript: true };
 	}
 	const audio = await downloadAudio(episode);
-	const transcript = await transcribe(episode, audio);
-	return { episode: episode.episode, metadata, audio, transcript, reusedTranscript: false };
+	const transcript = await transcribe(episode, audio, glossary);
+	return { episode: episode.episode, metadata, audio, transcript, glossary: GLOSSARY_PATH, reusedTranscript: false };
 }
 
 async function sha1(path) {
@@ -350,6 +378,7 @@ async function main() {
 		return;
 	}
 	if (command === 'normalize') {
+		await loadGlossary();
 		const episode = episodeFromOption(await fetchEpisodes());
 		const transcripts = await existingTranscripts();
 		const transcript = transcripts.get(episode.episodeNumber);

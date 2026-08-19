@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { basename, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { loadGlossary } from './podcast-pipeline.mjs';
 
 const TOPICS = new Set(['男性困境', '情感腳本', '性別凝視', '身份認同', '在地事件', '多元對話', '聽眾互動']);
 const PUBLIC_HOSTS = new Set(['柏文', '孝成', '博志', '沁儒']);
@@ -74,6 +75,27 @@ export function inspect(content, fileName, { allowDraft = false } = {}) {
 	return { errors, warnings, textLength, headings: headings.length, quoteCount };
 }
 
+/**
+ * 從 KB2 找出文章中仍出現的可能錯字，交給人工依上下文確認。
+ */
+export function findGlossaryWarnings(content, glossary) {
+	const warnings = [];
+	for (const line of glossary.split(/\r?\n/)) {
+		if (!line.startsWith('| **')) continue;
+		const cells = line.split('|').map((cell) => cell.trim());
+		const correct = cells[1]?.replaceAll('**', '').trim();
+		const variants = cells[2]
+			?.replaceAll('**', '')
+			.split(/[、,，]/)
+			.map((variant) => variant.replace(/（.*?）|\(.*?\)/g, '').trim())
+			.filter((variant) => variant && variant !== '—' && !variant.startsWith('（')) ?? [];
+		for (const variant of variants) {
+			if (content.includes(variant)) warnings.push(`KB2 可能錯字「${variant}」；請確認是否應為「${correct}」`);
+		}
+	}
+	return [...new Set(warnings)];
+}
+
 async function main() {
 	const allowDraft = process.argv.includes('--allow-draft');
 	const files = process.argv.slice(2).filter((value) => !value.startsWith('--'));
@@ -83,9 +105,20 @@ async function main() {
 		return;
 	}
 
+	let glossary;
+	try {
+		glossary = await loadGlossary();
+	} catch (error) {
+		console.error(`KB2 對照表讀取失敗：${error.message}`);
+		process.exitCode = 1;
+		return;
+	}
+
 	let failed = false;
 	for (const file of files) {
-		const result = inspect(await readFile(file, 'utf8'), basename(file), { allowDraft });
+		const content = await readFile(file, 'utf8');
+		const result = inspect(content, basename(file), { allowDraft });
+		result.warnings.push(...findGlossaryWarnings(content, glossary));
 		console.log(`${file}：${result.errors.length ? '未通過' : '通過'}（約 ${result.textLength ?? 0} 字、${result.headings ?? 0} 節、${result.quoteCount ?? 0} 句引用）`);
 		for (const error of result.errors) console.error(`  錯誤：${error}`);
 		for (const warning of result.warnings) console.warn(`  提醒：${warning}`);

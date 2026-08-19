@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { episodeNumber, normalizeTranscriptText, parseRss } from '../scripts/podcast-pipeline.mjs';
+import { episodeNumber, loadGlossary, normalizeTranscriptText, parseRss } from '../scripts/podcast-pipeline.mjs';
 
 test('episodeNumber accepts common episode labels', () => {
 	assert.equal(episodeNumber('EP2：標題'), 2);
@@ -38,7 +38,14 @@ test('parseRss extracts and sorts downloadable episodes', () => {
 
 test('normalizeTranscriptText fixes recurring public names', () => {
 	assert.equal(
-		normalizeTranscriptText('我是博文。我是柏智。我是校成。歡迎收聽新世界直男戰士，約會要不要A智慧？'),
-		'我是柏文。我是博志。我是孝成。歡迎收聽新世紀直男戰士，約會要不要AA制？',
+		normalizeTranscriptText('我是博文。我是柏智。我是校成。我是夏晨。我是沁如。吳英章是室友。歡迎收聽新世界直男戰士和新世紀指南戰士，約會要不要A智慧？'),
+		'我是柏文。我是博志。我是孝成。我是孝成。我是沁儒。吳英彰是室友。歡迎收聽新世紀直男戰士和新世紀直男戰士，約會要不要AA制？',
 	);
+});
+
+test('podcast pipeline loads the shared KB2 glossary', async () => {
+	const glossary = await loadGlossary();
+	assert.match(glossary, /\*\*柏文\*\*/);
+	assert.match(glossary, /\*\*吳英彰\*\*/);
+	assert.match(glossary, /\*\*黃腔\*\*/);
 });

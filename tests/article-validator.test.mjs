@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { inspect } from '../scripts/validate-generated-article.mjs';
+import { findGlossaryWarnings, inspect } from '../scripts/validate-generated-article.mjs';
+import { loadGlossary } from '../scripts/podcast-pipeline.mjs';
 
 const paragraph = '約會中的體貼不能只靠既定性別規則判斷，真正需要的是先看見對方的處境，再透過詢問確認彼此是否舒服。'.repeat(3);
 
@@ -75,4 +76,10 @@ test('男性困境是固定分類，舊分類男性特權不再接受', () => {
 	assert.ok(
 		inspect(article({ topic: '男性特權' }), 'ep99.md').errors.some((error) => error.includes('不允許的議題分類')),
 	);
+});
+
+test('article validation checks the shared KB2 glossary', async () => {
+	const glossary = await loadGlossary();
+	const warnings = findGlossaryWarnings('柏文的室友吳英章出現在這段文字裡。', glossary);
+	assert.ok(warnings.some((warning) => warning.includes('吳英章')));
 });
