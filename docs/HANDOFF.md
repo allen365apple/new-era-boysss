@@ -2,6 +2,13 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-20 by Codex（修正音檔下載重試與 Whisper prompt）
+
+- 這次做了什麼：`scripts/podcast-pipeline.mjs` 的音檔下載加入 3 次有限重試（1 秒／3 秒退避），對 408／425／429／5xx 與網路例外處理；最終錯誤會保留並顯示底層 `cause`。Whisper 的 KB2 提示改成只傳正確名稱清單並限制長度，避免超過 1024 token 上限。
+- 背景：EP6 曾因 SoundOn 音檔 URL 302 轉址到 CDN 時暫時回報 `fetch failed`；重試後已成功完成本機 Memo AI Small 轉錄。EP6 音檔、metadata、SRT、JSON 均留在 repo 上層，不進 site repo。
+- 測試狀態：新增重試與 prompt 長度測試；`npm test` 18 項通過、`npm run build` 20 頁成功、`git diff --check` 通過。
+- 發布狀態：本次只修改下載器、測試與交接文件；尚未 commit／push，也未產出 EP6 文章。`site/` 目前有預期中的未提交修改，後續須先完成 EP6／EP7 文章流程或由使用者確認提交策略。
+
 ## 最新交接 — 2026-08-18 by Codex（補充圖片中的 SRT 辨識錯字）
 
 - KB2 新增：`新世紀指南戰士` → `《新世紀直男戰士》`、`夏晨` → `孝成`、`沁如` → `沁儒`；開場整句範例補上 `伐GO 歡迎來到新世紀指南戰士 我是博文／我是夏晨／我是沁如／我是博智`。
@@ -40,6 +47,7 @@
   - **去 AI 味依 `speak-human-tw`（v1.4.0）實戰補兩條規則**：`references/patterns.md` 第 12 種「不是A而是B」整篇最多一次、第 16 種不用反問句收尾整節；並清掉正文多餘破折號（第 23 種，署名的 `——` 不受限）。
   - **依新規重寫 EP2／EP3／EP4** 當對照範例：本集簡介開頭、每節 2 段、結尾 2 段融入一個概念（EP2「性別腳本」「善意的性別歧視」、EP3「男性腳本」「霸權陽剛氣質」、EP4「有毒的陽剛氣質」）、署名進引用區塊。
   - **`scripts/validate-generated-article.mjs`**：金句計數從 `^>\s+`（會把署名行與空 `>` 分隔行誤算）改為只數 `^>\s*[「『]`，署名移進引用區塊後不再誤判超量。
+  - **新增 `llms.txt`（AEO）**：建 `src/pages/llms.txt.js` endpoint，建置時自動從 blog collection 產生 `/llms.txt`（規範見 llmstxt.org），依集數排序列出全部已發布文章（標題＋描述＋絕對網址）＋收聽平台＋關於／議題／RSS。新文章發布後自動更新，零維護。輸出 `content-type: text/plain`，已本機驗證。
   - **修手機版首頁 hero 標題頂到邊**：`.hero-title-line` 原本 `white-space: nowrap`，Android 系統字體放大時「台灣第一個由直男視角出發的」整行撐破容器頂到右緣。已在 `index.astro` 的 `@media (max-width:600px)` 加上 `.hero-title-line { white-space: normal }`，讓標題在手機上可換行；實測 root 放大到 24px（約 1.5×）時 `overflowX:false`、自動換行，正常字級維持設計的兩行。
   - **標題路線＝為 SEO 改寫，並定調「關鍵字優先型」**：本回合曾試著把 8 篇 `title` 改成「節目原標題去 EPXX：前綴」，但團隊確認標題目的是 SEO（從逐字稿挑關鍵字改寫），已撤回。接著把方向定為**關鍵字優先型**（核心概念詞放句首、`[關鍵字]+[白話鉤子問句]`、≤約30全形字、全形標點、系列上下集差異化），並**重擬全 8 篇已發布文章標題**（EP1–EP5、EP48、EP49、EP64）。例：EP3「陽剛氣質一定要強大？從動漫影視看非典型男性角色」、EP48/49 差異化為「女權vs平權/女性弱勢」與「男性權益/性別困境」。規則寫進 v3.8 §6、§7。日後可接 Google Search Console 用真實搜尋詞再微調。
 - 為什麼這樣做 / 重要決策:
