@@ -50,6 +50,7 @@ export async function GET(context) {
 	lines.push('');
 
 	lines.push('## 其他頁面');
+	lines.push(`- [常見問題](${base}/faq/)：關於性別、女權、陽剛氣質與約會界線的常見問題，答案整理自各集節目並標明出處。`);
 	lines.push(`- [關於節目](${base}/about/)`);
 	lines.push(`- [議題索引](${base}/topics/)`);
 	lines.push(`- [RSS](${base}/rss.xml)`);
