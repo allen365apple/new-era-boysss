@@ -1,8 +1,11 @@
 ---
+import SocialLinks from './SocialLinks.astro';
+
 const today = new Date();
 ---
 
 <footer>
+	<SocialLinks variant="compact" label="節目社群連結" />
 	<p>&copy; {today.getFullYear()} 新世紀直男戰士</p>
 	<p class="sub">部分文章由 AI 協助整理 Podcast 內容，通過內容與敏感資訊檢查後發布</p>
 	<a class="admin-link expand-animation scale-animation" href="/admin/" target="_blank" rel="noopener noreferrer" data-astro-reload>內容管理後臺 ↗</a>
@@ -17,6 +20,9 @@ const today = new Date();
 	}
 	footer p {
 		margin: 0;
+	}
+	footer :global(.social-links) {
+		margin-bottom: 1.5rem;
 	}
 	footer .sub {
 		font-size: 0.82rem;

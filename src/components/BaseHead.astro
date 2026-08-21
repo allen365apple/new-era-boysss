@@ -8,6 +8,7 @@ import {
 	PODCAST_NAME,
 	PODCAST_HOST,
 	PODCAST_LINKS,
+	SOCIAL_LINKS,
 	GOOGLE_SITE_VERIFICATION,
 } from '../consts';
 
@@ -90,7 +91,8 @@ const siteJsonLd = !isArticle
 		url: canonicalURL.toString(),
 		inLanguage: 'zh-TW',
 		...(pageKind === 'podcast' && {
-			sameAs: Object.values(PODCAST_LINKS),
+			// 收聽平台 + 社群帳號一起列入 sameAs，協助搜尋引擎與 AI 把它們認成同一個節目實體。
+			sameAs: [...Object.values(PODCAST_LINKS), ...Object.values(SOCIAL_LINKS)],
 		}),
 		...jsonLdExtra,
 	})

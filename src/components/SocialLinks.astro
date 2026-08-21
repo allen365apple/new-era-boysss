@@ -1,0 +1,105 @@
+---
+import { SOCIAL_PLATFORMS } from '../data/social-links';
+
+interface Props {
+	/** compact 給頁尾（小圖示）；full 給關於頁（圖示 + 名稱）。 */
+	variant?: 'compact' | 'full';
+	label?: string;
+}
+
+const { variant = 'compact', label = '節目社群連結' } = Astro.props;
+---
+
+<ul class:list={['social-links', variant]} aria-label={label}>
+	{SOCIAL_PLATFORMS.map((platform) => (
+		<li>
+			<a
+				href={platform.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				style={`--brand: ${platform.color}`}
+				aria-label={`前往${platform.name}`}
+			>
+				<span class="icon" aria-hidden="true" set:html={platform.icon} />
+				{variant === 'full' && <span class="name">{platform.name}</span>}
+			</a>
+		</li>
+	))}
+</ul>
+
+<style>
+	.social-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.social-links a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--text-muted);
+		text-decoration: none;
+		transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+	}
+	.social-links a:hover,
+	.social-links a:focus-visible {
+		color: var(--brand);
+	}
+	.social-links .icon {
+		display: inline-flex;
+	}
+	.social-links :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+
+	/* 頁尾：只有圖示，圓形外框 */
+	.compact a {
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+	}
+	.compact a:hover,
+	.compact a:focus-visible {
+		border-color: var(--brand);
+		transform: translateY(-2px);
+	}
+	.compact .icon {
+		width: 1.05rem;
+		height: 1.05rem;
+	}
+
+	/* 關於頁：圖示 + 名稱，膠囊按鈕 */
+	.full a {
+		padding: 0.6rem 1.15rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		color: var(--text-primary);
+		font-size: 0.95rem;
+	}
+	.full a:hover,
+	.full a:focus-visible {
+		border-color: var(--brand);
+		color: var(--brand);
+		transform: translateY(-2px);
+	}
+	.full .icon {
+		width: 1.15rem;
+		height: 1.15rem;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.social-links a,
+		.compact a:hover,
+		.full a:hover {
+			transition: none;
+			transform: none;
+		}
+	}
+</style>

@@ -12,6 +12,14 @@ export const PODCAST_HOST = '新世紀直男戰士製作團隊';
 // 留空字串時不會輸出任何 meta，不影響其他頁面。
 export const GOOGLE_SITE_VERIFICATION = '';
 
+// 節目社群帳號，來源為官方導覽頁 https://portaly.cc/new.era.boys（2026-08-21 逐一確認可連線）。
+export const SOCIAL_LINKS = {
+	instagram: 'https://www.instagram.com/new.era.boysss/',
+	threads: 'https://www.threads.com/@new.era.boysss',
+	facebook: 'https://www.facebook.com/new.era.boysss/',
+	portaly: 'https://portaly.cc/new.era.boys',
+} as const;
+
 // 節目各平台入口，來源為官方導覽頁 https://portaly.cc/new.era.boys
 export const PODCAST_LINKS = {
 	spotify: 'https://open.spotify.com/show/1BAWRDklXg5vdIUxMoPCkr',

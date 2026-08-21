@@ -5,6 +5,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { LISTEN_PLATFORMS } from '../data/listen-platforms';
+import SocialLinks from '../components/SocialLinks.astro';
 
 // 頁面文字由 /admin 的「關於節目」單頁維護，見 src/content/pages/about.md。
 const about = await getEntry('pages', 'about');
@@ -201,6 +202,14 @@ const { title, subtitle, description, missionTitle, statsTitle, statsNote, stats
 						</a>
 					))}
 				</div>
+			</section>
+
+			<hr class="rule" />
+
+			<section class="about-section" aria-labelledby="follow-heading">
+				<h2 id="follow-heading">追蹤我們</h2>
+				<p class="listen-intro">節目之外的日常、聽眾回饋與新集預告都在這裡。歡迎來留言聊聊。</p>
+				<SocialLinks variant="full" label="節目社群連結" />
 			</section>
 		</main>
 		<Footer />
