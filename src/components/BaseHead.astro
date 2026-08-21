@@ -53,6 +53,7 @@ const articleJsonLd = isArticle
 		headline: title,
 		description,
 		image: ogImage.toString(),
+		inLanguage: 'zh-TW',
 		datePublished: pubDate?.toISOString(),
 		...(updatedDate && { dateModified: updatedDate.toISOString() }),
 		...(episode && { identifier: episode }),
