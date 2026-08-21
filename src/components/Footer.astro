@@ -10,10 +10,9 @@ const today = new Date();
 		<a href="/faq/">常見問題</a>
 		<a href="/topics/">議題索引</a>
 		<a href="/about/">關於節目</a>
+		<a href="/admin/" target="_blank" rel="noopener noreferrer" data-astro-reload>內容管理後臺</a>
 	</nav>
 	<p>&copy; {today.getFullYear()} 新世紀直男戰士</p>
-	<p class="sub">部分文章由 AI 協助整理 Podcast 內容，通過內容與敏感資訊檢查後發布</p>
-	<a class="admin-link expand-animation scale-animation" href="/admin/" target="_blank" rel="noopener noreferrer" data-astro-reload>內容管理後臺 ↗</a>
 </footer>
 <style>
 	footer {
@@ -33,35 +32,27 @@ const today = new Date();
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		gap: 0.4rem 1.1rem;
-		margin-bottom: 1.1rem;
+		align-items: center;
+		margin-bottom: 0.9rem;
 	}
 	.footer-nav a {
+		padding: 0.15rem 0;
 		color: var(--text-muted);
 		font-size: 0.85rem;
+		text-decoration: none;
+	}
+	/* 分隔線由 CSS 產生，不進無障礙朗讀 */
+	.footer-nav a:not(:last-child)::after {
+		content: '｜';
+		color: var(--border-strong, var(--border));
 		text-decoration: none;
 	}
 	.footer-nav a:hover,
 	.footer-nav a:focus-visible {
 		color: var(--text-primary);
-		text-decoration: underline;
 	}
-	footer .sub {
-		font-size: 0.82rem;
-		margin-top: 0.3rem;
-	}
-	.admin-link {
-		display: inline-flex;
-		margin-top: 1rem;
-		padding: 0.28rem 0.65rem;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		color: var(--text-muted);
-		font-size: 0.72rem;
-		letter-spacing: 0.04em;
-	}
-	.admin-link:hover {
-		color: var(--text-primary);
-		border-color: var(--border-strong);
+	.footer-nav a:hover::after,
+	.footer-nav a:focus-visible::after {
+		color: var(--border-strong, var(--border));
 	}
 </style>
