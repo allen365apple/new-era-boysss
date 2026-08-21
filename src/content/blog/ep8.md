@@ -1,7 +1,8 @@
 ---
 title: "身體界線怎麼學？從後悔裡重練親密關係"
 description: "柏文回看早期戀愛裡的身體越界、討關注、情緒外包與說教，拆解一個人如何承認做錯，練習尊重與照顧自己。"
-pubDate: 2024-07-05
+pubDate: 2026-08-21
+episodeDate: 2024-07-05
 episode: EP8
 episodeTitle: "EP8：說教、鬧脾氣、毛手毛腳…我是父權混蛋嗎？不敢回想的柏文後悔錄！／直男列傳 #1"
 listenLinks:

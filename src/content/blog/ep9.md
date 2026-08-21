@@ -1,7 +1,8 @@
 ---
 title: "政治正確有標準答案嗎？在寬容與界線間留點餘裕"
 description: "從日劇《極度不妥》的世代衝突出發，討論稱讚、男性凝視、女性主義與寬容，找出比一刀切更能開啟對話的做法。"
-pubDate: 2024-07-19
+pubDate: 2026-08-21
+episodeDate: 2024-07-19
 episode: EP9
 episodeTitle: "EP9: 不能要人加油、不能說人可愛嗎？聊《極度不妥》裡的政治正確與不正確！"
 listenLinks:

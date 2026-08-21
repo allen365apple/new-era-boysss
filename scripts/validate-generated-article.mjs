@@ -29,7 +29,7 @@ export function inspect(content, fileName, { allowDraft = false } = {}) {
 	const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
 	if (!match) return { errors: ['缺少正確的 frontmatter'], warnings };
 	const [, frontmatter, body] = match;
-	const required = ['title', 'description', 'pubDate', 'episode', 'episodeTitle', 'hosts'];
+	const required = ['title', 'description', 'pubDate', 'episodeDate', 'episode', 'episodeTitle', 'hosts'];
 	for (const key of required) if (!field(frontmatter, key)) errors.push(`缺少 ${key}`);
 	if (!allowDraft && field(frontmatter, 'draft') !== 'false') errors.push('自動產生文章必須使用 draft: false 直接發布');
 	if (field(frontmatter, 'aiGenerated') !== 'true') errors.push('aiGenerated 必須是 true');

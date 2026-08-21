@@ -17,7 +17,7 @@ Podcast 產線的共用正本是 **`docs/KB2_人名與專有名詞對照表.md`*
 2. 新集數與歷史補文使用不同佇列，避免彼此重複處理。
 3. 從 RSS 的 `enclosure` 下載 MP3 到本機。
 4. **完整讀取 `docs/KB2_人名與專有名詞對照表.md`**，把正確名稱與常見辨識錯字帶進辨識提示；再使用本機 `whisper.cpp`，優先沿用 Memo AI 已下載的 `Small` 模型轉成 SRT。EP2 已用 Large 轉完，保留既有結果、不重跑。
-5. `podcast:prepare` 成功後**不得停在素材階段**：立即讀取該集 metadata 與 SRT，依 KB2 做人名與專有名詞檢查，再依 `部落格改寫規則.md` 產生含 `---` 分隔線、文末小結、`draft: false` 的 Markdown 文章。前後收聽文案與連結由版型自動顯示。
+5. `podcast:prepare` 成功後**不得停在素材階段**：立即讀取該集 metadata 與 SRT，依 KB2 做人名與專有名詞檢查，再依 `部落格改寫規則.md` 產生含 `---` 分隔線、文末小結、`draft: false` 的 Markdown 文章。`pubDate` 填本次在台灣發布文章的日期，`episodeDate` 填 RSS `publishedAt` 轉成台灣日期；兩者不可混用。前後收聽文案與連結由版型自動顯示。
 6. 使用 `speak-human-tw` 的部落格「中」力度做第二輪校稿。自動產線採「跳過確認、事後摘要」，先保護集數、日期、KB2 已確認的專有名詞、公開暱稱、平台連結與已選定引言，再檢查 38 種 AI 痕跡、台灣用語與全形標點；摘要只留在任務紀錄，不寫進文章。
 7. 執行文章結構、公開暱稱、議題分類、事實保真與敏感資訊檢查。
 8. 同步單集封面與 SoundOn／Apple Podcasts／Spotify 連結。

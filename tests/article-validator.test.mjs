@@ -14,6 +14,7 @@ function article({ draft = false, includeConclusion = true, topic = '男性困�
 title: "測試文章"
 description: "測試文章摘要"
 pubDate: 2026-08-16
+episodeDate: 2024-08-09
 episode: EP99
 episodeTitle: "EP99：測試集數"
 hosts: "柏文、孝成、博志"
