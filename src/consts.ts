@@ -6,6 +6,12 @@ export const SITE_DESCRIPTION = '台灣第一個由直男視角出發、系統�
 export const PODCAST_NAME = '新世紀直男戰士';
 export const PODCAST_HOST = '新世紀直男戰士製作團隊';
 
+// Google Search Console 的 HTML 標記驗證碼（只填 content 值，不用整段 meta 標籤）。
+// 在 https://search.google.com/search-console 新增「網址前置字元」資源後，
+// 選「HTML 標記」會得到 <meta name="google-site-verification" content="XXXX">，把 XXXX 填在這裡。
+// 留空字串時不會輸出任何 meta，不影響其他頁面。
+export const GOOGLE_SITE_VERIFICATION = '';
+
 // 節目各平台入口，來源為官方導覽頁 https://portaly.cc/new.era.boys
 export const PODCAST_LINKS = {
 	spotify: 'https://open.spotify.com/show/1BAWRDklXg5vdIUxMoPCkr',

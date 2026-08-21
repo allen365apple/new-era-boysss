@@ -1,0 +1,124 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+// Astro 會把這頁輸出成 dist/404.html，Cloudflare Pages 會自動以 HTTP 404 提供，
+// 修正原本「不存在的網址也回 200」的軟 404 問題。
+// 順便導向最新文章，讓走錯路的讀者有地方去。
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+---
+
+<!doctype html>
+<html lang="zh-TW">
+	<head>
+		<BaseHead
+			title={'找不到這個頁面'}
+			description={'這個網址不存在或已經搬家。從這裡回首頁，或看看最新的節目文章。'}
+			pageKind="collection"
+		/>
+		<meta name="robots" content="noindex, follow" />
+		<style>
+			main {
+				width: min(var(--content-width), calc(100% - 2.5rem));
+				max-width: none;
+			}
+			.notfound {
+				padding-block: 3rem 2.5rem;
+				text-align: center;
+			}
+			.code {
+				margin: 0 0 0.75rem;
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.18em;
+				color: var(--accent-pink);
+			}
+			.notfound h1 {
+				margin: 0 0 0.9rem;
+				font-size: clamp(1.7rem, 5vw, 2.4rem);
+			}
+			.notfound p {
+				margin: 0 auto;
+				max-width: 34rem;
+				color: var(--text-secondary);
+				font-size: 1.02rem;
+				line-height: 1.75;
+			}
+			.actions {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.75rem;
+				margin-top: 2rem;
+			}
+			.actions a {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.72rem 1.4rem;
+				border: 1px solid var(--accent-pink);
+				border-radius: 999px;
+				font-size: 0.96rem;
+				font-weight: 500;
+				text-decoration: none;
+			}
+			.actions .primary {
+				background: var(--accent-pink);
+				color: #10070d;
+			}
+			.actions .secondary {
+				color: var(--text-primary);
+			}
+			.suggest {
+				padding-block: 1rem 3rem;
+			}
+			.suggest h2 {
+				margin: 0 0 1.4rem;
+				font-size: 1.15rem;
+			}
+			.suggest-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.25rem;
+			}
+			@media (max-width: 860px) {
+				.suggest-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main id="main-content">
+			<section class="notfound">
+				<p class="code">404 NOT FOUND</p>
+				<h1>找不到這個頁面</h1>
+				<p>
+					這個網址不存在，或者內容已經搬到別的地方。
+					你可以回首頁，或者從下面的文章繼續看我們怎麼聊性別。
+				</p>
+				<div class="actions">
+					<a class="primary" href="/">回首頁</a>
+					<a class="secondary" href="/blog/">所有文章</a>
+					<a class="secondary" href="/topics/">議題索引</a>
+				</div>
+			</section>
+
+			{posts.length > 0 && (
+				<section class="suggest" aria-labelledby="suggest-heading">
+					<h2 id="suggest-heading">最新文章</h2>
+					<div class="suggest-grid">
+						{posts.map((post) => <ArticleCard post={post} variant="grid" />)}
+					</div>
+				</section>
+			)}
+		</main>
+		<Footer />
+	</body>
+</html>

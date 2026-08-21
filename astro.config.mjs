@@ -22,7 +22,11 @@ export default defineConfig({
 			updateBodyClass: false,
 			globalInstance: true,
 		}),
-		sitemap(),
+		sitemap({
+			// /topics/male-privilege/ 是舊網址的 301 轉址頁，本身帶 noindex。
+			// 收進 sitemap 會讓 Search Console 報「已提交的網址標記為 noindex」，故排除。
+			filter: (page) => !page.includes('/topics/male-privilege'),
+		}),
 	],
 	fonts: [
 		{

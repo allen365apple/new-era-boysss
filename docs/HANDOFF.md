@@ -55,6 +55,33 @@
 - 使用方式:
   - 直接開啟 `故事資料庫/故事回饋.html`，逐篇填寫；按右上角「下載回饋檔」後，把下載的 JSON 傳回對話即可。
 
+## 最新交接 — 2026-08-21 by Claude（SEO/AEO 稽核＋修軟 404、GSC 欄位、sitemap）
+
+- 這次做了什麼:
+  - **修軟 404**：新增 `src/pages/404.astro`。原本專案沒有 404 頁，Cloudflare Pages 對所有不存在的網址回 **HTTP 200**（實測 `/this-page-does-not-exist`、`/blog/ep999/`、`/random-xyz` 全部 200），形成軟 404，會拖累 Google 對整站的信任。Astro 會輸出 `dist/404.html`，Cloudflare Pages 自動以 404 狀態提供。頁面套全站風格、帶 `noindex, follow`、導向首頁／所有文章／議題索引，並列出最新 3 篇。
+  - **加 Google Search Console 驗證欄位**：`src/consts.ts` 新增 `GOOGLE_SITE_VERIFICATION`（目前留空字串），`BaseHead.astro` 只在有值時輸出 `<meta name="google-site-verification">`。**待使用者從 Search Console 取得驗證碼後填入即可**。
+  - **修 sitemap 收錄 noindex 頁**：`astro.config.mjs` 的 `sitemap()` 加 `filter`，排除 `/topics/male-privilege/`（舊網址 301 轉址 stub，本身帶 `noindex`）。原本會讓 Search Console 報「已提交的網址標記為 noindex」。sitemap 由 24 → 23 個網址。
+- 重要發現（線上實測）:
+  - **網站目前完全沒被 Google 收錄**：搜節目名＋網域、搜文章獨特句（「善意的性別歧視」「走外側」）都查不到本站；排前面的是 TVBS、關鍵評論網、PanSci、udn 等高權重站。節目本身在 Apple／Castbox／Listen Notes／IG／Threads 收錄良好，只有部落格隱形。
+  - **技術面沒有東西在擋**：robots.txt 全開含 6 種 AI 爬蟲並指向 sitemap、sitemap 200、無 noindex header、首頁 0.34s。
+  - **最大結構性問題是 `.pages.dev` 網域**（在公共後綴清單上，Google 幾乎不給權重）。買自訂網域是投報率最高的動作，但需使用者付費決定，未執行。
+  - 站上**沒有** Google Search Console 驗證痕跡、**沒有**任何分析工具（GA4／Plausible 皆無）。
+  - 期間 Codex 已發布 EP6–EP9，現共 **12 篇**已發布文章；`llms.txt` 自動收錄無需手改（實測 12 筆）。
+- 完整稽核結果（尚未執行的待辦，依投報率）:
+  - **技術面高優先**：缺 `PodcastEpisode` schema（`episode`/`episodeTitle`/`listenLinks`/`hosts` 資料齊備卻沒標記，Podcast 站最大浪費）、缺 `BreadcrumbList` 與可見麵包屑、`dateModified` 全站不存在（schema 有 `updatedDate` 但 12 篇都沒填）、sitemap 無 `lastmod`、robots.txt 缺「即時檢索」bot（`OAI-SearchBot`、`ChatGPT-User`、`Claude-User`、`Claude-SearchBot` — 這幾支才決定 AI 回答時能否引用，GPTBot 只是訓練用）。
+  - **內容面高優先**：12 篇正文的 Markdown 內部連結 **總數 0**（連 EP48 結語寫「下一集…」都沒連到 EP49）；EP48／EP49 結構嚴重不符 v3.8（只有 1 個篇名式 H2、小節全降級成 H3、0 個 blockquote 金句、EP49 達 3963 字約規格 2.5 倍、無導言段）；H2 標題偏文學（EP3／EP5 各 0 個問句），對 SEO/AEO 不利。
+  - **關鍵字缺口（站上 0 覆蓋、台灣搜量高）**：兵役／當兵、家務分工、育嬰假／父職、情緒勞動、mansplaining、家暴、男性心理健康／自殺率、恐同／同志議題。另「男子氣概」是純關鍵字錯配（站上只用「陽剛氣質」）。
+  - **`topics` 有兩個分類 0 篇文章**：`在地事件`、`聽眾互動`。後者天生是 FAQ 結構，是目前 AEO 最缺的一塊。
+- 目前狀態(能不能跑 / 有無已知問題):
+  - `npm run build` 25 頁成功（20→25 是 EP6–EP9 加上 404 頁）；`dist/404.html` 產生、`robots` meta 為 `noindex, follow`；sitemap 已排除 male-privilege；GSC 留空時不輸出 meta（已驗證）。
+  - 瀏覽器實測 `/this-page-does-not-exist` 顯示自製 404 頁、樣式與導覽正常。
+- 尚未完成 / TODO:
+  - 使用者需自行：①登錄 Google Search Console 取得驗證碼交給 agent 填入 → 提交 sitemap → 用「網址檢查／要求建立索引」逐篇催收錄；②評估購買自訂網域；③社群貼文附文章連結取得外部連結。
+  - 上述稽核待辦都未執行，等使用者決定優先順序。
+- 給下一位 agent 的建議:
+  - 投報率最高且最無風險的是**補內部連結**（現在是 0），尤其 EP48 → EP49 上下集互連。
+  - 加 `PodcastEpisode` schema 不需新內容，資料已在 frontmatter。
+
 ## 最新交接 — 2026-08-17 by Claude（改寫規則升 v3.8、EP2–4 去 AI 味）
 
 - 這次做了什麼:
