@@ -1,17 +1,20 @@
 ---
-import { SOCIAL_PLATFORMS } from '../data/social-links';
+import { SOCIAL_PLATFORMS, FOOTER_PLATFORMS } from '../data/social-links';
 
 interface Props {
 	/** compact 給頁尾（小圖示）；full 給關於頁（圖示 + 名稱）。 */
 	variant?: 'compact' | 'full';
+	/** social 只有社群帳號；footer 另含 Spotify 與 Apple Podcasts。 */
+	set?: 'social' | 'footer';
 	label?: string;
 }
 
-const { variant = 'compact', label = '節目社群連結' } = Astro.props;
+const { variant = 'compact', set = 'social', label = '節目社群連結' } = Astro.props;
+const platforms = set === 'footer' ? FOOTER_PLATFORMS : SOCIAL_PLATFORMS;
 ---
 
 <ul class:list={['social-links', variant]} aria-label={label}>
-	{SOCIAL_PLATFORMS.map((platform) => (
+	{platforms.map((platform) => (
 		<li>
 			<a
 				href={platform.url}

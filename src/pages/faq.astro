@@ -75,12 +75,87 @@ const FAQS: Faq[] = [
 	},
 ];
 
+// 名詞解釋：只收節目實際用過的詞（已逐一比對 12 篇文章）。
+// 例外是「厭女」，節目本身沒有用過這個詞，答案裡直接講明，不假裝節目討論過。
+const TERMS: Faq[] = [
+	{
+		q: '什麼是女性主義？',
+		a: '節目沒有給教科書定義，而是從它想解決什麼講起。女性主義是一套看世界的視角，從爭取投票權、工作權一路發展而來，關心的是性別之間的權力怎麼分配。節目最貼近的理解是：它未必是要毀滅男性，而是在拆解同樣要求男性剛強、壓抑情感的那套框架。另一集也補了一句，女性主義是一個人看世界的其中一個視角，不會取代她所有的感受。',
+		source: { label: 'EP49 性別大辯論（下）', href: '/blog/ep49/' },
+	},
+	{
+		q: '什麼是「厭女」？',
+		a: '這個詞節目本身沒有用過，節目談的是它常被拿來對照的「厭男」。一般來說，厭女指的是把女性當成次等、或以敵意與貶抑對待女性的態度與文化；它不一定表現為公開的討厭，也可能藏在「女生就是這樣」的預設裡。節目裡最接近的討論，是性暴力與凝視的落差，以及性醜聞後果的性別不對等：同樣捲入，男性常被說成風流，女性則背上蕩婦的罵名。',
+		source: { label: 'EP48 性別大辯論（上）', href: '/blog/ep48/' },
+	},
+	{
+		q: '什麼是「父權體制」？',
+		a: '指一套把權力、資源與話語權主要交給男性的社會制度。節目特別強調它比較少被談的另一半：它不只給男性方便，也同時規定男性該長成什麼樣子。要剛強、要壓抑情感、隨時準備被丟去打仗或當成資本的燃料。',
+		source: { label: 'EP49 性別大辯論（下）', href: '/blog/ep49/' },
+	},
+	{
+		q: '什麼是「父權紅利」？',
+		a: '男性不必做任何事，光是身在這個結構裡就自動分到的方便，例如較少被騷擾、較少需要警戒。它之所以難討論，正因為當事人常常感覺不到。沒領到好處的感覺是真的，但那不代表紅利不存在，只代表它被分得很不平均，底層男性拿到的也很少。',
+		source: { label: 'EP48 性別大辯論（上）', href: '/blog/ep48/' },
+	},
+	{
+		q: '什麼是「霸權陽剛氣質」？',
+		a: '同一個社會裡，各種男子氣概並不平等，總有一種被擺在最高，其他人都拿來跟它比。具體來說，強硬、能賺錢、能保護人的樣子被放在最高位置，其他活法則顯得次一等。它不必靠強迫，光是不斷出現、不斷被稱讚，就足以讓人自動對號入座。',
+		source: { label: 'EP3 陽剛氣質一定要強大？', href: '/blog/ep3/' },
+	},
+	{
+		q: '什麼是「性別腳本」？',
+		a: '社會替不同性別預先寫好的台詞和走位。照著演不用思考就知道下一步，但久了很難分辨，自己是真的想這麼做，還是只是背得太熟。節目舉的例子包括男生走在馬路外側、搶著買單、包辦整個約會行程。',
+		source: { label: 'EP2 拆解直男體貼背後的性別腳本', href: '/blog/ep2/' },
+	},
+	{
+		q: '什麼是「情緒勞動」？',
+		a: '照顧別人情緒所付出的、看不見卻很耗人的心力。節目的例子很具體：女生提出不同意見，男生把它當成自尊受損，於是對方得先稱讚、先安撫，再小心說出真正想法。她不只要處理議題，還得額外照顧對方的情緒。另一集裡，主持人柏文也發現自己曾把所有低潮都丟給同一個人，對方承擔了大量情緒勞動。',
+		source: { label: 'EP8 身體界線怎麼學？', href: '/blog/ep8/' },
+	},
+	{
+		q: '什麼是「善意的性別歧視」？',
+		a: '用保護和禮遇當包裝的歧視，前提是先把對方當成需要被照顧的弱者。走外側、搶買單、接過對方手上的東西都不帶惡意，看起來也很體面，但正因為它看起來體面，反而比明著看不起更難察覺。',
+		source: { label: 'EP2 約會該男生買單嗎？', href: '/blog/ep2/' },
+	},
+	{
+		q: '什麼是「女權自助餐」？',
+		a: '這是網路上常見的批評說法，指責女性「好處都拿、責任不揹」：希望男性繼續負起傳統父權要求的責任，同時還要接手過去被認為屬於女生的那一份。節目把這個說法請到現場正面討論，而不是當成不能提的禁區；主持人的回應是，那些理所當然的「男人責任」，其實同樣是一種枷鎖。',
+		source: { label: 'EP48 性別大辯論（上）', href: '/blog/ep48/' },
+	},
+	{
+		q: '什麼是「紅藥丸」？',
+		a: '網路上教男性如何吸引女性的一套說法，常要求男性不要自我矮化、要掌握場面，也會把男女如何付出愛講成兩套不能重疊的規則。節目的來賓實際接觸過，他的感受是：有些話好像立刻能用，有些卻太絕對，像把複雜的人際互動切成固定答案。',
+		source: { label: 'EP7 交友軟體為何讓直男焦慮？', href: '/blog/ep7/' },
+	},
+	{
+		q: '什麼是「男性開腿」（Manspreading）？',
+		a: '指男性在座位上大幅張開雙腿、佔用鄰座空間。支持的一方訴諸生理構造，反對的一方看到的是空間權力：女性從小被教導要縮小身體、併攏雙腿，男性則被鼓勵佔據空間、展現氣概。當一個人張開腿迫使鄰座縮小自己，那個座位上重演的是「男大女小」的關係。',
+		source: { label: 'EP49 性別大辯論（下）', href: '/blog/ep49/' },
+	},
+	{
+		q: '什麼是「Not All Men」？',
+		a: '意思是「不是所有男人都這樣」，被指責時最常見的那句反駁。委屈可能是真的，但節目提醒：如果對話只停在這裡，另一邊那些反覆發生、已經累積成警戒的經驗，也很容易再次被蓋過去。',
+		source: { label: 'EP5 厭男到底在厭什麼？', href: '/blog/ep5/' },
+	},
+	{
+		q: '什麼是「凝視」？為什麼被稱讚外貌會不舒服？',
+		a: '凝視指的是把人當成被觀看、被評價的對象，而不是有自己想法的人。稱讚外貌可能讓人開心，也可能把人當成被打量的物件；差別在於有沒有夾帶評分與慾望。另一集也點出恐懼的不對稱：同樣一句性暗示，男性聽到多半只是不適，女性在公車上或職場裡聽到，往往伴隨對人身安全的擔憂。',
+		source: { label: 'EP9 政治正確有標準答案嗎？', href: '/blog/ep9/' },
+	},
+	{
+		q: '什麼是「餘裕」？',
+		a: '節目用這個詞形容一個人還剩多少力氣去理解別人。工作受挫、塞車、被主管責罵之後，人未必還有力氣理解下一個笨拙的陌生人。有精神時願意多聽一段故事很好，沒有餘裕時先保護自己也完全合理。節目也因此沒有把寬容說成人人都該履行的美德：寬容不是弱勢者的義務。',
+		source: { label: 'EP9 政治正確有標準答案嗎？', href: '/blog/ep9/' },
+	},
+];
+
 const faqJsonLd = JSON.stringify({
 	'@context': 'https://schema.org',
 	'@type': 'FAQPage',
 	'@id': `${new URL('faq/', Astro.site).toString()}#faq`,
 	inLanguage: 'zh-TW',
-	mainEntity: FAQS.map((item) => ({
+	mainEntity: [...FAQS, ...TERMS].map((item) => ({
 		'@type': 'Question',
 		name: item.q,
 		acceptedAnswer: { '@type': 'Answer', text: item.a },
@@ -127,10 +202,44 @@ const faqJsonLd = JSON.stringify({
 				border-top: 1px solid var(--border);
 				padding-top: 1.75rem;
 			}
-			.faq-item h2 {
+			.faq-item h3 {
 				margin: 0 0 0.85rem;
 				font-size: clamp(1.1rem, 2.6vw, 1.28rem);
 				line-height: 1.5;
+			}
+			.faq-jump {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.6rem;
+				padding-bottom: 2.5rem;
+			}
+			.faq-jump a {
+				padding: 0.45rem 1rem;
+				border: 1px solid var(--border);
+				border-radius: 999px;
+				color: var(--text-secondary);
+				font-size: 0.88rem;
+				text-decoration: none;
+			}
+			.faq-jump a:hover,
+			.faq-jump a:focus-visible {
+				border-color: var(--accent-pink);
+				color: var(--accent-pink);
+			}
+			.group-heading {
+				margin: 0 0 0.75rem;
+				font-size: 0.78rem;
+				font-weight: 700;
+				letter-spacing: 0.16em;
+				color: var(--accent-pink);
+				scroll-margin-top: 5rem;
+			}
+			.group-intro {
+				margin: 0 0 0.5rem;
+				color: var(--text-muted);
+				font-size: 0.92rem;
+				line-height: 1.8;
 			}
 			.faq-item p {
 				margin: 0 0 1rem;
@@ -166,15 +275,39 @@ const faqJsonLd = JSON.stringify({
 				</p>
 			</section>
 
-			<div class="faq-list">
-				{FAQS.map((item) => (
-					<article class="faq-item">
-						<h2>{item.q}</h2>
-						<p>{item.a}</p>
-						<a class="faq-source" href={item.source.href}>{item.source.label}</a>
-					</article>
-				))}
-			</div>
+			<nav class="faq-jump" aria-label="頁內快速跳轉">
+				<a href="#questions">常見問題（{FAQS.length}）</a>
+				<a href="#terms">名詞解釋（{TERMS.length}）</a>
+			</nav>
+
+			<section aria-labelledby="questions">
+				<h2 class="group-heading" id="questions">常見問題</h2>
+				<div class="faq-list">
+					{FAQS.map((item) => (
+						<article class="faq-item">
+							<h3>{item.q}</h3>
+							<p>{item.a}</p>
+							<a class="faq-source" href={item.source.href}>{item.source.label}</a>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section aria-labelledby="terms">
+				<h2 class="group-heading" id="terms">名詞解釋</h2>
+				<p class="group-intro">
+					這些是節目裡出現過的詞。性別議題的名詞常被當成標籤丟來丟去，這裡用白話解釋它們原本想講什麼。
+				</p>
+				<div class="faq-list">
+					{TERMS.map((item) => (
+						<article class="faq-item">
+							<h3>{item.q}</h3>
+							<p>{item.a}</p>
+							<a class="faq-source" href={item.source.href}>{item.source.label}</a>
+						</article>
+					))}
+				</div>
+			</section>
 		</main>
 		<Footer />
 	</body>
