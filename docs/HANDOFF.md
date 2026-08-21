@@ -2,6 +2,14 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-21 by Codex（prepare 後直接接續產文與發布）
+
+- 這次做了什麼：把 Podcast 流程明定為 `podcast:prepare` 成功後立即讀取 metadata／SRT、產生文章、逐篇驗證、同步單集連結、測試／建置、敏感資訊檢查，再 commit／push；不再停在「素材已就緒」。下載器新增公開音檔的有限重試，Whisper 提示改用精簡 KB2 名稱清單，避免提示超過模型上限。
+- 本次發布：新增 `src/content/blog/ep6.md`、`src/content/blog/ep7.md` 與對應封面；兩篇均 `draft: false`、`aiGenerated: true`，已同步 SoundOn／Apple Podcasts 連結。
+- 驗證狀態：EP6、EP7 的文章驗證通過；`npm test` 18 項通過、`npm run build` 成功、`git diff --check` 通過；文章文字敏感資訊掃描乾淨。音檔、SRT、metadata、模型均留在 repo 外。
+- 人工確認：EP6 開場 SRT 出現無法可靠確認的「Ariel／笑真」；EP7 來賓正式寫法以「小P」為待確認項目。文章未猜測不確定主持人署名，只使用公開暱稱。
+- 提交狀態：流程修正 commit `e1a4b62`、文章發布 commit `61b55de` 已建立；本次交接文件待一併提交，之後推送 `origin HEAD:main`。
+
 ## 最新交接 — 2026-08-20 by Codex（修正音檔下載重試與 Whisper prompt）
 
 - 這次做了什麼：`scripts/podcast-pipeline.mjs` 的音檔下載加入 3 次有限重試（1 秒／3 秒退避），對 408／425／429／5xx 與網路例外處理；最終錯誤會保留並顯示底層 `cause`。Whisper 的 KB2 提示改成只傳正確名稱清單並限制長度，避免超過 1024 token 上限。
