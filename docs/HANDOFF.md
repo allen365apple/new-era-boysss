@@ -67,6 +67,11 @@
   - **最大結構性問題是 `.pages.dev` 網域**（在公共後綴清單上，Google 幾乎不給權重）。買自訂網域是投報率最高的動作，但需使用者付費決定，未執行。
   - 站上**沒有** Google Search Console 驗證痕跡、**沒有**任何分析工具（GA4／Plausible 皆無）。
   - 期間 Codex 已發布 EP6–EP9，現共 **12 篇**已發布文章；`llms.txt` 自動收錄無需手改（實測 12 筆）。
+- **本回合後續已完成（承上稽核）**:
+  - **Google Search Console 驗證成功**：使用者選「HTML 檔案上傳」法，驗證檔放在 `public/googled0126dcd9d5a177d.html`（此檔不可修改或刪除，否則會失去驗證）。注意 Cloudflare Pages 會把 `/xxx.html` 308 轉址到 `/xxx`，Google 仍成功跟隨轉址驗證通過。`consts.ts` 的 `GOOGLE_SITE_VERIFICATION` 保留為備用的 meta 標記法（目前留空、不輸出）。
+  - **robots.txt 大幅更新**：補上決定「AI 回答時能否即時引用本站」的爬蟲 `OAI-SearchBot`、`ChatGPT-User`、`Claude-SearchBot`、`Claude-User`、`Perplexity-User`，以及 `Applebot`／`Applebot-Extended`、`meta-externalagent`；移除已停用的 `Anthropic-AI`；註記 llms.txt 位置。原本只開放訓練用爬蟲（GPTBot 等），是 AEO 的關鍵漏洞。
+  - **加入 `PodcastEpisode` 與 `BreadcrumbList` 結構化資料**（`BlogPost.astro`）：PodcastEpisode 含 `episodeNumber`、`datePublished`（優先用 episodeDate）、主持人／來賓以 `、` 拆成 Person 陣列、SoundOn 單集音檔當 `associatedMedia`、`partOfSeries` 串到節目與六大平台、`subjectOf` 指回 BlogPosting。BreadcrumbList 為「首頁 › 所有文章 › 本篇」。BaseHead 的 BlogPosting 補 `inLanguage: zh-TW`。已驗證 12/12 篇三種 schema 齊全且 JSON 合法。
+  - **12 篇加入 24 條內部連結**（原本總數 0）：每篇 2 條，自然嵌在既有句子、錨點含關鍵字，未新增段落、未動 frontmatter 與 blockquote 引言。EP48 ⇄ EP49 上下集互連已補。已驗證無自連、無死連結、無孤島頁。改動前備份在 `_archive/2026-08-21/blog-before-internal-links/`。
 - 完整稽核結果（尚未執行的待辦，依投報率）:
   - **技術面高優先**：缺 `PodcastEpisode` schema（`episode`/`episodeTitle`/`listenLinks`/`hosts` 資料齊備卻沒標記，Podcast 站最大浪費）、缺 `BreadcrumbList` 與可見麵包屑、`dateModified` 全站不存在（schema 有 `updatedDate` 但 12 篇都沒填）、sitemap 無 `lastmod`、robots.txt 缺「即時檢索」bot（`OAI-SearchBot`、`ChatGPT-User`、`Claude-User`、`Claude-SearchBot` — 這幾支才決定 AI 回答時能否引用，GPTBot 只是訓練用）。
   - **內容面高優先**：12 篇正文的 Markdown 內部連結 **總數 0**（連 EP48 結語寫「下一集…」都沒連到 EP49）；EP48／EP49 結構嚴重不符 v3.8（只有 1 個篇名式 H2、小節全降級成 H3、0 個 blockquote 金句、EP49 達 3963 字約規格 2.5 倍、無導言段）；H2 標題偏文學（EP3／EP5 各 0 個問句），對 SEO/AEO 不利。
