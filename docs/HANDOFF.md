@@ -72,6 +72,10 @@
   - **robots.txt 大幅更新**：補上決定「AI 回答時能否即時引用本站」的爬蟲 `OAI-SearchBot`、`ChatGPT-User`、`Claude-SearchBot`、`Claude-User`、`Perplexity-User`，以及 `Applebot`／`Applebot-Extended`、`meta-externalagent`；移除已停用的 `Anthropic-AI`；註記 llms.txt 位置。原本只開放訓練用爬蟲（GPTBot 等），是 AEO 的關鍵漏洞。
   - **加入 `PodcastEpisode` 與 `BreadcrumbList` 結構化資料**（`BlogPost.astro`）：PodcastEpisode 含 `episodeNumber`、`datePublished`（優先用 episodeDate）、主持人／來賓以 `、` 拆成 Person 陣列、SoundOn 單集音檔當 `associatedMedia`、`partOfSeries` 串到節目與六大平台、`subjectOf` 指回 BlogPosting。BreadcrumbList 為「首頁 › 所有文章 › 本篇」。BaseHead 的 BlogPosting 補 `inLanguage: zh-TW`。已驗證 12/12 篇三種 schema 齊全且 JSON 合法。
   - **12 篇加入 24 條內部連結**（原本總數 0）：每篇 2 條，自然嵌在既有句子、錨點含關鍵字，未新增段落、未動 frontmatter 與 blockquote 引言。EP48 ⇄ EP49 上下集互連已補。已驗證無自連、無死連結、無孤島頁。改動前備份在 `_archive/2026-08-21/blog-before-internal-links/`。
+  - **EP48／EP49 依 v3.8 重構完成**：拆掉篇名式 H2、H3 升 H2 並改問句、補本集簡介開頭、12 處粗體引句改為正式引用框（各挑 3–4 句，歸屬不明確者不署名）、EP48 2288→1541 字／EP49 3445→1700 字、清掉 EP49 髒空格、EP48 補「女權自助餐」定義、補 `guests: 志豪` 與第三個 topic。
+  - **EP3／EP5 小標全改問句**（原本各 0 個問句），並補關鍵字與定義：EP3「男子氣概」（站上原本 0 次）、EP5「Not All Men」「mansplaining」「情緒勞動」、EP64「跟蹤騷擾」＋《跟蹤騷擾防制法》。EP1 單段小節拆兩段。
+  - **12/12 篇 `validate:article` 首次全數通過**。備份在 `_archive/2026-08-21/blog-before-restructure/`。
+  - Google Search Console 的 sitemap 一度顯示「無法擷取」：已逐項實測（HTTP 200、`application/xml`、XML 合法含 23 網址、Googlebot UA 也回 200），且「上次讀取時間」為空，判定為 Google 尚未實際抓取的正常現象，不需重複提交。
 - 完整稽核結果（尚未執行的待辦，依投報率）:
   - **技術面高優先**：缺 `PodcastEpisode` schema（`episode`/`episodeTitle`/`listenLinks`/`hosts` 資料齊備卻沒標記，Podcast 站最大浪費）、缺 `BreadcrumbList` 與可見麵包屑、`dateModified` 全站不存在（schema 有 `updatedDate` 但 12 篇都沒填）、sitemap 無 `lastmod`、robots.txt 缺「即時檢索」bot（`OAI-SearchBot`、`ChatGPT-User`、`Claude-User`、`Claude-SearchBot` — 這幾支才決定 AI 回答時能否引用，GPTBot 只是訓練用）。
   - **內容面高優先**：12 篇正文的 Markdown 內部連結 **總數 0**（連 EP48 結語寫「下一集…」都沒連到 EP49）；EP48／EP49 結構嚴重不符 v3.8（只有 1 個篇名式 H2、小節全降級成 H3、0 個 blockquote 金句、EP49 達 3963 字約規格 2.5 倍、無導言段）；H2 標題偏文學（EP3／EP5 各 0 個問句），對 SEO/AEO 不利。
