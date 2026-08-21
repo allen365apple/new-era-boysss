@@ -7,7 +7,7 @@
 - 問題：EP6～EP9 初次補文時把 RSS `publishedAt` 填進 `pubDate`，導致文章頁顯示 2024 年的節目上線日，沒有反映本次 2026-08-21 的本站發布日。
 - 修正：EP6～EP9 的 `pubDate` 已改為 `2026-08-21`；`episodeDate` 分別保留 RSS 轉台灣日期的 `2024-06-07`、`2024-06-21`、`2024-07-05`、`2024-07-19`。網站的雙日期語意重新寫入規則、Podcast 流程與系統架構。
 - 防呆：文章驗證器現在要求新文章必填 `episodeDate`；排程提示已明確要求 `pubDate` 使用本次台灣發布日，`episodeDate` 使用 RSS `publishedAt` 的台灣日期。
-- 驗證狀態：EP6～EP9 逐篇通過 `validate:article`；`npm test` 18 項通過、`npm run build` 24 頁成功、`git diff --check` 通過；同步工具確認沒有其他文章被改動。
+- 驗證狀態：EP6～EP9 逐篇通過 `validate:article`；`npm test` 18 項通過、`npm run build` 24 頁成功、`git diff --check` 通過；同步工具確認沒有其他文章被改動。修正 commit `963dff2` 已推送至 `origin/main`。
 
 ## 最新交接 — 2026-08-21 by Codex（prepare 後直接接續產文與發布）
 
