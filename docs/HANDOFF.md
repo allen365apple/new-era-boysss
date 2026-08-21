@@ -76,6 +76,8 @@
   - **EP3／EP5 小標全改問句**（原本各 0 個問句），並補關鍵字與定義：EP3「男子氣概」（站上原本 0 次）、EP5「Not All Men」「mansplaining」「情緒勞動」、EP64「跟蹤騷擾」＋《跟蹤騷擾防制法》。EP1 單段小節拆兩段。
   - **12/12 篇 `validate:article` 首次全數通過**。備份在 `_archive/2026-08-21/blog-before-restructure/`。
   - Google Search Console 的 sitemap 一度顯示「無法擷取」：已逐項實測（HTTP 200、`application/xml`、XML 合法含 23 網址、Googlebot UA 也回 200），且「上次讀取時間」為空，判定為 Google 尚未實際抓取的正常現象，不需重複提交。
+  - **社群連結**：新增 `SOCIAL_LINKS`（Instagram／Threads／Facebook／Portaly，來源官方導覽頁，已逐一確認可連線）與共用元件 `SocialLinks.astro`（compact 給頁尾、full 給關於頁），logo 用 Simple Icons 官方路徑。首頁 `PodcastSeries` 的 `sameAs` 併入社群共 10 筆，協助實體整合。頁尾另加導覽（常見問題／議題索引／關於節目）。
+  - **新增 `/faq/` 常見問題頁 + FAQPage 結構化資料**（12 題）：補上稽核指出的 AEO 最大缺口。**刻意不寫成「聽眾來信 Q&A」**——手上沒有真實聽眾提問，不編造；每題都是節目實際談過的內容，答案標明出自哪一集並連回文章（共連向 9 篇）。若要做真正的「聽眾互動」分類文章，需使用者提供真實的聽眾提問（Portaly 上有意見表單、IG 私訊）。
 - 完整稽核結果（尚未執行的待辦，依投報率）:
   - **技術面高優先**：缺 `PodcastEpisode` schema（`episode`/`episodeTitle`/`listenLinks`/`hosts` 資料齊備卻沒標記，Podcast 站最大浪費）、缺 `BreadcrumbList` 與可見麵包屑、`dateModified` 全站不存在（schema 有 `updatedDate` 但 12 篇都沒填）、sitemap 無 `lastmod`、robots.txt 缺「即時檢索」bot（`OAI-SearchBot`、`ChatGPT-User`、`Claude-User`、`Claude-SearchBot` — 這幾支才決定 AI 回答時能否引用，GPTBot 只是訓練用）。
   - **內容面高優先**：12 篇正文的 Markdown 內部連結 **總數 0**（連 EP48 結語寫「下一集…」都沒連到 EP49）；EP48／EP49 結構嚴重不符 v3.8（只有 1 個篇名式 H2、小節全降級成 H3、0 個 blockquote 金句、EP49 達 3963 字約規格 2.5 倍、無導言段）；H2 標題偏文學（EP3／EP5 各 0 個問句），對 SEO/AEO 不利。
