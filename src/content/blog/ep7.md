@@ -8,6 +8,7 @@ episodeTitle: "EP7：我真的這麼糟嗎...？直男玩交友軟體，從低�
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/d3872a39-5e39-43e2-87d4-f7d381f8c499
   apple: https://podcasts.apple.com/tw/podcast/ep7-%E6%88%91%E7%9C%9F%E7%9A%84%E9%80%99%E9%BA%BC%E7%B3%9F%E5%97%8E-%E7%9B%B4%E7%94%B7%E7%8E%A9%E4%BA%A4%E5%8F%8B%E8%BB%9F%E9%AB%94-%E5%BE%9E%E4%BD%8E%E8%B0%B7%E5%88%B0%E4%B8%8A%E5%B2%B8%E7%9A%84%E5%BF%83%E8%B7%AF%E6%AD%B7%E7%A8%8B/id1732062544?i=1000659705701&uo=4
+  spotify: https://open.spotify.com/episode/7I0Kdr3sznr95qQCLaQvM0
 hosts: "柏文、博志"
 guests: "阿澤、小P"
 topics:

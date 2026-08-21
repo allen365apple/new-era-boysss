@@ -8,6 +8,7 @@ episodeTitle: "EP6：父權社會收買我？聊《男孩危機》裡，男性�
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/47e69c66-d914-4cc5-9c23-d9ac7d859b1b
   apple: https://podcasts.apple.com/tw/podcast/ep6-%E7%88%B6%E6%AC%8A%E7%A4%BE%E6%9C%83%E6%94%B6%E8%B2%B7%E6%88%91-%E8%81%8A-%E7%94%B7%E5%AD%A9%E5%8D%B1%E6%A9%9F-%E8%A3%A1-%E7%94%B7%E6%80%A7%E7%9A%84%E5%A4%B1%E8%90%BD%E8%88%87%E8%84%86%E5%BC%B1/id1732062544?i=1000658123516&uo=4
+  spotify: https://open.spotify.com/episode/2hSXJ5wtdNbpjfkIuGO3X9
 hosts: "柏文、孝成、博志、沁儒"
 topics:
   - 男性困境

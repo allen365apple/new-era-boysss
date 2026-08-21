@@ -7,6 +7,7 @@ episodeTitle: "EP8：說教、鬧脾氣、毛手毛腳…我是父權混蛋嗎�
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/c6890a1f-8a67-4ed6-a5f0-e37ea7355aff
   apple: https://podcasts.apple.com/tw/podcast/ep8-%E8%AA%AA%E6%95%99-%E9%AC%A7%E8%84%BE%E6%B0%A3-%E6%AF%9B%E6%89%8B%E6%AF%9B%E8%85%B3-%E6%88%91%E6%98%AF%E7%88%B6%E6%AC%8A%E6%B7%B7%E8%9B%8B%E5%97%8E-%E4%B8%8D%E6%95%A2%E5%9B%9E%E6%83%B3%E7%9A%84%E6%9F%8F%E6%96%87%E5%BE%8C%E6%82%94%E9%8C%84-%E7%9B%B4%E7%94%B7%E5%88%97%E5%82%B3-1/id1732062544?i=1000661199298&uo=4
+  spotify: https://open.spotify.com/episode/6SRKkRyWQwOnfEsmaTMKmJ
 hosts: "柏文、孝成、博志、沁儒"
 topics:
   - 男性困境

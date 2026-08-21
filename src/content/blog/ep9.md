@@ -7,6 +7,7 @@ episodeTitle: "EP9: 不能要人加油、不能說人可愛嗎？聊《極度不
 listenLinks:
   soundon: https://player.soundon.fm/p/77af8789-ee40-4dd4-94b9-35c32ed1a46a/episodes/bc9ae7f8-b17e-4164-9168-90acec00a612
   apple: https://podcasts.apple.com/tw/podcast/ep9-%E4%B8%8D%E8%83%BD%E8%A6%81%E4%BA%BA%E5%8A%A0%E6%B2%B9-%E4%B8%8D%E8%83%BD%E8%AA%AA%E4%BA%BA%E5%8F%AF%E6%84%9B%E5%97%8E-%E8%81%8A-%E6%A5%B5%E5%BA%A6%E4%B8%8D%E5%A6%A5-%E8%A3%A1%E7%9A%84%E6%94%BF%E6%B2%BB%E6%AD%A3%E7%A2%BA%E8%88%87%E4%B8%8D%E6%AD%A3%E7%A2%BA/id1732062544?i=1000662660497&uo=4
+  spotify: https://open.spotify.com/episode/6njTZ5FbcYlf5osRqBDK12
 hosts: "柏文、孝成、博志、沁儒"
 topics:
   - 多元對話
