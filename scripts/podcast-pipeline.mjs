@@ -25,6 +25,9 @@ const MODEL_PATH = process.env.PODCAST_WHISPER_MODEL ?? (existsSync(MEMO_MODEL_P
 const MODEL_URL = `https://huggingface.co/ggerganov/whisper.cpp/resolve/main/${MODEL_NAME}`;
 const MODEL_SHA1 = '55356645c2b361a969dfd0ef2c5a50d530afd8d5';
 const PUBLIC_HOSTS = '柏文、孝成、博志、沁儒';
+const AUDIO_FETCH_ATTEMPTS = 3;
+const AUDIO_FETCH_DELAYS_MS = [1000, 3000];
+const WHISPER_PROMPT_TERM_LIMIT = 1000;
 const GLOSSARY_PATH = join(SITE_DIR, 'docs', 'KB2_人名與專有名詞對照表.md');
 const REQUIRED_GLOSSARY_NAMES = ['柏文', '孝成', '博志', '沁儒', '吳英彰'];
 
@@ -116,14 +119,26 @@ export async function loadGlossary() {
 	return glossary;
 }
 
-function buildTranscriptionPrompt(episode, glossary) {
-	const glossaryRows = glossary
+/**
+ * 以精簡後的 KB2 正確名稱建立 Whisper 提示，避免超過模型的 prompt 上限。
+ */
+export function buildTranscriptionPrompt(episode, glossary) {
+	const terms = glossary
 		.split(/\r?\n/)
 		.filter((line) => line.startsWith('| **'))
-		.join('\n');
+		.map((line) => line.split('|')[1]?.replaceAll('**', '').trim())
+		.filter(Boolean);
+	const selectedTerms = [];
+	let termLength = 0;
+	for (const term of terms) {
+		const nextLength = termLength + term.length + (selectedTerms.length ? 1 : 0);
+		if (nextLength > WHISPER_PROMPT_TERM_LIMIT) break;
+		selectedTerms.push(term);
+		termLength = nextLength;
+	}
 	return `《新世紀直男戰士》Podcast，臺灣繁體中文。固定主持人是${PUBLIC_HOSTS}。\n` +
-		`以下是 KB2 人名與專有名詞對照表，請用來提高辨識準確度；只有發音與上下文都吻合時才採用正確寫法，不能把可能是真實人物或一般名詞的錯字無腦替換。\n` +
-		`${glossaryRows}\n本集標題：${episode.title}`;
+		`請優先辨識以下 KB2 已確認的人名與專有名詞；只有發音與上下文都吻合時才採用，不能無腦替換。\n` +
+		`正確名稱：${selectedTerms.join('、')}\n本集標題：${episode.title}`;
 }
 
 async function exists(path) {
@@ -141,6 +156,40 @@ async function fetchEpisodes() {
 	const episodes = parseRss(await response.text());
 	if (!episodes.length) throw new Error('RSS 中找不到含音檔的單集。');
 	return episodes;
+}
+
+function isRetryableStatus(status) {
+	return status === 408 || status === 425 || status === 429 || status >= 500;
+}
+
+function wait(milliseconds) {
+	return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+/**
+ * 對可能短暫失敗的公開來源做有限次重試，並保留最後一次底層錯誤。
+ */
+export async function fetchWithRetry(url, options = {}, config = {}) {
+	const attempts = config.attempts ?? AUDIO_FETCH_ATTEMPTS;
+	const delays = config.delays ?? AUDIO_FETCH_DELAYS_MS;
+	const fetchImpl = config.fetchImpl ?? fetch;
+	const waitImpl = config.waitImpl ?? wait;
+	let lastError;
+	for (let attempt = 1; attempt <= attempts; attempt += 1) {
+		try {
+			const response = await fetchImpl(url, options);
+			if (!isRetryableStatus(response.status) || attempt === attempts) return response;
+			await response.body?.cancel();
+			lastError = new Error(`HTTP ${response.status} ${response.statusText}`.trim());
+		} catch (error) {
+			lastError = error;
+			if (attempt === attempts) {
+				throw new Error(`fetch failed after ${attempts} attempts`, { cause: error });
+			}
+		}
+		await waitImpl(delays[Math.min(attempt - 1, delays.length - 1)] ?? 0);
+	}
+	throw new Error(`fetch failed after ${attempts} attempts`, { cause: lastError });
 }
 
 async function existingArticleNumbers() {
@@ -253,7 +302,7 @@ async function downloadAudio(episode) {
 	}
 	const temporary = `${destination}.download`;
 	if (await exists(temporary)) throw new Error(`${temporary} 是先前未完成的下載，請先移到可刪除封存後再重試。`);
-	const response = await fetch(episode.audioUrl);
+	const response = await fetchWithRetry(episode.audioUrl);
 	if (!response.ok || !response.body) throw new Error(`音檔下載失敗：${response.status} ${response.statusText}`);
 	const contentType = response.headers.get('content-type') ?? '';
 	if (!contentType.includes('audio') && !contentType.includes('octet-stream')) {
@@ -392,7 +441,8 @@ async function main() {
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
 if (isMain) {
 	main().catch((error) => {
-		console.error(`Podcast 自動化失敗：${error.message}`);
+		const cause = error.cause instanceof Error ? `；底層原因：${error.cause.message}` : '';
+		console.error(`Podcast 自動化失敗：${error.message}${cause}`);
 		process.exitCode = 1;
 	});
 }

@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { episodeNumber, loadGlossary, normalizeTranscriptText, parseRss } from '../scripts/podcast-pipeline.mjs';
+import {
+	episodeNumber,
+	fetchWithRetry,
+	buildTranscriptionPrompt,
+	loadGlossary,
+	normalizeTranscriptText,
+	parseRss,
+} from '../scripts/podcast-pipeline.mjs';
 
 test('episodeNumber accepts common episode labels', () => {
 	assert.equal(episodeNumber('EP2：標題'), 2);
@@ -48,4 +55,30 @@ test('podcast pipeline loads the shared KB2 glossary', async () => {
 	assert.match(glossary, /\*\*柏文\*\*/);
 	assert.match(glossary, /\*\*吳英彰\*\*/);
 	assert.match(glossary, /\*\*黃腔\*\*/);
+});
+
+test('fetchWithRetry retries transient network failures', async () => {
+	let calls = 0;
+	const response = await fetchWithRetry('https://example.com/audio.mp3', {}, {
+		attempts: 3,
+		delays: [0, 0],
+		fetchImpl: async () => {
+			calls += 1;
+			if (calls < 3) throw new TypeError('temporary connection failure');
+			return new Response('ok', { status: 200 });
+		},
+		waitImpl: async () => {},
+	});
+	assert.equal(response.status, 200);
+	assert.equal(calls, 3);
+});
+
+test('transcription prompt stays compact while keeping confirmed names', async () => {
+	const glossary = await loadGlossary();
+	const prompt = buildTranscriptionPrompt({ title: 'EP6：男孩危機' }, glossary);
+	assert.ok(prompt.length < 1800);
+	assert.match(prompt, /柏文/);
+	assert.match(prompt, /孝成/);
+	assert.match(prompt, /博志/);
+	assert.match(prompt, /沁儒/);
 });
