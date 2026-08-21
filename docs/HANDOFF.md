@@ -8,7 +8,7 @@
 - 本次發布：新增 `src/content/blog/ep6.md`、`src/content/blog/ep7.md` 與對應封面；兩篇均 `draft: false`、`aiGenerated: true`，已同步 SoundOn／Apple Podcasts 連結。
 - 驗證狀態：EP6、EP7 的文章驗證通過；`npm test` 18 項通過、`npm run build` 成功、`git diff --check` 通過；文章文字敏感資訊掃描乾淨。音檔、SRT、metadata、模型均留在 repo 外。
 - 人工確認：EP6 開場 SRT 出現無法可靠確認的「Ariel／笑真」；EP7 來賓正式寫法以「小P」為待確認項目。文章未猜測不確定主持人署名，只使用公開暱稱。
-- 提交狀態：流程修正 commit `e1a4b62`、文章發布 commit `61b55de` 已建立；本次交接文件待一併提交，之後推送 `origin HEAD:main`。
+- 提交狀態：流程修正 commit `e1a4b62`、文章發布 commit `61b55de`、交接文件 commit `2c03d9c` 已建立並推送至 `origin/main`。
 
 ## 最新交接 — 2026-08-20 by Codex（修正音檔下載重試與 Whisper prompt）
 
