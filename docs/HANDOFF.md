@@ -2,6 +2,13 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-23 by Codex（保存 2026-08-21 改版前備份）
+
+- 這次做了什麼：確認 `_archive/2026-08-21/` 是 SEO／內部連結與文章重構前的本機備份，包含 18 份已公開文章舊版，以及 `Footer.astro.bak`、`faq.astro.bak`，總計約 192 KB；依使用者指示納入版本控制。
+- 安全檢查：未發現 API 金鑰、Token、Email、電話、地址、成員真實姓名、內部 URL、客戶資訊、音檔、逐字稿或 metadata；檔案中的網址只有公開 Podcast 平台連結與 Schema.org。
+- 驗證狀態：封存檔不參與 Astro 建置；提交前仍執行 `git diff --check`、`npm test` 與 `npm run build`。
+- 提交狀態：本次建立獨立 `chore(archive)` commit，不混入 Podcast 歷史補文文章提交；是否 push 另依使用者指示。
+
 ## 最新交接 — 2026-08-21 by Codex（修正文章發布日與單集上線日混用）
 
 - 問題：EP6～EP9 初次補文時把 RSS `publishedAt` 填進 `pubDate`，導致文章頁顯示 2024 年的節目上線日，沒有反映本次 2026-08-21 的本站發布日。

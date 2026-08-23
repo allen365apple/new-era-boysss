@@ -1,0 +1,67 @@
+---
+import SocialLinks from './SocialLinks.astro';
+
+const today = new Date();
+---
+
+<footer>
+	<SocialLinks variant="compact" set="footer" label="節目社群與收聽平台連結" />
+	<nav class="footer-nav" aria-label="頁尾導覽">
+		<a href="/faq/">常見問題</a>
+		<a href="/topics/">議題索引</a>
+		<a href="/about/">關於節目</a>
+	</nav>
+	<p>&copy; {today.getFullYear()} 新世紀直男戰士</p>
+	<p class="sub">部分文章由 AI 協助整理 Podcast 內容，通過內容與敏感資訊檢查後發布</p>
+	<a class="admin-link expand-animation scale-animation" href="/admin/" target="_blank" rel="noopener noreferrer" data-astro-reload>內容管理後臺 ↗</a>
+</footer>
+<style>
+	footer {
+		border-top: 1px solid var(--border);
+		padding: 2.5rem 1.25rem;
+		text-align: center;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+	}
+	footer p {
+		margin: 0;
+	}
+	footer :global(.social-links) {
+		margin-bottom: 1.5rem;
+	}
+	.footer-nav {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.4rem 1.1rem;
+		margin-bottom: 1.1rem;
+	}
+	.footer-nav a {
+		color: var(--text-muted);
+		font-size: 0.85rem;
+		text-decoration: none;
+	}
+	.footer-nav a:hover,
+	.footer-nav a:focus-visible {
+		color: var(--text-primary);
+		text-decoration: underline;
+	}
+	footer .sub {
+		font-size: 0.82rem;
+		margin-top: 0.3rem;
+	}
+	.admin-link {
+		display: inline-flex;
+		margin-top: 1rem;
+		padding: 0.28rem 0.65rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		color: var(--text-muted);
+		font-size: 0.72rem;
+		letter-spacing: 0.04em;
+	}
+	.admin-link:hover {
+		color: var(--text-primary);
+		border-color: var(--border-strong);
+	}
+</style>
