@@ -2,6 +2,14 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-23 by Codex（EP10／EP11 歷史補文）
+
+- 本次發布：依歷史佇列完成 EP10、EP11；兩集均以 Memo AI Small 本機模型轉錄，音檔、SRT、JSON、metadata、模型與 state 留在 repo 外。新增 `src/content/blog/ep10.md`、`src/content/blog/ep11.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
+- 文章核心：EP10 從 AV 片場工作、色情啟蒙與固定性愛腳本，談幻想和現實中的同意；EP11 從兄弟群體的叛徒感、情慾羞恥與「慾犬」，談拒絕文化、性自主及不傷人的慾望表達。
+- 名稱與引言：本集來賓依 metadata 使用「小度」；主持人為柏文、孝成、博志、沁儒。僅替上下文明確可確認的小度引言署名，其餘不猜測。SRT 中數個疑似誤聽的作品／人物名未寫入文章。
+- 驗證狀態：EP10 約 1535 字、EP11 約 1508 字，兩篇皆為 5 節、4 句引用並通過 `validate:article`；`npm test` 18/18 通過、`npm run build` 29 頁成功、`git diff --check` 與敏感資訊／本機素材掃描通過。Spotify 未設定憑證，僅同步 SoundOn、Apple Podcasts 與 RSS 封面。
+- 提交狀態：文章 commit `8d7cb65`（`docs(content): 發布 EP10、EP11 文章`）；另有使用者指示保存封存的 `3aef92a`。本交接紀錄完成後一併推送 `origin/main`。
+
 ## 最新交接 — 2026-08-23 by Codex（保存 2026-08-21 改版前備份）
 
 - 這次做了什麼：確認 `_archive/2026-08-21/` 是 SEO／內部連結與文章重構前的本機備份，包含 18 份已公開文章舊版，以及 `Footer.astro.bak`、`faq.astro.bak`，總計約 192 KB；依使用者指示納入版本控制。
