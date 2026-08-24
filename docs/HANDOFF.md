@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-24 by Codex（EP12／EP13 歷史補文）
+
+- 本次發布：依歷史佇列完成 EP12、EP13；兩集均使用 Memo AI Small 本機模型轉錄，音檔、SRT、JSON、metadata、模型與 state 留在 repo 外。新增 `src/content/blog/ep12.md`、`src/content/blog/ep13.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
+- 文章核心：EP12 從陰柔男性、男性群體的陽剛表演與劇場身體訓練，談直男特權、未經邀請的指導與身體同意；EP13 從國中性平教育現場，整理身體界線、愛情價值觀、多元性別、月經知識與知情同意。
+- 名稱與引言：EP12 來賓使用 metadata 可確認的蟲子、毓茹，作品為《不可憐的東西》、劇團為「不然，B 計畫」；EP13 來賓為小獅，節目為《獅來想去腐導室》。僅替上下文明確可確認的來賓引言署名，SRT 中無法確認的人名、書名與網路案例未寫入文章。
+- 語感校稿：`speak-human-tw` 採自動產線「跳過確認、事後摘要」。EP12 第二輪無需追加修改；EP13 修改 2 處，移除生硬導引句，並把「不是 A，而是 B」降至全文一次，保護內容與事實保真回讀均完成。
+- 驗證狀態：EP12 約 1610 字、EP13 約 1550 字，兩篇皆為 5 節、4 句引用並通過 `validate:article`；`npm test` 18/18 通過、`npm run build` 31 頁成功、`git diff --check` 與敏感資訊／本機素材掃描通過。Spotify 未設定憑證，僅同步 SoundOn、Apple Podcasts 與 RSS 封面。
+- 提交狀態：文章 commit `2359ab0`（`docs(content): 發布 EP12、EP13 文章`）已推送 `origin/main`；本交接紀錄完成後另以文件 commit 推送。
+
 ## 最新交接 — 2026-08-23 by Codex（EP10／EP11 歷史補文）
 
 - 本次發布：依歷史佇列完成 EP10、EP11；兩集均以 Memo AI Small 本機模型轉錄，音檔、SRT、JSON、metadata、模型與 state 留在 repo 外。新增 `src/content/blog/ep10.md`、`src/content/blog/ep11.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
