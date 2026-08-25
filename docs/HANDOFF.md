@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-25 by Codex（EP14／EP15 歷史補文）
+
+- 本次發布：依歷史佇列完成 EP14、EP15；EP14 沿用既有本機 SRT，EP15 使用 Memo AI Small 本機模型轉錄。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外。新增 `src/content/blog/ep14.md`、`src/content/blog/ep15.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
+- 文章核心：EP14 從偶像劇戀愛腳本、霸凌記憶與越界式癡情，談受傷後的情感封閉、求助及跨文化家庭裡的性別分工；EP15 從聯誼中的挑選視線、催婚催生、言語騷擾與資產展示，談界線回應、男性資格感與真誠傾聽。
+- 名稱與引言：EP14 只使用主持人公開暱稱柏文、孝成、博志、沁儒；EP15 來賓依 metadata 使用 Nina，主持人為柏文、孝成、博志。只替上下文明確可確認的孝成與 Nina 引言署名；SRT 中無法確認的參加者姓名、作品名與組織名未寫入文章。
+- 語感校稿：`speak-human-tw` 採自動產線「跳過確認、事後摘要」。EP14 第二輪無需追加修改；EP15 修改 3 處，降低重複的「真正」式強調，改成具體敘述，保護欄位、專有名詞與引言均未變動。
+- 驗證狀態：EP14 約 1476 字、EP15 約 1568 字，兩篇皆為 5 節、4 句引用並通過 `validate:article`；`npm test` 18/18 通過、`npm run build` 33 頁成功、`git diff --check` 與敏感資訊／本機素材掃描通過。Spotify 未設定憑證，僅同步 SoundOn、Apple Podcasts 與 RSS 封面。
+- 提交狀態：文章 commit `aa4bb99`（`docs(content): 發布 EP14、EP15 文章`）已建立；本交接紀錄以獨立文件 commit 提交後，一併推送 `origin/main`。
+
 ## 最新交接 — 2026-08-24 by Codex（EP12／EP13 歷史補文）
 
 - 本次發布：依歷史佇列完成 EP12、EP13；兩集均使用 Memo AI Small 本機模型轉錄，音檔、SRT、JSON、metadata、模型與 state 留在 repo 外。新增 `src/content/blog/ep12.md`、`src/content/blog/ep13.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
