@@ -97,6 +97,22 @@ const siteJsonLd = !isArticle
 		...jsonLdExtra,
 	})
 	: null;
+
+// WebSite schema：只在首頁輸出，明確告訴 Google 網站名稱。
+// 沒有這個，Google 會拿網域擁有者（pages.dev → Cloudflare）當站名。
+const isHome = canonicalURL.pathname === '/';
+const websiteJsonLd = isHome
+	? JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		'@id': `${Astro.site?.toString()}#website`,
+		name: PODCAST_NAME,
+		alternateName: SITE_TITLE,
+		url: Astro.site?.toString(),
+		inLanguage: 'zh-TW',
+		publisher: { '@type': 'Organization', name: PODCAST_NAME },
+	})
+	: null;
 ---
 
 <!-- Global Metadata -->
@@ -177,3 +193,4 @@ const siteJsonLd = !isArticle
 <!-- JSON-LD Structured Data -->
 {articleJsonLd && <script type="application/ld+json" set:html={articleJsonLd} />}
 {siteJsonLd && <script type="application/ld+json" set:html={siteJsonLd} />}
+{websiteJsonLd && <script type="application/ld+json" set:html={websiteJsonLd} />}
