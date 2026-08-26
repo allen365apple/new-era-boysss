@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "node --test tests/*.test.mjs",
-    "sync:episode-links": "node scripts/sync-episode-links.mjs",
+    "sync:episode-links": "node --env-file-if-exists=.env scripts/sync-episode-links.mjs",
     "podcast:init": "node scripts/podcast-pipeline.mjs init",
     "podcast:status": "node scripts/podcast-pipeline.mjs status",
     "podcast:queue": "node scripts/podcast-pipeline.mjs queue",

@@ -2,6 +2,13 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-26 by Codex（本機 Spotify 憑證載入）
+
+- 本次設定：`package.json` 的 `sync:episode-links` 改用 Node `--env-file-if-exists=.env`，讓本機排程自動讀取被 Git 忽略的 `site/.env`；GitHub Actions 既有環境變數仍可照常使用。未將任何憑證值寫入 tracked 檔案。
+- 驗證狀態：同步預覽成功取得 RSS 65 集、Apple 65 集、Spotify 65 集，預計更新 0 篇文章；`npm test` 18/18 通過、`npm run build` 33 頁成功。
+- 工作樹提醒：另有既存未追蹤檔 `_archive/2026-08-21/BaseHead.astro.bak`，本次未讀取、未修改、未提交。後續 Podcast 自動化會因工作樹不乾淨而停止，需由使用者確認此封存檔應如何處理；不得擅自刪除。
+- 提交狀態：本次只建立本機設定提交，不推送公開 repo，待使用者決定。
+
 ## 最新交接 — 2026-08-25 by Codex（EP14／EP15 歷史補文）
 
 - 本次發布：依歷史佇列完成 EP14、EP15；EP14 沿用既有本機 SRT，EP15 使用 Memo AI Small 本機模型轉錄。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外。新增 `src/content/blog/ep14.md`、`src/content/blog/ep15.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
