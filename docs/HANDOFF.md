@@ -2,6 +2,13 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-29 by Codex（解除歷史補文 Git 阻塞）
+
+- 本次處理：依使用者指示解決排程阻塞。確認未追蹤的 `_archive/2026-08-21/BaseHead.astro.bak` 是 commit `a34f0d7` 時期的 `src/components/BaseHead.astro` 原始版本，屬於 2026-08-21 既有封存中遺漏納管的檔案；未刪除或覆寫任何資料。
+- 安全檢查：備份檔沒有 API 金鑰、Token、Email、電話、地址、成員真實姓名、內部 URL、客戶資訊、音檔、逐字稿或 metadata；只含公開的 Google Fonts 與 Schema.org 網址。
+- 驗證狀態：`npm test` 18/18 通過、`npm run build` 33 頁成功、`git diff --check` 通過。既有本機 commit `2e94fb8` 只讓同步指令讀取被 Git 忽略的 `.env`，沒有包含憑證值。
+- 提交狀態：本次將備份與本交接紀錄建立獨立 `chore(archive)` commit，連同 `2e94fb8` 推送 `origin/main`；推送後工作樹應恢復乾淨，歷史補文排程可再次執行。
+
 ## 最新交接 — 2026-08-26 by Codex（本機 Spotify 憑證載入）
 
 - 本次設定：`package.json` 的 `sync:episode-links` 改用 Node `--env-file-if-exists=.env`，讓本機排程自動讀取被 Git 忽略的 `site/.env`；GitHub Actions 既有環境變數仍可照常使用。未將任何憑證值寫入 tracked 檔案。
