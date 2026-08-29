@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-08-29 by Codex（EP16／EP17 歷史補文）
+
+- 本次發布：依歷史佇列完成 EP16、EP17，兩集均使用 Memo AI Small 本機模型轉錄。EP16 下載來源實為 MP4 容器，原檔已在 repo 外保留為 `EP16-source.mp4`，另新增相容的 MP3 供轉錄；未刪除任何素材。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外。新增 `src/content/blog/ep16.md`、`src/content/blog/ep17.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
+- 文章核心：EP16 從首集聽眾 QA 的關係溝通、情慾同意、男性受騷擾與審美代表性，談多元共存如何容納衝突而不走向壓迫；EP17 從教室、公車與日常偷看的經驗，談男性凝視、退路、安全風險及觀看界線。
+- 名稱與引言：EP16 主持人為柏文、孝成、博志，來賓依開場使用 Nina；EP17 主持人為柏文、孝成、沁儒，來賓依 metadata 使用阿筑。只替上下文明確的來賓引言署名；無法確認的聽眾名、研究比例、作品名與發言者均未猜測。
+- 語感校稿：`speak-human-tw` 採自動產線「跳過確認、事後摘要」。兩篇第二輪均無需追加改字；撰稿時已移除 EP16 不可靠的研究數字與疑似誤聽作品名，EP17 未把玩笑中的秒數寫成通則，保留事實、公開暱稱與引言語意。
+- 驗證狀態：EP16 約 1438 字、EP17 約 1437 字，兩篇皆為 5 節、4 句引用並在連結同步前後通過 `validate:article`；SoundOn、Apple Podcasts、Spotify 與 RSS 封面同步完成，`npm test` 18/18 通過、`npm run build` 35 頁成功、`git diff --check` 與敏感資訊／本機素材掃描通過。
+- 提交狀態：文章 commit `f8a0a96`（`docs(content): 發布 EP16、EP17 文章`）已建立；本交接紀錄以獨立文件 commit 提交後，一併推送 `origin/main`。
+
 ## 最新交接 — 2026-08-29 by Codex（解除歷史補文 Git 阻塞）
 
 - 本次處理：依使用者指示解決排程阻塞。確認未追蹤的 `_archive/2026-08-21/BaseHead.astro.bak` 是 commit `a34f0d7` 時期的 `src/components/BaseHead.astro` 原始版本，屬於 2026-08-21 既有封存中遺漏納管的檔案；未刪除或覆寫任何資料。
