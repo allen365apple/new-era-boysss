@@ -22,7 +22,7 @@ const imageAlt = post.data.coverImage ? post.data.title : '新世紀直男戰士
 >
 	<article class:list={['post-card', variant]}>
 		<div class="thumb">
-			<Image width={300} height={300} src={image} alt={imageAlt} />
+			<Image width={300} height={300} widths={[300, 600]} sizes="(max-width: 640px) 45vw, 300px" src={image} alt={imageAlt} />
 			<span class="thumb-shade" aria-hidden="true"></span>
 			<span class="thumb-arrow" aria-hidden="true">›</span>
 		</div>

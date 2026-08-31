@@ -51,5 +51,6 @@ Allow: /
 
 # 給 AI 的網站地圖（llmstxt.org 慣例）
 # LLM sitemap: https://new-era-boysss.pages.dev/llms.txt
+# LLM full content: https://new-era-boysss.pages.dev/llms-full.txt
 
 Sitemap: https://new-era-boysss.pages.dev/sitemap-index.xml

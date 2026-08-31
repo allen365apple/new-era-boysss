@@ -54,6 +54,7 @@ export async function GET(context) {
 	lines.push(`- [關於節目](${base}/about/)`);
 	lines.push(`- [議題索引](${base}/topics/)`);
 	lines.push(`- [RSS](${base}/rss.xml)`);
+	lines.push(`- [全文版 llms-full.txt](${base}/llms-full.txt)：本站所有文章的完整內文，供 AI 直接讀取引用。`);
 	lines.push('');
 
 	return new Response(lines.join('\n'), {

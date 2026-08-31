@@ -439,7 +439,7 @@ const breadcrumbJsonLd = JSON.stringify({
 
 				{coverImage && (
 					<div class="cover">
-						<Image src={coverImage} alt={title} />
+						<Image src={coverImage} alt={title} width={480} height={480} widths={[360, 480, 720, 960]} sizes="(max-width: 520px) 92vw, 480px" />
 					</div>
 				)}
 

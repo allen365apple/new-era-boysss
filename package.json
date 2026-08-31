@@ -1,31 +1,32 @@
 {
-  "name": "site",
-  "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "test": "node --test tests/*.test.mjs",
-    "sync:episode-links": "node --env-file-if-exists=.env scripts/sync-episode-links.mjs",
-    "podcast:init": "node scripts/podcast-pipeline.mjs init",
-    "podcast:status": "node scripts/podcast-pipeline.mjs status",
-    "podcast:queue": "node scripts/podcast-pipeline.mjs queue",
-    "podcast:prepare": "node scripts/podcast-pipeline.mjs prepare",
-    "podcast:normalize": "node scripts/podcast-pipeline.mjs normalize",
-    "podcast:download-model": "node scripts/podcast-pipeline.mjs download-model",
-    "validate:article": "node scripts/validate-generated-article.mjs"
-  },
-  "dependencies": {
-    "@astrojs/mdx": "^7.0.0",
-    "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.3",
-    "@swup/astro": "^1.8.0",
-    "astro": "^7.0.3",
-    "sharp": "^0.34.3"
-  }
+	"name": "site",
+	"type": "module",
+	"version": "0.0.1",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"test": "node --test tests/*.test.mjs",
+		"sync:episode-links": "node --env-file-if-exists=.env scripts/sync-episode-links.mjs",
+		"podcast:init": "node scripts/podcast-pipeline.mjs init",
+		"podcast:status": "node scripts/podcast-pipeline.mjs status",
+		"podcast:queue": "node scripts/podcast-pipeline.mjs queue",
+		"podcast:prepare": "node scripts/podcast-pipeline.mjs prepare",
+		"podcast:normalize": "node scripts/podcast-pipeline.mjs normalize",
+		"podcast:download-model": "node scripts/podcast-pipeline.mjs download-model",
+		"validate:article": "node scripts/validate-generated-article.mjs",
+		"stamp:dates": "node scripts/stamp-updated-dates.mjs"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^7.0.0",
+		"@astrojs/rss": "^4.0.18",
+		"@astrojs/sitemap": "^3.7.3",
+		"@swup/astro": "^1.8.0",
+		"astro": "^7.0.3",
+		"sharp": "^0.34.3"
+	}
 }

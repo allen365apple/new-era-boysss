@@ -3,6 +3,7 @@ title: "約會該男生買單嗎？拆解直男體貼背後的性別腳本"
 draft: false
 description: 男生走外側、主動買單、包辦約會行程，就一定是體貼嗎？從幾個約會小劇場拆開性別腳本，重新看見共識、選擇與身體界線。
 pubDate: 2026-08-15
+updatedDate: 2026-08-21
 episodeDate: 2024-04-12
 episode: EP2
 episodeTitle: EP2：我的愛意不是她的在意？直男與異性相處時的內心活動！ feat. 莉庭

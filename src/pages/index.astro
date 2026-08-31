@@ -486,7 +486,7 @@ const floatingKeywords = [
 					</div>
 					<a class="latest-card scale-animation" href={`/blog/${latestPost.id}/`}>
 						<div class="latest-image">
-							<Image width={720} height={720} src={latestImage} alt={latestPost.data.title} />
+							<Image width={720} height={720} widths={[360, 540, 720]} sizes="(max-width: 860px) 92vw, 720px" src={latestImage} alt={latestPost.data.title} />
 						</div>
 						<div class="latest-copy">
 							<span class="latest-meta">{latestPost.data.episode ?? '最新文章'}{latestPost.data.topics?.length ? `・${latestPost.data.topics.join('／')}` : ''}</span>
