@@ -23,6 +23,7 @@ interface Props {
 	updatedDate?: Date;
 	episode?: string;
 	topics?: string[];
+	hosts?: string;
 	pageKind?: PageKind;
 	jsonLdExtra?: Record<string, unknown>;
 }
@@ -37,12 +38,37 @@ const {
 	updatedDate,
 	episode,
 	topics,
+	hosts,
 	pageKind = 'podcast',
 	jsonLdExtra = {},
 } = Astro.props;
 
 const ogImage = new URL(image.src, Astro.url);
 const fullTitle = title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;
+
+const siteUrl = Astro.site?.toString();
+const orgId = `${siteUrl}#org`;
+
+// 站台的 Organization 節點（每頁輸出，供其他節點以 @id 參照）。
+const organizationJsonLd = JSON.stringify({
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	'@id': orgId,
+	name: PODCAST_NAME,
+	url: siteUrl,
+	logo: {
+		'@type': 'ImageObject',
+		url: new URL('/favicon-192x192.png', Astro.site).toString(),
+		width: 192,
+		height: 192,
+	},
+	sameAs: [...Object.values(PODCAST_LINKS), ...Object.values(SOCIAL_LINKS)],
+});
+
+// hosts 字串（「柏文、孝成、博志」）拆成 Person 陣列，供 BlogPosting 的 author 使用。
+const authorPeople = hosts
+	? hosts.split(/[、,，/]/).map((n) => n.trim()).filter(Boolean).map((name) => ({ '@type': 'Person', name }))
+	: [];
 
 // JSON-LD for articles
 const articleJsonLd = isArticle
@@ -53,28 +79,23 @@ const articleJsonLd = isArticle
 		url: canonicalURL.toString(),
 		headline: title,
 		description,
-		image: ogImage.toString(),
+		image: { '@type': 'ImageObject', url: ogImage.toString() },
 		inLanguage: 'zh-TW',
 		datePublished: pubDate?.toISOString(),
 		...(updatedDate && { dateModified: updatedDate.toISOString() }),
 		...(episode && { identifier: episode }),
 		...(topics && topics.length > 0 ? { articleSection: topics, keywords: topics.join(', ') } : {}),
-		author: {
-			'@type': 'Organization',
-			name: PODCAST_HOST,
-		},
-		publisher: {
-			'@type': 'Organization',
-			name: PODCAST_NAME,
-		},
+		author: authorPeople.length > 0 ? authorPeople : { '@type': 'Organization', name: PODCAST_HOST },
+		publisher: { '@id': orgId },
 		mainEntityOfPage: {
 			'@type': 'WebPage',
 			'@id': canonicalURL.toString(),
 		},
 		isPartOf: {
 			'@type': 'Blog',
+			'@id': `${siteUrl}#blog`,
 			name: SITE_TITLE,
-			url: Astro.site?.toString(),
+			url: siteUrl,
 		},
 		...jsonLdExtra,
 	})
@@ -110,7 +131,7 @@ const websiteJsonLd = isHome
 		alternateName: SITE_TITLE,
 		url: Astro.site?.toString(),
 		inLanguage: 'zh-TW',
-		publisher: { '@type': 'Organization', name: PODCAST_NAME },
+		publisher: { '@id': orgId },
 	})
 	: null;
 ---
@@ -131,6 +152,8 @@ const websiteJsonLd = isHome
 />
 <meta name="generator" content={Astro.generator} />
 <meta name="color-scheme" content="dark light" />
+<meta name="theme-color" content="#f7f4f8" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#07080b" media="(prefers-color-scheme: dark)" />
 {GOOGLE_SITE_VERIFICATION && (
 	<meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />
 )}
@@ -194,3 +217,4 @@ const websiteJsonLd = isHome
 {articleJsonLd && <script type="application/ld+json" set:html={articleJsonLd} />}
 {siteJsonLd && <script type="application/ld+json" set:html={siteJsonLd} />}
 {websiteJsonLd && <script type="application/ld+json" set:html={websiteJsonLd} />}
+<script type="application/ld+json" set:html={organizationJsonLd} />
