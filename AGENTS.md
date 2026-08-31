@@ -47,7 +47,7 @@ AGENTS.md 與 docs/HANDOFF.md。commit message 要清楚描述改動。」
 1. **本檔（AGENTS.md）** — 你正在讀，是索引。
 2. **`docs/HANDOFF.md`** — 最新一位 agent 做了什麼、測試狀態、已知問題與下一步。
 3. **`系統架構.md`** — 整個系統怎麼組成、怎麼運作、內容如何從 Podcast 變成文章。**最重要，務必讀完。**
-4. **`部落格改寫規則.md`** — 「逐字稿 → 文章」的唯一正本（目前 v3.8）。做內容生產線一定要看。
+4. **`部落格改寫規則.md`** — 「逐字稿 → 文章」的唯一正本（目前 v3.9）。做內容生產線一定要看。
 5. **`docs/KB2_人名與專有名詞對照表.md`** — Podcast 產線共用正本；音檔轉 SRT 與逐字稿轉文章前都必須完整讀取。
 6. **`客製化指南.md`** — 改風格（顏色、字體、版面）的說明，全靠 `src/styles/global.css` 的設計變數。
 7. **關鍵程式碼**（下方「程式碼地圖」）— 對照著看，理解資料結構與版型。
@@ -64,7 +64,7 @@ AGENTS.md 與 docs/HANDOFF.md。commit message 要清楚描述改動。」
 
 - 線上 `main` 功能基線以 `git log origin/main -1` 為準。網站由 GitHub `main` 觸發 Cloudflare Pages 自動部署；2026-08-16 已完成主要公開頁的全站手機寬度檢查。
 - 已公開文章：EP1、EP2、EP3、EP4、EP5、EP48、EP49、EP64。
-- 寫作規則：`部落格改寫規則.md` v3.8；標題為 SEO／AEO 從逐字稿關鍵字改寫、採「關鍵字優先型」（核心概念詞放句首、≤約30全形字、上下集差異化）、開頭＝本集簡介（綜合 RSS＋逐字稿自己寫、不照抄）、4–5 節、每節 2 個正文段落、金句署名放進引用區塊內、文末分隔線 + 2 段收尾且融入一個性別理論概念（自然帶出、不掛學術招牌，專有名詞用「」標出並解釋一句）。
+- 寫作規則：`部落格改寫規則.md` v3.9；標題為 SEO／AEO 從逐字稿關鍵字改寫、採「關鍵字優先型」（核心概念詞放句首、≤約30全形字、上下集差異化）、開頭＝本集簡介（綜合 RSS＋逐字稿自己寫、不照抄）、4–5 節、每節 2 個正文段落、金句署名放進引用區塊內、文末分隔線 + 2 段收尾且融入一個性別理論概念（自然帶出、不掛學術招牌，專有名詞用「」標出並解釋一句）。
 - 去 AI 味：`speak-human-tw` 為文章第二輪校稿正本；自動產線採「跳過確認、事後摘要」。實戰重點：「不是A而是B」整篇最多一次、不用反問句收尾整節、正文少用破折號（署名除外）、全形標點。集數、日期、名稱、公開暱稱、平台連結與已選定引言屬保護內容。
 - 文章發布：目前依團隊決策使用 `draft: false` 直接發布，通過建置與敏感資訊檢查後推到 `main`；錯誤可從 `/admin` 修正，嚴重時再改成草稿下架。
 - 單集資料：SoundOn／Apple Podcasts／Spotify 連結與 RSS 單集封面由 `sync-episode-links.mjs` 依集數同步，文章產出時不手填猜測連結。
@@ -87,6 +87,13 @@ AGENTS.md 與 docs/HANDOFF.md。commit message 要清楚描述改動。」
 | SoundOn 上架文案 | repo 上層 `SoundOn上架規則/`，不要和部落格規則混用 |
 
 ### 近期更新
+
+#### 2026-08-22
+
+- **SEO/AEO 技術強化（一批）**：結構化資料補 Organization(含 logo) 並以 @id 串成 graph、BlogPosting 的 author 改主持人 Person、image 改 ImageObject；首頁補 WebSite schema（修正 Google 站名顯示 Cloudflare）；加 theme-color；RSS 改附 `<content:encoded>` 全文＋`<language>`；文章封面／卡片／首頁大圖加響應式 srcset；新增 `/llms-full.txt`（全站文章全文的 AI 版）。修軟 404、robots.txt 補 AI 即時檢索爬蟲、加 Google 驗證檔、`/faq/`＋FAQPage(25題含名詞定義)、頁尾與關於頁社群連結(含 Spotify/Apple)。
+- **內部連結制度化**：`部落格改寫規則.md` 升 **v3.9**，新增 §11「內部連結與更新日期」——每篇新文章正文連出去 2 條內部連結（自然嵌句、不新增段落、不動引言與 frontmatter）；EP1–EP9、EP48、EP49、EP64 已各補 2 條。
+- **updatedDate 自動化**：新增 `scripts/stamp-updated-dates.mjs`（`npm run stamp:dates`），依 git 歷史求真寫入 `updatedDate`（最後修改晚於首次發布才寫、新文章不灌水）；已為實際改過的 8 篇補上。編輯既有文章後跑一次即可。
+- 待辦：EP10–EP18、EP65 仍缺正文內部連結（規劃中）；自訂網域（建議 `.com`，在 Cloudflare Registrar 買最省事）尚未購買，換域後需全站改網址並設 301。
 
 #### 2026-08-17
 

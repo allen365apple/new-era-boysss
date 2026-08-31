@@ -55,16 +55,23 @@ for (const name of files) {
 	if (!m) continue;
 	const fm = m[1];
 
-	const first = firstCommitDate(path);
-	const last = isDirty(path) ? today() : lastCommitDate(path);
-	if (!first || !last) continue;
-
-	// 沒改過（首次==最後）→ 不設 updatedDate
-	const shouldHave = last > first;
-	const desired = shouldHave ? last : null;
-
 	const hasLine = /^updatedDate:\s*.+$/m.test(fm);
 	const currentVal = hasLine ? fm.match(/^updatedDate:\s*(.+)$/m)[1].trim() : null;
+
+	// 決定這篇「應該」的 updatedDate（避免回饋迴圈）：
+	//  - 有未提交的內容改動 → 今天。
+	//  - 乾淨且已經有 updatedDate → 保留原值，絕不因為後續 commit 而往前跳。
+	//  - 乾淨且還沒有 updatedDate → 用 git「最後修改日」一次性回填（僅在確實改過、最後晚於首次時）。
+	let desired;
+	if (isDirty(path)) {
+		desired = today();
+	} else if (hasLine) {
+		desired = currentVal;
+	} else {
+		const first = firstCommitDate(path);
+		const last = lastCommitDate(path);
+		desired = first && last && last > first ? last : null;
+	}
 
 	if (desired && currentVal !== desired) {
 		if (!checkOnly) {
