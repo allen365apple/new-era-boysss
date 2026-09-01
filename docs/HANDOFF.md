@@ -2,6 +2,16 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-09-01 by Codex（EP19／EP20 歷史補文）
+
+- 本次依 backfill 佇列完成 EP19、EP20。EP19 沿用既有本機 SRT；EP20 以本機 Memo AI Small 完成約 4127 秒音檔轉錄。音檔、SRT、JSON、metadata、模型與 state 均留在 site repo 外，未刪除任何素材。
+- EP19 核心：從朱宥勳的減重、哭泣、健身與穿搭經驗，談男性如何把身體當成可控制的工具，最後練習辨認訊號並放下解答焦慮。使用來賓朱宥勳、作品《只能用 4H 鉛筆》，主持人為柏文、孝成、沁儒。
+- EP20 核心：從《影后》女性視角下的男性配角，整理伴侶光環、工作挫折、自卑、憤怒、界線與承認疲憊；文末回到男性彼此支持與爭吵時先離開的選擇。主持人依開場使用柏文、孝成、博志、沁儒，沒有填寫來賓。
+- EP20 SRT 對角色姓名有多種辨識結果（李子齊／李子綺、陳偉任／陳偉業／陳偉刃、史萊瑪／史艾瑪、薛雅茲等），正文改用角色功能描述，避免猜測；《影后》片名與公開主持人暱稱保留，後續需人工確認角色正式寫法。EP19 的朱宥勳與《只能用 4H 鉛筆》依 metadata 可確認。
+- 兩篇均依 v3.9 完成 5 節、每節 2 段、4 句引言、`---` 與 2 段收尾；新增各 2 條自然站內連結。`speak-human-tw` 第二輪移除 EP19 不可靠代詞引言、EP20 不確定角色姓名與制式對比句，未改動保護欄位與已選引言原意。
+- 同步工具只更新 EP19／EP20 的 SoundOn、Apple Podcasts、Spotify 連結與兩張 RSS 封面。兩篇同步後 `validate:article` 通過；`npm test` 18/18 通過；`npm run build` 成功，38 頁完成；`git diff --check` 通過；公開前敏感資訊掃描未發現金鑰、Token、Email、電話、地址、內部 URL、客戶資訊或本機素材。
+- 提交狀態：文章與封面已建立 `710c7fb`（`docs(content): 發布 EP19、EP20 文章`）；本交接紀錄待另行建立文件提交後，與文章一併推送 `origin/main`。目前尚未 push。
+
 ## 最新交接 — 2026-08-29 by Codex（EP16／EP17 歷史補文）
 
 - 本次發布：依歷史佇列完成 EP16、EP17，兩集均使用 Memo AI Small 本機模型轉錄。EP16 下載來源實為 MP4 容器，原檔已在 repo 外保留為 `EP16-source.mp4`，另新增相容的 MP3 供轉錄；未刪除任何素材。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外。新增 `src/content/blog/ep16.md`、`src/content/blog/ep17.md` 與兩張 RSS 封面，文章皆為 `draft: false`、`aiGenerated: true`。
