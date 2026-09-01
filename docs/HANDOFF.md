@@ -10,7 +10,7 @@
 - EP20 SRT 對角色姓名有多種辨識結果（李子齊／李子綺、陳偉任／陳偉業／陳偉刃、史萊瑪／史艾瑪、薛雅茲等），正文改用角色功能描述，避免猜測；《影后》片名與公開主持人暱稱保留，後續需人工確認角色正式寫法。EP19 的朱宥勳與《只能用 4H 鉛筆》依 metadata 可確認。
 - 兩篇均依 v3.9 完成 5 節、每節 2 段、4 句引言、`---` 與 2 段收尾；新增各 2 條自然站內連結。`speak-human-tw` 第二輪移除 EP19 不可靠代詞引言、EP20 不確定角色姓名與制式對比句，未改動保護欄位與已選引言原意。
 - 同步工具只更新 EP19／EP20 的 SoundOn、Apple Podcasts、Spotify 連結與兩張 RSS 封面。兩篇同步後 `validate:article` 通過；`npm test` 18/18 通過；`npm run build` 成功，38 頁完成；`git diff --check` 通過；公開前敏感資訊掃描未發現金鑰、Token、Email、電話、地址、內部 URL、客戶資訊或本機素材。
-- 提交狀態：文章與封面已建立 `710c7fb`（`docs(content): 發布 EP19、EP20 文章`）；本交接紀錄待另行建立文件提交後，與文章一併推送 `origin/main`。目前尚未 push。
+- 提交狀態：文章與封面 commit `710c7fb`（`docs(content): 發布 EP19、EP20 文章`）、交接紀錄 commit `313b532`（`docs(handoff): 記錄 EP19、EP20 歷史補文`）均已推送 `origin/main`；推送後工作樹乾淨。
 
 ## 最新交接 — 2026-08-29 by Codex（EP16／EP17 歷史補文）
 
