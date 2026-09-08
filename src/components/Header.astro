@@ -45,9 +45,14 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 					<span class="search-label">搜尋</span>
 					<kbd>/</kbd>
 				</button>
-				<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-toggle aria-label="切換淺色模式">
-					<span data-theme-symbol aria-hidden="true">☀</span>
-				</button>
+				<div class="theme-switcher" role="group" aria-label="顯示模式">
+					<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-choice="dark" aria-label="切換為深色模式" aria-pressed="true" title="深色模式">
+						<span aria-hidden="true">☾</span>
+					</button>
+					<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-choice="light" aria-label="切換為明亮模式" aria-pressed="false" title="明亮模式">
+						<span aria-hidden="true">☀</span>
+					</button>
+				</div>
 			</div>
 		</div>
 	</nav>
@@ -215,6 +220,27 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	}
 	.theme-button {
 		font-size: 1.15rem;
+	}
+	.theme-switcher {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.1rem;
+		padding: 0.15rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		background: var(--surface-raised);
+	}
+	.theme-switcher .theme-button {
+		min-width: 36px;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		border-radius: 999px;
+	}
+	.theme-switcher .theme-button[aria-pressed='true'] {
+		background: var(--btn-plain-bg-hover);
+		color: var(--text-primary);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
 	}
 	nav :global(a:not(.brand)) {
 		height: 44px;
@@ -387,49 +413,37 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 
 <script>
 	type SiteTheme = 'dark' | 'light';
-	type ThemePreference = SiteTheme | 'system';
 	type SiteShellWindow = Window & {
 		__newEraSiteShellReady?: boolean;
 	};
 
 	const siteWindow = window as SiteShellWindow;
-	// 三段循環：深色 → 淺色 → 同系統。
-	const THEME_ORDER: ThemePreference[] = ['dark', 'light', 'system'];
-	const THEME_LABEL: Record<ThemePreference, string> = {
+	const THEME_LABEL: Record<SiteTheme, string> = {
 		dark: '深色',
-		light: '淺色',
-		system: '同系統預設',
-	};
-	const THEME_SYMBOL: Record<ThemePreference, string> = {
-		dark: '☾',
-		light: '☀',
-		system: '◐',
+		light: '明亮',
 	};
 
-	const systemPrefersLight = () => window.matchMedia('(prefers-color-scheme: light)').matches;
-	const resolveTheme = (preference: ThemePreference): SiteTheme =>
-		preference === 'system' ? (systemPrefersLight() ? 'light' : 'dark') : preference;
-
-	const readPreference = (): ThemePreference => {
+	const readPreference = (): SiteTheme => {
 		try {
 			const stored = localStorage.getItem('site-theme');
-			if (stored === 'light' || stored === 'dark' || stored === 'system') return stored;
+			if (stored === 'light' || stored === 'dark') return stored;
 		} catch {}
 		return 'dark';
 	};
 
-	const updateThemeButtons = (preference: ThemePreference) => {
-		const next = THEME_ORDER[(THEME_ORDER.indexOf(preference) + 1) % THEME_ORDER.length];
-		document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((button) => {
-			button.setAttribute('aria-label', `外觀：${THEME_LABEL[preference]}，點擊切換為${THEME_LABEL[next]}`);
-			button.setAttribute('title', `外觀：${THEME_LABEL[preference]}`);
-			const symbol = button.querySelector<HTMLElement>('[data-theme-symbol]');
-			if (symbol) symbol.textContent = THEME_SYMBOL[preference];
+	const updateThemeButtons = (preference: SiteTheme) => {
+		document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((button) => {
+			const choice = button.dataset.themeChoice as SiteTheme | undefined;
+			if (!choice || !(choice in THEME_LABEL)) return;
+			const isActive = choice === preference;
+			button.setAttribute('aria-pressed', String(isActive));
+			button.setAttribute('aria-label', isActive ? `目前為${THEME_LABEL[choice]}模式` : `切換為${THEME_LABEL[choice]}模式`);
+			button.setAttribute('title', isActive ? `目前為${THEME_LABEL[choice]}模式` : `切換為${THEME_LABEL[choice]}模式`);
 		});
 	};
 
-	const applyTheme = (preference: ThemePreference, persist = false) => {
-		document.documentElement.dataset.theme = resolveTheme(preference);
+	const applyTheme = (preference: SiteTheme, persist = false) => {
+		document.documentElement.dataset.theme = preference;
 		document.documentElement.dataset.themePreference = preference;
 		if (persist) {
 			try { localStorage.setItem('site-theme', preference); } catch {}
@@ -536,10 +550,9 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			if (!(target instanceof Element)) return;
 			if (target.closest('[data-search-open]')) openSearch();
 			if (target.closest('[data-search-close]')) target.closest('dialog')?.close();
-			if (target.closest('[data-theme-toggle]')) {
-				const current = readPreference();
-				const next = THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length];
-				applyTheme(next, true);
+			const themeChoice = target.closest<HTMLElement>('[data-theme-choice]')?.dataset.themeChoice;
+			if (themeChoice === 'dark' || themeChoice === 'light') {
+				applyTheme(themeChoice, true);
 			}
 			if (target.closest('.search-result')) target.closest('dialog')?.close();
 			if (target instanceof HTMLDialogElement && target.matches('[data-search-dialog]')) target.close();
@@ -575,11 +588,6 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			if (!(select instanceof HTMLSelectElement) || !select.matches('[data-sort-order]')) return;
 			applySortOrder(select.value);
 			try { localStorage.setItem(SORT_KEY, select.value); } catch {}
-		});
-
-		// 選擇「同系統預設」時，作業系統切換深淺色要立即反映。
-		window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-			if (readPreference() === 'system') applyTheme('system');
 		});
 
 		siteWindow.__newEraSiteShellReady = true;

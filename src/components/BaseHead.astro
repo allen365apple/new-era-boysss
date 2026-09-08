@@ -161,16 +161,13 @@ const websiteJsonLd = isHome
 <script is:inline>
 	(() => {
 		const applySavedTheme = () => {
-			// 偏好可為 dark／light／system；system 依作業系統設定決定實際外觀。
+			// 首次進站固定使用深色；只有使用者手動選擇後才讀取已保存的模式。
 			let preference = 'dark';
 			try {
 				const stored = localStorage.getItem('site-theme');
-				if (stored === 'light' || stored === 'dark' || stored === 'system') preference = stored;
+				if (stored === 'light' || stored === 'dark') preference = stored;
 			} catch {}
-			const theme = preference === 'system'
-				? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
-				: preference;
-			document.documentElement.dataset.theme = theme;
+			document.documentElement.dataset.theme = preference;
 			document.documentElement.dataset.themePreference = preference;
 		};
 

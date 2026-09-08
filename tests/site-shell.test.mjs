@@ -92,3 +92,18 @@ test('footer retains the subtle CMS entry point', async () => {
 	assert.match(footer, /href="\/admin\/"/);
 	assert.match(footer, /內容管理後臺/);
 });
+
+test('theme switcher only offers dark and light modes with dark as the default', async () => {
+	const [header, baseHead] = await Promise.all([
+		read('../src/components/Header.astro'),
+		read('../src/components/BaseHead.astro'),
+	]);
+	assert.match(header, /data-theme-choice="dark"/);
+	assert.match(header, /data-theme-choice="light"/);
+	assert.doesNotMatch(header, /data-theme-choice="system"/);
+	assert.doesNotMatch(header, /THEME_ORDER|同系統預設|prefers-color-scheme/);
+	assert.match(baseHead, /let preference = 'dark'/);
+	assert.match(baseHead, /stored === 'light' \|\| stored === 'dark'/);
+	assert.doesNotMatch(baseHead, /stored === 'system'/);
+	assert.doesNotMatch(baseHead, /const theme = preference === 'system'/);
+});
