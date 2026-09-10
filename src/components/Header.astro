@@ -45,14 +45,9 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 					<span class="search-label">搜尋</span>
 					<kbd>/</kbd>
 				</button>
-				<div class="theme-switcher" role="group" aria-label="顯示模式">
-					<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-choice="dark" aria-label="切換為深色模式" aria-pressed="true" title="深色模式">
-						<span aria-hidden="true">☾</span>
-					</button>
-					<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-choice="light" aria-label="切換為明亮模式" aria-pressed="false" title="明亮模式">
-						<span aria-hidden="true">☀</span>
-					</button>
-				</div>
+				<button type="button" class="utility-button theme-button btn-plain scale-animation" data-theme-toggle aria-label="切換為明亮模式" aria-pressed="false" title="切換為明亮模式">
+					<span data-theme-symbol aria-hidden="true">☀</span>
+				</button>
 			</div>
 		</div>
 	</nav>
@@ -220,27 +215,6 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 	}
 	.theme-button {
 		font-size: 1.15rem;
-	}
-	.theme-switcher {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.1rem;
-		padding: 0.15rem;
-		border: 1px solid var(--border);
-		border-radius: 999px;
-		background: var(--surface-raised);
-	}
-	.theme-switcher .theme-button {
-		min-width: 36px;
-		width: 36px;
-		height: 36px;
-		padding: 0;
-		border-radius: 999px;
-	}
-	.theme-switcher .theme-button[aria-pressed='true'] {
-		background: var(--btn-plain-bg-hover);
-		color: var(--text-primary);
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
 	}
 	nav :global(a:not(.brand)) {
 		height: 44px;
@@ -422,6 +396,10 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		dark: '深色',
 		light: '明亮',
 	};
+	const THEME_SYMBOL: Record<SiteTheme, string> = {
+		dark: '☾',
+		light: '☀',
+	};
 
 	const readPreference = (): SiteTheme => {
 		try {
@@ -431,14 +409,14 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		return 'dark';
 	};
 
-	const updateThemeButtons = (preference: SiteTheme) => {
-		document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]').forEach((button) => {
-			const choice = button.dataset.themeChoice as SiteTheme | undefined;
-			if (!choice || !(choice in THEME_LABEL)) return;
-			const isActive = choice === preference;
-			button.setAttribute('aria-pressed', String(isActive));
-			button.setAttribute('aria-label', isActive ? `目前為${THEME_LABEL[choice]}模式` : `切換為${THEME_LABEL[choice]}模式`);
-			button.setAttribute('title', isActive ? `目前為${THEME_LABEL[choice]}模式` : `切換為${THEME_LABEL[choice]}模式`);
+	const updateThemeButton = (preference: SiteTheme) => {
+		const next = preference === 'dark' ? 'light' : 'dark';
+		document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+			button.setAttribute('aria-pressed', String(preference === 'light'));
+			button.setAttribute('aria-label', `切換為${THEME_LABEL[next]}模式`);
+			button.setAttribute('title', `切換為${THEME_LABEL[next]}模式`);
+			const symbol = button.querySelector<HTMLElement>('[data-theme-symbol]');
+			if (symbol) symbol.textContent = THEME_SYMBOL[next];
 		});
 	};
 
@@ -448,7 +426,7 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 		if (persist) {
 			try { localStorage.setItem('site-theme', preference); } catch {}
 		}
-		updateThemeButtons(preference);
+		updateThemeButton(preference);
 	};
 	// 文章列表排序。放在共用 shell 而非頁面層 script，
 	// 因為 swup 換頁不會重新執行頁面自己的 script，會導致監聽器沒掛上。
@@ -550,9 +528,9 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			if (!(target instanceof Element)) return;
 			if (target.closest('[data-search-open]')) openSearch();
 			if (target.closest('[data-search-close]')) target.closest('dialog')?.close();
-			const themeChoice = target.closest<HTMLElement>('[data-theme-choice]')?.dataset.themeChoice;
-			if (themeChoice === 'dark' || themeChoice === 'light') {
-				applyTheme(themeChoice, true);
+			if (target.closest('[data-theme-toggle]')) {
+				const next = readPreference() === 'dark' ? 'light' : 'dark';
+				applyTheme(next, true);
 			}
 			if (target.closest('.search-result')) target.closest('dialog')?.close();
 			if (target instanceof HTMLDialogElement && target.matches('[data-search-dialog]')) target.close();
