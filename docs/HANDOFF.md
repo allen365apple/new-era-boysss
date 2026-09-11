@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-09-11 by Codex（EP31／EP32 歷史補文）
+
+- 本次依 backfill 佇列完成 EP31、EP32。兩集均使用程式設定的 Memo AI Small 本機模型轉錄；音檔、SRT、JSON、metadata、模型與 state 均留在 site repo 外，未刪除任何素材。
+- EP31 核心：從六支打破性別框架的廣告談「像女孩一樣跑步」、女足被忽略、男性哭泣、Tampon Book 月經稅與 Volvo E.V.A. Initiative 的男性預設值，最後回到廣告反轉如何連向制度與設計。EP32 核心：劉珞亦回看長孫責任、高中取笑男同志、師生權力與家庭分工，分享如何用性愛話題和分眾語言進入男學生，再談男性倡議者如何讓出女性身體經驗的發言空間。
+- 兩篇均依 v4.0 完成 5 節、每節 2 段、`---` 與 2 段收尾；EP31 4 句引言、EP32 3 句引言，各新增 2 條自然站內連結。EP31 以「男性中心主義」收束，EP32 以「位置性」收束，分開處理設計標準與倡議者站位。兩篇均使用公開主持人暱稱；EP32 來賓依 RSS metadata 使用「劉珞亦」。
+- 需要人工特別確認：EP31 的《Tampon Book》、Volvo「E.V.A. Initiative」、Orange 女足廣告與各品牌英文標語的正式寫法；EP32 來賓姓名「劉珞亦」及引用「狀況如此，但不應該如此」的原始出處。文章沒有為不確定的 SRT 講者猜測署名。
+- 同步工具更新 EP31／EP32 的 SoundOn、Apple Podcasts、Spotify 連結與兩張 RSS 封面。同步後 EP31 約 1825 字（有篇幅偏長提醒）、EP32 約 1716 字，兩篇均通過 `validate:article`；`npm test` 19/19 通過；`npm run build` 成功產生 50 頁；`git diff --check` 通過；公開前敏感資訊掃描未發現金鑰、Token、Email、電話號碼、地址、內部 URL、客戶資訊或本機素材。
+- 提交狀態：文章／封面 commit 待推送（`docs(content): 發布 EP31、EP32 文章`）；本交接紀錄將以獨立文件 commit 提交後一併推送，推送前再確認工作樹乾淨。
+
 ## 最新交接 — 2026-09-11 by Codex（EP29／EP30 歷史補文）
 
 - 本次依 backfill 佇列完成 EP29、EP30。兩集均使用程式設定的 Memo AI Small 本機模型流程；音檔、SRT、JSON、metadata、模型與 state 均留在 site repo 外，未刪除任何素材。EP30 沿用既有本機 SRT，EP29 完成本機轉錄。
