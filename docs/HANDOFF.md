@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-09-19 by Codex（EP43／EP44 新集上架）
+
+- 本次完成 EP43、EP44 新集文章。兩集均使用程式設定的 Memo AI Small 本機模型；EP43 因 RSS 音檔下載逾時，改用工作區外既有原始音檔完成準備，EP44 由流程下載音檔。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外，未刪除任何素材或加入 site repo。
+- EP43 核心：從面白大丈夫的「剛剛好的黃腔」與大喜利談幽默的出牌順序、熟悉度、意圖與性別化的冒犯風險，最後以高 EQ、給對方退路收束。EP44 核心：從喝酒、抽菸與共同活動如何成為男性友誼的情緒入口，談被比較／被說教的脆弱、女性被期待承擔傾聽勞動，以及對象比酒精更重要。
+- 兩篇均依部落格改寫規則 v4.0 完成 5 節、每節 2 段、EP43 3 句與 EP44 4 句未署名引言，正文後有單獨 `---` 與 2 段小結；正文各有 2 條自然站內連結。EP43 連至 EP17、EP16，結尾概念為「性別化的風險分配」；EP44 連至 EP65、EP35，結尾概念為「性別化的情緒入口」。`pubDate` 皆為 2026-09-19；`episodeDate` 依 RSS `publishedAt` 轉台灣日期，EP43 為 2025-11-07、EP44 為 2025-11-21。
+- 同步工具已更新 EP43、EP44 的 SoundOn、Apple Podcasts、Spotify 連結並下載 `src/assets/episode-covers/ep43.jpeg`、`ep44.jpeg`。需人工特別確認：EP43 來賓公開名稱「董軒」、面白大丈夫、「剛剛好的黃腔」系列名稱與引言原句；EP44 的主持人公開暱稱、室友／朋友故事細節、酒後對話與引用原句。文章未放入贊助 metadata 的私人聯絡資訊，也未猜測不確定講者。
+- 驗證狀態：兩篇同步前後均通過 `npm run validate:article`（EP43 約 1568 字、3 句引用；EP44 約 1570 字、4 句引用）；`npm test` 19/19 通過；`npm run build` 成功產生 63 頁；`git diff --check` 與公開前敏感資訊／本機素材掃描通過。這次沒有編輯既有文章，未執行 `stamp:dates`。
+- 提交狀態：EP43、EP44 文章與兩張封面待建立 `docs(content): 發布 EP43、EP44 文章`，本交接紀錄再以獨立 `docs(handoff): 記錄 EP43、EP44 新集上架` commit 後推送 `origin/main`；推送前確認 staged 差異只包含本次文章、封面與本紀錄。
+
 ## 最新交接 — 2026-09-19 by Codex（EP67 新集上架）
 
 - 本次完成 EP67 新集文章。依規則使用程式設定的 Memo AI Small 本機模型準備素材；使用者提供的 SRT 複製至 repo 外 `各集逐字稿/EP67 恨女的逆襲 FINAL.srt`，metadata、音檔、模型與 state 均未加入 site repo，也未刪除任何素材。
