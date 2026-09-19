@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-09-19 by Codex（EP67 新集上架）
+
+- 本次完成 EP67 新集文章。依規則使用程式設定的 Memo AI Small 本機模型準備素材；使用者提供的 SRT 複製至 repo 外 `各集逐字稿/EP67 恨女的逆襲 FINAL.srt`，metadata、音檔、模型與 state 均未加入 site repo，也未刪除任何素材。
+- 文章核心從「女拳」片名與拳擊意象切入，寫《恨女的逆襲》裡女兒承擔的照顧勞動、便當店家庭的性別腳本、父母與教練的沉默及複雜性，最後回到家玲睜開眼睛、在有限資源裡做出拳擊選擇的能動性；結尾以「性別腳本」整理照顧、被照顧與情緒說明如何按性別分配。
+- 文章依部落格改寫規則 v4.0 完成 5 節、每節 2 段、4 句未署名引言，正文後有單獨 `---` 與 2 段小結；正文自然連到 EP64、EP18 各 1 次，共 2 條站內連結。`pubDate` 為 2026-09-19；`episodeDate` 依 RSS `publishedAt`（2026-09-18 19:00:44 GMT）轉台灣日期為 2026-09-19。
+- 同步工具已更新 EP67 的 SoundOn、Apple Podcasts、Spotify 連結並下載 `src/assets/episode-covers/ep67.jpeg`。需人工特別確認：片名《恨女的逆襲》、角色家玲、教練「太爸」、節目引用原句，以及若後續補入人物時的導演／演員正式寫法；目前未替不確定講者署名，也未猜測未核實的作品《兩個爸爸的習題》或《下一秒‧無限》年份。RSS 未列出來賓，文章未新增來賓姓名。
+- 驗證狀態：`npm run validate:article -- src/content/blog/ep67.md` 通過（約 1567 字、5 節、4 句引用）；`npm test` 19/19 通過；`npm run build` 成功產生 61 頁；`git diff --check` 與公開前敏感資訊／本機素材掃描通過。這次沒有編輯既有文章，未執行 `stamp:dates`。
+- 提交狀態：EP67 文章、封面與本交接紀錄待分別建立 `docs(content): 發布 EP67 文章`、`docs(handoff): 記錄 EP67 新集上架` commit 後推送 `origin/main`；推送前再次確認 staged 差異只包含本次文章、封面與本紀錄。
+
 ## 最新交接 — 2026-09-19 by Codex（EP41／EP42 歷史補文）
 
 - 本次依 backfill 佇列完成 EP41、EP42。兩集均使用程式設定的 Memo AI Small 本機模型轉錄；音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外，未刪除任何素材。
