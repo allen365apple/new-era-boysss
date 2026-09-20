@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-09-20 by Codex（EP45／EP46 歷史補文）
+
+- 本次依 backfill 佇列完成 EP45、EP46。EP45 沿用工作區外既有 SRT；EP46 依流程下載音檔，使用程式設定的 Memo AI Small 本機模型轉錄。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外，未刪除任何素材或加入 site repo。
+- EP45 核心：從男性朋友圈、軍隊與性經驗比較拆解處男焦慮，延伸到性別雙重標準、拒絕與自我價值，最後回到第一次不是考試，而是伴侶之間的溝通與磨合。EP46 核心：從女性追男偶像的情感投射、女性凝視與棉褲福利談起，分析男偶像如何把陰柔、陽剛、傾聽與脆弱放在同一個形象裡，再以 Bromance 和男性友誼的情緒表達收束。
+- 兩篇均依部落格改寫規則 v4.0 完成 5 節、每節 2 段；EP45 4 句、EP46 3 句未署名引言，正文後均有單獨 `---` 與 2 段小結。EP45 正文自然連到 EP28、EP11；EP46 連到 EP17、EP35，各 2 條且目標檔案存在。`pubDate` 皆為 2026-09-20；`episodeDate` 依 RSS `publishedAt` 轉台灣日期，EP45 為 2025-12-06、EP46 為 2025-12-21。
+- 同步工具已更新 EP45、EP46 的 SoundOn、Apple Podcasts、Spotify 連結並下載 `src/assets/episode-covers/ep45.jpeg`、`ep46.jpeg`。需人工特別確認：EP45「處男焦慮」相關統計與性經驗定義、軍隊／朋友圈敘述及引言原句；EP46 來賓公開暱稱「查理」、男偶像／K-pop 產業描述、女性凝視與棉褲福利、Bromance 相關引言原句。文章未放入 metadata 中的私人聯絡資訊，也未替不確定講者猜測署名。
+- 驗證狀態：同步前後兩篇均通過 `npm run validate:article`（EP45 約 1729 字、4 句引用；EP46 約 1753 字、3 句引用）；`npm test` 19/19 通過；`npm run build` 成功產生 65 頁；`git diff --check` 通過。這次沒有編輯既有文章，未執行 `stamp:dates`。
+- 提交狀態：EP45、EP46 文章與兩張封面待建立 `docs(content): 發布 EP45、EP46 文章`，本交接紀錄再以獨立 `docs(handoff): 記錄 EP45、EP46 新集上架` commit 後推送 `origin/main`；推送前確認 staged 差異只包含本次文章、封面與本紀錄。
+
 ## 最新交接 — 2026-09-19 by Codex（EP43／EP44 新集上架）
 
 - 本次完成 EP43、EP44 新集文章。兩集均使用程式設定的 Memo AI Small 本機模型；EP43 因 RSS 音檔下載逾時，改用工作區外既有原始音檔完成準備，EP44 由流程下載音檔。音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外，未刪除任何素材或加入 site repo。
