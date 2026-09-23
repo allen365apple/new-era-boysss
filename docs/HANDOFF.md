@@ -2,6 +2,15 @@
 
 > 本檔是 Codex、Claude 與其他 agent 共用的交接板。最新紀錄放最上方，舊紀錄不得刪除；專案長期規則以根目錄 `AGENTS.md` 為單一來源。
 
+## 最新交接 — 2026-09-23 by Codex（EP53／EP54 歷史補文）
+
+- 本次依 backfill 佇列完成 EP53、EP54。兩集均使用程式設定的 Memo AI Small 本機模型準備素材；音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外，未刪除任何素材或加入 site repo。
+- EP53 核心：回覆 Gender 很荒謬、Gender 很抱歉與直男心事投稿，從黑色幽默裡照顧的缺席、女性主管被預設為男性、女兒在相親腳本中怎麼選都被責備，走到性羞辱、持續追求、睡夢中的觸碰與道歉後的修復界線。EP54 核心：邀請臺灣男性協會郭雅真理事長，拆解男性把嫉妒、害怕、委屈與被拋下都包成「幹」的情緒腳本，再談沒有新男性劇本的挫敗、性協商、父親眼淚與以熟悉語言靠近後翻轉的教育方法。
+- 兩篇均依部落格改寫規則 v4.0 完成 5 節、每節 2 段、4 句引言；正文後均有單獨 `---` 與 2 段小結，並按「提出張力 → 擴大情境 → 引入轉折 → 回到整集問題」安排起承轉合。EP53 正文自然連到 EP33、EP27；EP54 連到 EP52、EP36，各 2 條且目標檔案存在。`pubDate` 皆為 2026-09-23；`episodeDate` 依 RSS `publishedAt` 轉台灣日期，EP53 為 2026-03-13、EP54 為 2026-03-27。
+- 同步工具已更新兩篇的 SoundOn、Apple Podcasts、Spotify 連結並下載 `src/assets/episode-covers/ep53.jpeg`、`ep54.jpeg`。需人工特別確認：EP53 投稿情節中隱形眼鏡／女性主管／相親家庭、麥子與性羞辱、YH 追求及李同學睡夢觸碰的細節與引言原句；EP54 來賓公開姓名「郭雅真」、性別教育工作與少年漫畫牌卡、性協商情境故事、憤怒包心粉圓及引言原句。EP54 SRT 將郭雅真辨識成「雅貞」，文章已依 metadata 使用公開姓名；文章未放入 metadata 的私人聯絡資訊，也未替不確定講者猜測署名。
+- 驗證狀態：同步前後兩篇均通過 `npm run validate:article`（EP53 約 1776 字、EP54 約 1686 字，均 5 節、4 句引用）；`npm test` 19/19 通過；`npm run build` 成功產生 71 頁；`git diff --check` 與公開前敏感資訊／本機素材掃描待提交前再次確認。這次沒有編輯既有文章，未執行 `stamp:dates`。
+- 提交狀態：文章與兩張封面待建立 `docs(content): 發布 EP53、EP54 文章`，本交接紀錄再以獨立 `docs(handoff): 記錄 EP53、EP54 新集上架` commit 後推送 `origin/main`；推送前確認 staged 差異只包含本次文章、封面與本紀錄。
+
 ## 最新交接 — 2026-09-22 by Codex（EP51／EP52 歷史補文）
 
 - 本次依 backfill 佇列完成 EP51、EP52。兩集均使用程式設定的 Memo AI Small 本機模型準備素材；音檔、SRT、JSON、metadata、模型與 state 均留在 repo 外，未刪除任何素材或加入 site repo。
