@@ -9,7 +9,7 @@
 - 兩篇均依部落格改寫規則 v4.0 完成 5 節、每節 2 段、4 句未署名引言；正文後均有單獨 `---` 與 2 段小結，並按「提出張力 → 擴大情境 → 引入轉折 → 回到整集問題」安排起承轉合。EP57 正文自然連到 EP45、EP49；EP58 連到 EP36、EP65，各 2 條且目標檔案存在。`pubDate` 皆為 2026-09-25；`episodeDate` 依 RSS `publishedAt` 轉台灣日期，EP57 為 2026-05-01、EP58 為 2026-05-09。
 - 同步工具已更新兩篇的 SoundOn、Apple Podcasts、Spotify 連結並下載 `src/assets/episode-covers/ep57.jpeg`、`ep58.jpeg`。需人工特別確認：EP57《解構男性圈》與男性網紅／平台名稱、影集中的「矩陣」敘事及引言原句；EP58 四位主持人公開暱稱、母親「百分之兩百」的原話、埃及旅行與家庭照顧細節、文中引言原句。SRT 對主持人與部分專有名詞辨識不穩，文章未猜測講者或補寫不確定姓名。
 - 驗證狀態：同步前後兩篇均通過 `npm run validate:article`（EP57 約 1618 字、EP58 約 1654 字，均 5 節、4 句引用）；`npm test` 19/19 通過；`npm run build` 成功產生 75 頁；`git diff --check` 與公開前敏感資訊／本機素材掃描待提交前再次確認。這次沒有編輯既有文章，未執行 `stamp:dates`。
-- 提交狀態：文章與封面已建立 `2295210`（`docs(content): 發布 EP57、EP58 文章`），本交接紀錄已建立 `d24477c`（`docs(handoff): 記錄 EP57、EP58 新集上架`）；尚待推送 `origin/main`，推送前確認工作樹只剩預期的兩個提交。
+- 提交狀態：文章與封面 commit `2295210`（`docs(content): 發布 EP57、EP58 文章`）及交接紀錄 commit `603099e`（`docs(handoff): 記錄 EP57、EP58 新集上架`）均已推送 `origin/main`；推送後工作樹乾淨。
 
 ## 最新交接 — 2026-09-24 by Codex（EP55／EP56 歷史補文）
 
