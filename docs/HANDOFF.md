@@ -1,5 +1,13 @@
 # 交接紀錄 (HANDOFF)
 
+## 最新交接 — 2026-10-20 by Codex（EP68 文章初稿）
+
+- 已依 EP68 RSS metadata 與工作區外提供的 `EP68 傑哥集 Final.srt` 完成文章初稿 `src/content/blog/ep68.md`；SRT 未複製進 repo，也未刪除任何檔案。文章主線從傑哥在職場展現脆弱與愛出發，經過姊姊、全男校園、替代役與婚姻磨合，回到理解男性性別便利後如何選擇成為「新世紀好直男」。
+- 文章依部落格改寫規則 v4.0 完成 5 節、每節 2 段、4 句未署名引用；正文後有單獨 `---` 與 2 段小結，正文自然連到 EP65、EP62，各 1 條且目標文章存在。`pubDate` 為 2026-10-20；`episodeDate` 依 RSS `publishedAt` 轉台灣日期為 2026-10-19。
+- 驗證狀態：`npm run validate:article -- src/content/blog/ep68.md` 通過（約 1532 字、5 節、4 句引用）；`npm test` 19/19 通過；`npm run build` 成功產生 82 頁。這次只新增 EP68 文章，沒有編輯既有文章，無須執行 `stamp:dates`。
+- 同步狀態：已執行 `npm run sync:episode-links -- --write --include-drafts`，EP68 已補上 SoundOn、Apple Podcasts、Spotify 連結，並新增 `src/assets/episode-covers/ep68.jpeg`。提交前仍須確認標題、傑哥公開職稱、校園／替代役敘述與 4 句引言原句；公開差異不得包含 SRT、音檔、metadata、模型、憑證或內部資訊。
+- 提交狀態：文章與封面已以 `docs(content): 發布 EP68 文章` 建立本機 commit；本交接紀錄將以獨立的 `docs(handoff): 記錄 EP68 新集上架` commit 提交，兩者完成公開前檢查後一併推送 `origin/main`。
+
 ## 最新交接 — 2026-10-20 by Codex（EP68 對照表核對）
 
 - 使用工作區外的 EP68 SRT 核對 `docs/KB2_人名與專有名詞對照表.md` 新增項目；SRT 支持「傑哥」、「十二金釵」及「建中」等辨識修正，並提到傑哥是錄音室主人及節目所述公司的老闆。正式姓名與職稱另以公開來源交叉確認。SRT 未複製進 repo，也未刪除任何檔案。
