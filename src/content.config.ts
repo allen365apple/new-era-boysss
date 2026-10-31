@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { isYouTubeVideoUrl } from './utils/video-links.mjs';
 
 const listenLinksSchema = z.object({
 	soundon: z.string().url().optional(),
@@ -35,6 +36,9 @@ const blog = defineCollection({
 			])).optional(),
 			listenLinks: listenLinksSchema,
 			coverImage: z.optional(image()),
+			// 文章頁可另用橫式主視覺，列表仍使用單集方形封面。
+			heroImage: z.optional(image()),
+			videoUrl: z.string().url().refine(isYouTubeVideoUrl, '請填入 HTTPS YouTube 單支影片網址').optional(),
 			aiGenerated: z.boolean().default(true),
 			// 新文章預設直接發布；需要暫時下架時才改成 true。
 			draft: z.boolean().default(false),

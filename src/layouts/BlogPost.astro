@@ -22,6 +22,8 @@ const {
 	episodeDate,
 	updatedDate,
 	coverImage,
+	heroImage,
+	videoUrl,
 	episode,
 	episodeTitle,
 	hosts,
@@ -54,6 +56,8 @@ const effectiveListenLinks = {
 	kkbox: confirmedEpisodeLink('kkbox', listenLinks?.kkbox),
 };
 const hasListenLinks = Object.values(effectiveListenLinks).some(Boolean);
+const articleImage = heroImage ?? coverImage;
+const isWideImage = articleImage && articleImage.width > articleImage.height;
 const displayEpisodeTitle = episodeTitle
 	? episode && episodeTitle.trim().toUpperCase().startsWith(episode.toUpperCase())
 		? episodeTitle
@@ -70,7 +74,7 @@ const topicLinks = (topics ?? [])
 
 // ── 結構化資料（供 Google 與 AI 理解「這是一集 Podcast 的文字版」）────────────
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const episodeImage = new URL((coverImage ?? PodcastCover).src, Astro.url).toString();
+const episodeImage = new URL((articleImage ?? PodcastCover).src, Astro.url).toString();
 
 // 「柏文、孝成、博志」→ Person 陣列，供 PodcastEpisode 標記主持人與來賓。
 function toPeople(value?: string) {
@@ -129,7 +133,7 @@ const breadcrumbJsonLd = JSON.stringify({
 		<BaseHead
 			title={title}
 			description={description}
-			image={coverImage}
+			image={articleImage}
 			isArticle={true}
 			pubDate={pubDate}
 			updatedDate={updatedDate}
@@ -170,6 +174,40 @@ const breadcrumbJsonLd = JSON.stringify({
 				width: 100%;
 				height: auto;
 				border-radius: var(--radius-lg);
+			}
+			.cover.wide img {
+				max-width: 860px;
+			}
+			.video-intro {
+				width: min(860px, calc(100% - 2.5rem));
+				margin: 1rem auto 0;
+				padding: 1.25rem;
+				box-sizing: border-box;
+				border: 1px solid var(--border);
+				border-radius: var(--radius-lg);
+				background: var(--surface-soft);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
+				gap: 1rem;
+			}
+			.video-intro p {
+				margin: 0.3rem 0 0;
+				color: var(--text-secondary);
+			}
+			.video-button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 44px;
+				padding: 0.6rem 1rem;
+				box-sizing: border-box;
+				border-radius: var(--radius);
+				background: var(--accent);
+				color: var(--on-accent);
+				font-weight: 600;
+				text-decoration: none;
 			}
 
 			/* 兩欄:目錄 + 內文 */
@@ -437,10 +475,19 @@ const breadcrumbJsonLd = JSON.stringify({
 					{guests && <p class="guests">來賓:{guests}</p>}
 				</div>
 
-				{coverImage && (
-					<div class="cover">
-						<Image src={coverImage} alt={title} width={480} height={480} widths={[360, 480, 720, 960]} sizes="(max-width: 520px) 92vw, 480px" />
+				{articleImage && (
+					<div class:list={['cover', { wide: isWideImage }]}>
+						<Image src={articleImage} alt={title} width={isWideImage ? 860 : 480} widths={isWideImage ? [480, 860, 1280, 1720] : [360, 480, 720, 960]} sizes={isWideImage ? '(max-width: 900px) 92vw, 860px' : '(max-width: 520px) 92vw, 480px'} loading={videoUrl ? 'eager' : 'lazy'} />
 					</div>
+				)}
+				{videoUrl && (
+					<section class="video-intro" aria-label="本集影片版">
+						<div>
+							<strong>本集有影片版</strong>
+							<p>想看完整對談與現場互動？歡迎到 YouTube 觀看！</p>
+						</div>
+						<a class="video-button" href={videoUrl} target="_blank" rel="noopener noreferrer">前往 YouTube 看完整影片 ↗</a>
+					</section>
 				)}
 
 				<div class="layout">
@@ -506,6 +553,7 @@ const breadcrumbJsonLd = JSON.stringify({
 
 						{displayEpisodeTitle && (
 							<div class="closing-listen">
+								{videoUrl && <p>本集也有影片版，歡迎到 <a href={videoUrl} target="_blank" rel="noopener noreferrer">YouTube 觀看完整對談</a>。</p>}
 								<p>更多詳細內容，歡迎收聽《新世紀直男戰士》{displayEpisodeTitle}</p>
 								{hasListenLinks && (
 									<p class="closing-links">

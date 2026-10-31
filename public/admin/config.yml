@@ -129,6 +129,18 @@ collections:
         default: true
         hint: 勾選表示本文由 AI 整理自 Podcast 逐字稿
 
+      - label: 文章主視覺（選填）
+        name: heroImage
+        widget: image
+        required: false
+        hint: 可另放橫式圖片於文章頂部，列表保留原單集封面
+
+      - label: YouTube 影片版（選填）
+        name: videoUrl
+        widget: url
+        required: false
+        hint: 填入單支影片網址，文章頂部與文末會顯示觀看入口
+
       - label: 內文
         name: body
         widget: markdown
