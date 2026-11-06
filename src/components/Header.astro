@@ -1,28 +1,6 @@
 ---
-import { getCollection } from 'astro:content';
 import { SITE_BRAND } from '../consts';
 import HeaderLink from './HeaderLink.astro';
-
-const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.map((post) => ({
-		href: `/blog/${post.id}/`,
-		title: post.data.title,
-		description: post.data.description,
-		episode: post.data.episode,
-		topics: post.data.topics ?? [],
-		searchText: [
-			post.data.title,
-			post.data.description,
-			post.data.episode,
-			...(post.data.topics ?? []),
-			post.body,
-		]
-			.filter(Boolean)
-			.join(' ')
-			.replace(/\s+/g, ' ')
-			.toLocaleLowerCase('zh-TW'),
-	}));
 ---
 
 <!-- 導覽列結構與 expand/scale 動畫移植自 Fuwari（MIT） -->
@@ -67,16 +45,8 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
 			<input type="search" data-search-input placeholder="搜尋集數、標題、議題或文章內容…" autocomplete="off" />
 		</label>
-		<div class="search-results" data-search-results>
-			{searchPosts.map((post) => (
-				<a class="search-result" href={post.href} data-search-item data-search-text={post.searchText}>
-					<span class="search-meta">{[post.episode, ...post.topics].filter(Boolean).join(' · ')}</span>
-					<strong>{post.title}</strong>
-					<span class="search-description">{post.description}</span>
-				</a>
-			))}
-			<p class="no-search-results" data-search-empty hidden>找不到符合的文章，換一組關鍵字試試看。</p>
-		</div>
+		<p class="no-search-results" data-search-status role="status" aria-live="polite"></p>
+		<div class="search-results" data-search-results></div>
 	</div>
 </dialog>
 
@@ -386,6 +356,7 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 </style>
 
 <script>
+	import { normalizeSearchText } from '../utils/search-index.mjs';
 	type SiteTheme = 'dark' | 'light';
 	type SiteShellWindow = Window & {
 		__newEraSiteShellReady?: boolean;
@@ -453,6 +424,57 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			applySortOrder(saved);
 		}
 	};
+	type SearchPost = { href: string; title: string; description: string; episode?: string; topics: string[]; searchText: string };
+	let searchIndex: Promise<SearchPost[]> | undefined;
+	const loadSearchIndex = () => {
+		if (!searchIndex) {
+			searchIndex = fetch('/search-index.json')
+				.then((response) => {
+					if (!response.ok) throw new Error(`Search index: ${response.status}`);
+					return response.json() as Promise<SearchPost[]>;
+				})
+				.catch((error) => { searchIndex = undefined; throw error; });
+		}
+		return searchIndex;
+	};
+	const prepareSearch = async (dialog: HTMLDialogElement) => {
+		if (dialog.dataset.searchReady || dialog.dataset.searchLoading) return;
+		const results = dialog.querySelector<HTMLElement>('[data-search-results]');
+		const status = dialog.querySelector<HTMLElement>('[data-search-status]');
+		if (!results || !status) return;
+		dialog.dataset.searchLoading = 'true';
+		status.textContent = '正在載入文章搜尋…';
+		try {
+			const posts = await loadSearchIndex();
+			if (!dialog.isConnected) return;
+			const fragment = document.createDocumentFragment();
+			for (const post of posts) {
+				const link = document.createElement('a');
+				link.className = 'search-result';
+				link.href = post.href;
+				link.dataset.searchItem = '';
+				link.dataset.searchText = post.searchText;
+				for (const [tag, className, text] of [
+					['span', 'search-meta', [post.episode, ...post.topics].filter(Boolean).join(' · ')],
+					['strong', '', post.title],
+					['span', 'search-description', post.description],
+				]) {
+					const element = document.createElement(tag);
+					element.className = className;
+					element.textContent = text;
+					link.append(element);
+				}
+				fragment.append(link);
+			}
+			results.replaceChildren(fragment);
+			dialog.dataset.searchReady = 'true';
+			dialog.querySelector<HTMLInputElement>('[data-search-input]')?.dispatchEvent(new Event('input', { bubbles: true }));
+		} catch {
+			status.textContent = '搜尋暫時無法載入，請關閉後重新開啟。也可以從「文章」或「議題」瀏覽。';
+		} finally {
+			delete dialog.dataset.searchLoading;
+		}
+	};
 	const openSearch = () => {
 		const dialog = document.querySelector<HTMLDialogElement>('[data-search-dialog]');
 		if (!dialog) return;
@@ -463,6 +485,7 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			input.dispatchEvent(new Event('input', { bubbles: true }));
 			requestAnimationFrame(() => input.focus());
 		}
+		void prepareSearch(dialog);
 	};
 	const updateActiveNavigation = () => {
 		const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/';
@@ -539,15 +562,15 @@ const searchPosts = (await getCollection('blog', ({ data }) => !data.draft))
 			const input = event.target;
 			if (!(input instanceof HTMLInputElement) || !input.matches('[data-search-input]')) return;
 			const dialog = input.closest<HTMLDialogElement>('dialog');
-			const query = input.value.trim().toLocaleLowerCase('zh-TW');
+			const query = normalizeSearchText(input.value);
 			let visibleCount = 0;
 			dialog?.querySelectorAll<HTMLElement>('[data-search-item]').forEach((item) => {
 				const visible = !query || (item.dataset.searchText ?? '').includes(query);
 				item.hidden = !visible;
 				if (visible) visibleCount += 1;
 			});
-			const empty = dialog?.querySelector<HTMLElement>('[data-search-empty]');
-			if (empty) empty.hidden = visibleCount > 0;
+			const status = dialog?.querySelector<HTMLElement>('[data-search-status]');
+			if (status && dialog?.dataset.searchReady) status.textContent = visibleCount > 0 ? '' : '找不到符合的文章，換一組關鍵字試試看。';
 		});
 		document.addEventListener('keydown', (event) => {
 			const target = event.target;

@@ -1,0 +1,7 @@
+/admin
+  X-Robots-Tag: noindex
+/admin/*
+  X-Robots-Tag: noindex
+/search-index.json
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Robots-Tag: noindex

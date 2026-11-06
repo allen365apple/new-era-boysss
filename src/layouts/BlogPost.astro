@@ -89,8 +89,8 @@ function toPeople(value?: string) {
 const episodeNumber = episode ? Number(/\d+/.exec(episode)?.[0]) : undefined;
 const hostPeople = toPeople(hosts);
 const guestPeople = toPeople(guests);
-// 只有格式已驗證過的單集音檔連結才拿來當 associatedMedia。
-const audioUrl = effectiveListenLinks.soundon;
+// 已確認的連結是平台播放頁，不是實際音訊檔，不能當作 contentUrl。
+const episodePlatformUrls = Object.values(effectiveListenLinks).filter(Boolean);
 
 const podcastEpisodeJsonLd = JSON.stringify({
 	'@context': 'https://schema.org',
@@ -105,9 +105,7 @@ const podcastEpisodeJsonLd = JSON.stringify({
 	...(Number.isFinite(episodeNumber) && { episodeNumber }),
 	...(hostPeople.length > 0 && { author: hostPeople, creator: hostPeople }),
 	...(guestPeople.length > 0 && { actor: guestPeople }),
-	...(audioUrl && {
-		associatedMedia: { '@type': 'MediaObject', contentUrl: audioUrl },
-	}),
+	...(episodePlatformUrls.length > 0 && { sameAs: episodePlatformUrls }),
 	partOfSeries: {
 		'@type': 'PodcastSeries',
 		name: PODCAST_NAME,
@@ -535,6 +533,7 @@ const breadcrumbJsonLd = JSON.stringify({
 						{episode && aiGenerated && (
 							<section class="episode-listen-intro" aria-label="內容來源與收聽連結">
 								<p class="source-title">本文內容由 AI 整理自《新世紀直男戰士》{displayEpisodeTitle ?? episode}</p>
+								<p class="accuracy-note">整理與維護：新世紀直男戰士製作團隊。<a href="/about/#這裡的文章怎麼來">文章來源與更正方式</a></p>
 								<p class="accuracy-note">AI 整理可能有些許誤差，詳細內容歡迎收聽本集節目：</p>
 								{hasListenLinks ? (
 									<div class="listen-links">

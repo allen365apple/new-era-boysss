@@ -65,9 +65,12 @@ const organizationJsonLd = JSON.stringify({
 	sameAs: [...Object.values(PODCAST_LINKS), ...Object.values(SOCIAL_LINKS)],
 });
 
-// hosts 字串（「柏文、孝成、博志」）拆成 Person 陣列，供 BlogPosting 的 author 使用。
+// 主持人是口述來源；文章整理署名為製作團隊，另以 contributor 表示對談參與者。
 const authorPeople = hosts
-	? hosts.split(/[、,，/]/).map((n) => n.trim()).filter(Boolean).map((name) => ({ '@type': 'Person', name }))
+	? hosts.split(/[、,，/]/).map((n) => n.trim()).filter(Boolean).map((name) => ({
+		'@type': 'Person', name,
+		...(['柏文', '孝成', '博志', '沁儒'].includes(name) && { url: new URL(`/about/#${name}`, Astro.site).toString() }),
+	}))
 	: [];
 
 // JSON-LD for articles
@@ -85,7 +88,8 @@ const articleJsonLd = isArticle
 		...(updatedDate && { dateModified: updatedDate.toISOString() }),
 		...(episode && { identifier: episode }),
 		...(topics && topics.length > 0 ? { articleSection: topics, keywords: topics.join(', ') } : {}),
-		author: authorPeople.length > 0 ? authorPeople : { '@type': 'Organization', name: PODCAST_HOST },
+		author: { '@id': orgId },
+		...(authorPeople.length > 0 && { contributor: authorPeople }),
 		publisher: { '@id': orgId },
 		mainEntityOfPage: {
 			'@type': 'WebPage',

@@ -13,6 +13,7 @@
 import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { taipeiDay } from '../src/utils/content-dates.mjs';
 
 const BLOG_DIR = 'src/content/blog';
 const checkOnly = process.argv.includes('--check');
@@ -26,8 +27,7 @@ function git(cmd) {
 }
 
 function today() {
-	// 本機執行，允許用系統日期；格式 YYYY-MM-DD。
-	return new Date().toISOString().slice(0, 10);
+	return taipeiDay();
 }
 
 function firstCommitDate(file) {
