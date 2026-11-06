@@ -6,6 +6,7 @@ import swup from '@swup/astro';
 import { defineConfig, fontProviders } from 'astro/config';
 import { readFile } from 'node:fs/promises';
 import { FAQ_REVIEW_DATE } from './src/data/faq-meta.mjs';
+import { TOPIC_GUIDES } from './src/data/topic-guides.mjs';
 import { articleLastmod } from './src/utils/content-dates.mjs';
 
 // https://astro.build/config
@@ -31,6 +32,8 @@ export default defineConfig({
 			filter: (page) => !page.includes('/topics/male-privilege'),
 			async serialize(item) {
 				if (new URL(item.url).pathname.replace(/\/$/, '') === '/faq') item.lastmod = FAQ_REVIEW_DATE;
+				const topicSlug = /^\/topics\/([^/]+)\/?$/.exec(new URL(item.url).pathname)?.[1];
+				if (topicSlug && TOPIC_GUIDES[topicSlug]) item.lastmod = TOPIC_GUIDES[topicSlug].updatedDate;
 				const slug = /^\/blog\/(ep\d+)\/?$/.exec(new URL(item.url).pathname)?.[1];
 				if (slug) {
 					const markdown = await readFile(new URL(`./src/content/blog/${slug}.md`, import.meta.url), 'utf8');

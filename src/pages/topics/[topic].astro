@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
 import { TOPICS, type Topic } from '../../data/topics';
+import { resolveTopicGuide } from '../../data/topic-guides.mjs';
 
 type Props = {
 	topic: Topic;
@@ -27,6 +28,8 @@ export async function getStaticPaths() {
 }
 
 const { topic, posts } = Astro.props as Props;
+const guide = resolveTopicGuide(topic, posts);
+const relatedTopics = TOPICS.filter((other) => guide.related.includes(other.slug));
 ---
 
 <!doctype html>
@@ -34,11 +37,21 @@ const { topic, posts } = Astro.props as Props;
 	<head>
 		<BaseHead
 			title={topic.name}
-			description={`${topic.description} 閱讀《${SITE_TITLE}》相關文章。`}
+			description={`${guide.question} ${topic.description} 從三集入門導讀，閱讀《${SITE_TITLE}》相關文章。`}
 			pageKind="collection"
 			jsonLdExtra={{
+				dateModified: guide.updatedDate,
+				about: { '@type': 'Thing', name: topic.name },
+				breadcrumb: {
+					'@type': 'BreadcrumbList',
+					itemListElement: [
+						{ '@type': 'ListItem', position: 1, name: '議題索引', item: new URL('/topics/', Astro.site).toString() },
+						{ '@type': 'ListItem', position: 2, name: topic.name, item: new URL(`/topics/${topic.slug}/`, Astro.site).toString() },
+					],
+				},
 				mainEntity: {
 					'@type': 'ItemList',
+					name: `${topic.name}全部文章`,
 					itemListElement: posts.map((post, index) => ({
 						'@type': 'ListItem',
 						position: index + 1,
@@ -75,6 +88,58 @@ const { topic, posts } = Astro.props as Props;
 				max-width: 620px;
 				color: var(--text-secondary);
 			}
+			.guide p,
+			.reading-path p {
+				color: var(--text-secondary);
+			}
+			.jump-links,
+			.related-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem 1.25rem;
+			}
+			.guide a,
+			.jump-links a,
+			.related-links a {
+				color: var(--accent-pink);
+				overflow-wrap: anywhere;
+			}
+			.guide,
+			.reading-path,
+			.related {
+				margin-bottom: 2.5rem;
+			}
+			.reading-path ol {
+				padding-left: 1.5rem;
+			}
+			.reading-path li {
+				padding: 0.25rem 0 1rem 0.35rem;
+				border-bottom: 1px solid var(--border);
+				margin-bottom: 1rem;
+			}
+			.reading-path h3 {
+				font-size: 1.1rem;
+				line-height: 1.6;
+				margin: 0 0 0.5rem;
+			}
+			.reading-path h3 a {
+				display: block;
+				color: var(--text-primary);
+				text-decoration-color: var(--accent-pink);
+				text-underline-offset: 0.2em;
+				overflow-wrap: anywhere;
+			}
+			.reading-path h3 a:hover,
+			.reading-path h3 a:focus-visible {
+				text-decoration: underline;
+			}
+			.reading-path li p {
+				margin: 0;
+			}
+			.guide .guide-updated {
+				font-size: 0.82rem;
+				color: var(--text-muted);
+			}
 			.posts {
 				margin-top: 1.5rem;
 			}
@@ -94,8 +159,34 @@ const { topic, posts } = Astro.props as Props;
 				<p class="eyebrow">議題</p>
 				<h1>{topic.name}</h1>
 				<p>{topic.description}</p>
+				<nav class="jump-links" aria-label="本頁閱讀入口">
+					<a href="#start-here">先從這幾集開始</a>
+					<a href="#all-articles">全部文章（{posts.length}）</a>
+				</nav>
 			</section>
-			<section class="posts" aria-label={`${topic.name}文章列表`}>
+			<section class="guide" aria-labelledby="guide-question">
+				<h2 id="guide-question">{guide.question}</h2>
+				{guide.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+				<p>想先查名詞？<a href="/faq/">常見問題與概念來源</a>整理了相關說明，也連回節目討論。</p>
+				<p class="guide-updated">導讀更新：<time datetime={guide.updatedDate}>{guide.updatedDate}</time></p>
+			</section>
+			{guide.startHere.length > 0 && <section class="reading-path" aria-labelledby="start-here">
+				<h2 id="start-here">先從這幾集開始</h2>
+				<p>以下依討論脈絡安排閱讀順序，每篇文章內都有完整單集的收聽連結。</p>
+				<ol>
+					{guide.startHere.map(({ post, reason }) => <li>
+						<h3><a href={`/blog/${post.id}/`}>{post.data.episode}｜{post.data.title}</a></h3>
+						<p>{reason}</p>
+					</li>)}
+				</ol>
+			</section>}
+			<nav class="related" aria-labelledby="related-topics">
+				<h2 id="related-topics">接著探索</h2>
+				<div class="related-links">{relatedTopics.map((other) => <a href={`/topics/${other.slug}/`}>{other.name}</a>)}</div>
+			</nav>
+			<section class="posts" aria-labelledby="all-articles">
+				<h2 id="all-articles">全部文章（{posts.length}）</h2>
+				<p>依文章發布日期，由新到舊排列。</p>
 				{posts.length > 0 ? posts.map((post) => <ArticleCard post={post} />) : (
 					<p class="empty">這個議題的文章正在整理中，先從其他分類逛逛吧。</p>
 				)}
