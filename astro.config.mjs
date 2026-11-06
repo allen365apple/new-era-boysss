@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import swup from '@swup/astro';
 import { defineConfig, fontProviders } from 'astro/config';
 import { readFile } from 'node:fs/promises';
+import { FAQ_REVIEW_DATE } from './src/data/faq-meta.mjs';
 import { articleLastmod } from './src/utils/content-dates.mjs';
 
 // https://astro.build/config
@@ -29,6 +30,7 @@ export default defineConfig({
 			// 收進 sitemap 會讓 Search Console 報「已提交的網址標記為 noindex」，故排除。
 			filter: (page) => !page.includes('/topics/male-privilege'),
 			async serialize(item) {
+				if (new URL(item.url).pathname.replace(/\/$/, '') === '/faq') item.lastmod = FAQ_REVIEW_DATE;
 				const slug = /^\/blog\/(ep\d+)\/?$/.exec(new URL(item.url).pathname)?.[1];
 				if (slug) {
 					const markdown = await readFile(new URL(`./src/content/blog/${slug}.md`, import.meta.url), 'utf8');
