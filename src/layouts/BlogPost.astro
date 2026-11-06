@@ -12,7 +12,7 @@ import { PODCAST_NAME, PODCAST_LINKS, SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	headings?: MarkdownHeading[];
-	relatedPosts?: CollectionEntry<'blog'>[];
+	relatedPosts?: { post: CollectionEntry<'blog'>; reason: string }[];
 };
 
 const {
@@ -390,6 +390,24 @@ const breadcrumbJsonLd = JSON.stringify({
 				font-size: 0.82rem;
 				color: var(--text-muted);
 			}
+			.related .related-reason {
+				display: block;
+				margin-top: 0.5rem;
+				font-size: 0.9rem;
+				line-height: 1.75;
+				color: var(--text-secondary);
+			}
+			.topic-guides {
+				margin-top: 1.5rem;
+			}
+			.topic-guides p {
+				margin-bottom: 0.5rem;
+			}
+			.topic-guides a {
+				display: inline-block;
+				margin: 0.25rem 0.75rem 0.25rem 0;
+				color: var(--accent-pink);
+			}
 			.article :global(h2),
 			.article :global(h3) {
 				scroll-margin-top: 6.5rem;
@@ -572,7 +590,7 @@ const breadcrumbJsonLd = JSON.stringify({
 							<section class="related" aria-labelledby="related-heading">
 								<h2 id="related-heading">你可能也會想讀</h2>
 								<ul>
-									{relatedPosts.map((related) => (
+									{relatedPosts.map(({ post: related, reason }) => (
 										<li>
 											<a href={`/blog/${related.id}/`}>
 												{related.data.title}
@@ -580,12 +598,17 @@ const breadcrumbJsonLd = JSON.stringify({
 													{related.data.episode ? `${related.data.episode} · ` : ''}
 													<FormattedDate date={related.data.pubDate} />
 												</span>
+												<span class="related-reason">{reason}</span>
 											</a>
 										</li>
 									))}
 								</ul>
 							</section>
 						)}
+						{topicLinks.length > 0 && <nav class="topic-guides" aria-label="本篇相關議題導讀">
+							<p>想沿著議題繼續讀？這些導讀整理了入門順序：</p>
+							{topicLinks.map((topic) => <a href={`/topics/${topic.slug}/`}>{topic.name}導讀 →</a>)}
+						</nav>}
 					</div>
 				</div>
 			</article>
