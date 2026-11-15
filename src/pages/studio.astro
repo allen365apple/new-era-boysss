@@ -1,0 +1,249 @@
+---
+// 最後更新：2026-11-15 18:20（台北時間）
+// 誰幫忙的：Claude Code（Sonnet subagent）
+// 修改摘要：新增 /studio 登入前說明頁（獨立版面、noindex、風格對齊上架工作台），按鈕連到工作台。
+//
+// 這頁不套部落格導覽與版型，也不放進 sitemap（見 astro.config.mjs 的 filter），
+// 部落格任何地方都不連到它；夥伴是直接輸入網址或從別處拿到連結進來的。
+const STUDIO_URL = 'https://episode-studio.allen365apple.workers.dev/';
+const abilities = [
+	'音檔自動轉成字幕',
+	'產出多個標題、SoundOn 節目描述（含章節時間）、IG 貼文、封面文字',
+	'自動校正常被聽錯的人名，並列出要你親自確認的地方',
+	'哪一段不滿意，寫一句附註就能一鍵重寫',
+];
+---
+
+<!doctype html>
+<html lang="zh-Hant-TW">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>直男戰士上架工作台｜節目夥伴專用</title>
+		<meta
+			name="description"
+			content="《新世紀直男戰士》節目夥伴專用的上架工作台：把剪好的音檔或字幕丟進來，拿到整包上架文案。"
+		/>
+		<link rel="icon" type="image/png" href="/studio-logo.png" />
+		<link rel="apple-touch-icon" href="/studio-logo.png" />
+		<style is:global>
+			/* 色票沿用上架工作台（episode-studio/frontend/src/index.css），登入後看到的是同一個產品 */
+			:root {
+				color-scheme: light dark;
+				--bg: #fafaf7;
+				--fg: #1a1a1a;
+				--card: #ffffff;
+				--primary: #1f3fd1;
+				--on-primary: #ffffff;
+				--muted-fg: #55554f;
+				--tint: #e6eafb;
+				--line: #1f3fd1;
+				--shadow-btn: #142a93;
+				--dots: rgb(31 63 209 / 0.14);
+			}
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #0c1020;
+					--fg: #e9ecf7;
+					--card: #121831;
+					--primary: #8da2ff;
+					--on-primary: #0c1020;
+					--muted-fg: #a6adc8;
+					--tint: #1a2347;
+					--line: #6c82f0;
+					--shadow-btn: #4a5fc9;
+					--dots: rgb(141 162 255 / 0.16);
+				}
+			}
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+			html {
+				-webkit-text-size-adjust: 100%;
+			}
+			body.studio {
+				margin: 0;
+				min-height: 100vh;
+				min-height: 100dvh;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				background-color: var(--bg);
+				background-image: radial-gradient(circle, var(--dots) 1px, transparent 1.2px);
+				background-size: 1rem 1rem;
+				color: var(--fg);
+				font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei',
+					'Heiti TC', system-ui, sans-serif;
+				font-size: 1.0625rem;
+				line-height: 1.7;
+				overflow-wrap: anywhere;
+			}
+			.studio-wrap {
+				width: min(38rem, 100% - 2.5rem);
+				margin-block: auto;
+				padding-block: 2rem;
+			}
+			.brand {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				padding-bottom: 0.9rem;
+				border-bottom: 1px solid var(--line);
+			}
+			.brand img {
+				width: 2.25rem;
+				height: 2.25rem;
+			}
+			.brand-name {
+				font-weight: 700;
+				line-height: 1.25;
+			}
+			.mono {
+				font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+			}
+			.label {
+				display: inline-block;
+				margin: 1.6rem 0 0;
+				padding: 0.1rem 0.55rem;
+				border: 1px solid var(--line);
+				border-radius: 3px;
+				background: var(--tint);
+				color: var(--primary);
+				font-size: 0.78rem;
+				letter-spacing: 0.08em;
+				line-height: 1.6;
+			}
+			.studio h1 {
+				margin: 0.7rem 0 0.5rem;
+				font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.5rem);
+				line-height: 1.25;
+				font-weight: 700;
+			}
+			.lede {
+				margin: 0;
+				color: var(--muted-fg);
+			}
+			.studio h2 {
+				margin: 1.8rem 0 0.4rem;
+				font-size: 1rem;
+				font-weight: 700;
+			}
+			.abilities {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				counter-reset: ability;
+				border-top: 1px solid var(--line);
+			}
+			.abilities li {
+				counter-increment: ability;
+				display: flex;
+				gap: 0.85rem;
+				padding: 0.6rem 0;
+				border-bottom: 1px solid color-mix(in srgb, var(--line) 35%, transparent);
+				line-height: 1.55;
+			}
+			.abilities li::before {
+				content: counter(ability, decimal-leading-zero);
+				flex: none;
+				padding-top: 0.12rem;
+				color: var(--primary);
+				font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+				font-size: 0.85rem;
+				font-weight: 700;
+			}
+			.cta {
+				margin-top: 1.9rem;
+			}
+			.cta-button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 3rem;
+				padding: 0.5rem 1.6rem;
+				border: 1px solid var(--primary);
+				border-radius: 3px;
+				background: var(--primary);
+				color: var(--on-primary);
+				font-size: 1.0625rem;
+				font-weight: 700;
+				text-decoration: none;
+				box-shadow: 3px 3px 0 var(--shadow-btn);
+				transition:
+					transform 0.12s ease,
+					box-shadow 0.12s ease;
+			}
+			.cta-button:hover {
+				transform: translate(1px, 1px);
+				box-shadow: 2px 2px 0 var(--shadow-btn);
+			}
+			.cta-button:active {
+				transform: translate(3px, 3px);
+				box-shadow: 0 0 0 var(--shadow-btn);
+			}
+			.cta-button:focus-visible {
+				outline: 3px solid var(--primary);
+				outline-offset: 3px;
+			}
+			.cta-note {
+				margin: 0.9rem 0 0;
+				color: var(--muted-fg);
+				font-size: 0.9375rem;
+				line-height: 1.6;
+			}
+			.fine {
+				margin: 1.6rem 0 0;
+				color: var(--muted-fg);
+				font-size: 0.8125rem;
+			}
+			@media (max-width: 480px) {
+				.studio-wrap {
+					padding-block: 1.25rem;
+				}
+				.cta-button {
+					display: flex;
+					width: 100%;
+				}
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.cta-button {
+					transition: none;
+				}
+				.cta-button:hover,
+				.cta-button:active {
+					transform: none;
+				}
+			}
+		</style>
+	</head>
+	<body class="studio">
+		<main class="studio-wrap">
+			<header class="brand">
+				<img src="/studio-logo.png" alt="" width="36" height="36" />
+				<p class="brand-name" style="margin:0">
+					新世紀直男戰士
+				</p>
+			</header>
+
+			<p class="label mono">EPISODE STUDIO／節目夥伴專用</p>
+			<h1>直男戰士上架工作台</h1>
+			<p class="lede">把剪好的音檔或字幕丟進來，拿到整包上架文案。</p>
+
+			<h2>在這裡可以做的事</h2>
+			<ul class="abilities">
+				{abilities.map((item) => <li><span>{item}</span></li>)}
+			</ul>
+
+			<div class="cta">
+				<a class="cta-button" href={STUDIO_URL} data-no-swup>用 Email 登入</a>
+				<p class="cta-note">只開放受邀的節目夥伴。輸入信箱後會收到 6 位數驗證碼。</p>
+			</div>
+
+			<p class="fine">AI 寫的內容上架前要有人看過。</p>
+		</main>
+	</body>
+</html>

@@ -1,7 +1,5 @@
-# 最後更新：2026-11-15 15:55（台北時間）
-# 誰幫忙的：Claude Code（Fable 5.2）
-# 修改摘要：新增 /studio 轉到直男戰士上架工作台（要用受邀信箱驗證才進得去）。
+# 最後更新：2026-11-15 18:20（台北時間）
+# 誰幫忙的：Claude Code（Sonnet subagent）
+# 修改摘要：拿掉 /studio 轉址（改由 src/pages/studio.astro 說明頁接手，按鈕再連到工作台）。
 /topics/male-privilege /topics/male-struggles/ 301
 /topics/male-privilege/ /topics/male-struggles/ 301
-/studio https://episode-studio.allen365apple.workers.dev/ 302
-/studio/ https://episode-studio.allen365apple.workers.dev/ 302
