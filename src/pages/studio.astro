@@ -1,7 +1,7 @@
 ---
-// 最後更新：2026-11-17 17:36（台北時間）
+// 最後更新：2026-11-17 17:58（台北時間）
 // 誰幫忙的：Claude Code（Claude 桌面 App）
-// 修改摘要：登入方式只剩 Google，按鈕改成「用 Google 帳號登入」，拿掉信箱驗證碼的說明。
+// 修改摘要：說明頁改成固定淺色（不再跟著系統深色），和上架工作台的預設一致。
 //
 // 這頁不套部落格導覽與版型，也不放進 sitemap（見 astro.config.mjs 的 filter），
 // 2026-11-17 起部落格頁尾的「上架工作站」會連到這頁（柏文指定）。
@@ -19,7 +19,7 @@ const abilities = [
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-		<meta name="color-scheme" content="light dark" />
+		<meta name="color-scheme" content="light" />
 		<meta name="robots" content="noindex, nofollow" />
 		<title>直男戰士上架工作台｜節目夥伴專用</title>
 		<meta
@@ -31,7 +31,7 @@ const abilities = [
 		<style is:global>
 			/* 色票沿用上架工作台（episode-studio/frontend/src/index.css），登入後看到的是同一個產品 */
 			:root {
-				color-scheme: light dark;
+				color-scheme: light;
 				--bg: #fafaf7;
 				--fg: #1a1a1a;
 				--card: #ffffff;
@@ -42,20 +42,6 @@ const abilities = [
 				--line: #1f3fd1;
 				--shadow-btn: #142a93;
 				--dots: rgb(31 63 209 / 0.14);
-			}
-			@media (prefers-color-scheme: dark) {
-				:root {
-					--bg: #0c1020;
-					--fg: #e9ecf7;
-					--card: #121831;
-					--primary: #8da2ff;
-					--on-primary: #0c1020;
-					--muted-fg: #a6adc8;
-					--tint: #1a2347;
-					--line: #6c82f0;
-					--shadow-btn: #4a5fc9;
-					--dots: rgb(141 162 255 / 0.16);
-				}
 			}
 			*,
 			*::before,
