@@ -1,4 +1,7 @@
 ---
+// 最後更新：2026-11-17 17:28（台北時間）
+// 誰幫忙的：Claude Code（Claude 桌面 App）
+// 修改摘要：頁尾「內容管理後臺」縮成「內容後臺」，新增「上架工作站」連結到 /studio/
 import SocialLinks from './SocialLinks.astro';
 
 const today = new Date();
@@ -10,7 +13,8 @@ const today = new Date();
 		<a href="/faq/">常見問題</a>
 		<a href="/topics/">議題索引</a>
 		<a href="/about/">關於節目</a>
-		<a href="/admin/" target="_blank" rel="noopener noreferrer" data-astro-reload>內容管理後臺</a>
+		<a href="/admin/" target="_blank" rel="noopener noreferrer" data-astro-reload>內容後臺</a>
+		<a href="/studio/" target="_blank" rel="noopener noreferrer" data-astro-reload>上架工作站</a>
 	</nav>
 	<p>&copy; {today.getFullYear()} 新世紀直男戰士</p>
 </footer>

@@ -1,16 +1,16 @@
 ---
-// 最後更新：2026-11-15 18:20（台北時間）
-// 誰幫忙的：Claude Code（Sonnet subagent）
-// 修改摘要：新增 /studio 登入前說明頁（獨立版面、noindex、風格對齊上架工作台），按鈕連到工作台。
+// 最後更新：2026-11-17 17:30（台北時間）
+// 誰幫忙的：Claude Code（Claude 桌面 App）
+// 修改摘要：登入說明改成 Google 登入為主、「附註」改「回饋」；部落格頁尾現在會連到這頁。
 //
 // 這頁不套部落格導覽與版型，也不放進 sitemap（見 astro.config.mjs 的 filter），
-// 部落格任何地方都不連到它；夥伴是直接輸入網址或從別處拿到連結進來的。
+// 2026-11-17 起部落格頁尾的「上架工作站」會連到這頁（柏文指定）。
 const STUDIO_URL = 'https://episode-studio.allen365apple.workers.dev/';
 const abilities = [
 	'音檔自動轉成字幕',
 	'產出多個標題、SoundOn 節目描述（含章節時間）、IG 貼文、封面文字',
 	'自動校正常被聽錯的人名，並列出要你親自確認的地方',
-	'哪一段不滿意，寫一句附註就能一鍵重寫',
+	'哪一段不滿意，寫一句回饋就能一鍵重寫',
 ];
 ---
 
@@ -240,7 +240,7 @@ const abilities = [
 
 			<div class="cta">
 				<a class="cta-button" href={STUDIO_URL} data-no-swup>用 Email 登入</a>
-				<p class="cta-note">只開放受邀的節目夥伴。輸入信箱後會收到 6 位數驗證碼。</p>
+				<p class="cta-note">只開放受邀的節目夥伴。用受邀的 Google 帳號登入，或輸入信箱收 6 位數驗證碼。</p>
 			</div>
 
 			<p class="fine">AI 寫的內容上架前要有人看過。</p>
