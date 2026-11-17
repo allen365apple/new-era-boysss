@@ -1,7 +1,7 @@
 ---
-// 最後更新：2026-11-17 17:30（台北時間）
+// 最後更新：2026-11-17 17:36（台北時間）
 // 誰幫忙的：Claude Code（Claude 桌面 App）
-// 修改摘要：登入說明改成 Google 登入為主、「附註」改「回饋」；部落格頁尾現在會連到這頁。
+// 修改摘要：登入方式只剩 Google，按鈕改成「用 Google 帳號登入」，拿掉信箱驗證碼的說明。
 //
 // 這頁不套部落格導覽與版型，也不放進 sitemap（見 astro.config.mjs 的 filter），
 // 2026-11-17 起部落格頁尾的「上架工作站」會連到這頁（柏文指定）。
@@ -239,8 +239,8 @@ const abilities = [
 			</ul>
 
 			<div class="cta">
-				<a class="cta-button" href={STUDIO_URL} data-no-swup>用 Email 登入</a>
-				<p class="cta-note">只開放受邀的節目夥伴。用受邀的 Google 帳號登入，或輸入信箱收 6 位數驗證碼。</p>
+				<a class="cta-button" href={STUDIO_URL} data-no-swup>用 Google 帳號登入</a>
+				<p class="cta-note">只開放受邀的節目夥伴。用受邀的 Google 帳號登入。</p>
 			</div>
 
 			<p class="fine">AI 寫的內容上架前要有人看過。</p>
